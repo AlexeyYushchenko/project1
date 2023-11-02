@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Client Statuses</title>
+</head>
+<body>
+<h1>Client Statuses</h1>
+<div th:each="clientStatus : ${clientStatuses}">
+    <a th:href="@{'/clientStatuses/' + ${clientStatus.id}}" th:text="|${clientStatus.getId()}. ${clientStatus.getName()}|">Client Status</a>
+</div>
+<br>
+
+<h3>Add new client status</h3>
+<form th:action="@{/clientStatuses}" method="post">
+    <label for="name">
+        <input id="name" type="text" name="name">
+    </label>
+    <button type="submit">Add</button>
+</form>
+<br>
+
+<div>
+    <a th:href="@{/menu}">Go to Main menu</a>
+</div>
+
+<dif th:insert="~{fragments::errors}"></dif>
+
+</body>
+</html>
