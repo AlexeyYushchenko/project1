@@ -9,7 +9,7 @@
 
 <h1>CLIENT STATUS</h1>
 
-<form th:action="@{/clientStatuses/{clientStatusId}(clientStatusId=${clientStatus.id})}" method="post" th:object="${clientStatus}">
+<form th:action="@{/clientStatuses/{clientStatusId}(clientStatusId=${clientStatus.id()})}" method="post" th:object="${clientStatus}">
     <fieldset>
         <legend>Client Status Details</legend>
 
@@ -21,7 +21,7 @@
     </fieldset>
 </form>
 
-<form th:action="@{/clientStatuses/{clientStatusId}/delete(clientStatusId=${clientStatus.id})}" method="post">
+<form th:action="@{/clientStatuses/{clientStatusId}/delete(clientStatusId=${clientStatus.id()})}" method="post">
     <button type="submit">Remove</button>
 </form>
 

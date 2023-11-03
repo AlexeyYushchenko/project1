@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import utlc.ru.project1.dto.ClientStatusDto;
+import utlc.ru.project1.dto.ClientStatusReadDto;
+import utlc.ru.project1.dto.ClientStatusUpdateDto;
 import utlc.ru.project1.service.ClientStatusService;
 
 @Controller
@@ -39,22 +40,32 @@ public class ClientStatusController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute @Validated ClientStatusDto clientStatusDto,
+    public String create(@ModelAttribute @Validated ClientStatusReadDto clientStatusReadDto,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
-//        if (bindingResult.hasErrors()) {
-//            redirectAttributes.addFlashAttribute("author", author);
-//            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-//            return "redirect:/authors";
-//        }
-        clientStatusService.create(clientStatusDto);
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("clientStatus", clientStatusReadDto);
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            return "redirect:/clientStatuses";
+        }
+        clientStatusService.create(clientStatusReadDto);
         return "redirect:/clientStatuses";
     }
 
     @PostMapping("/{id}")
     public String update(@PathVariable("id") Integer id,
-                         @ModelAttribute @Validated ClientStatusDto dto) {
-        return clientStatusService.update(id, dto)
+                         @ModelAttribute @Validated ClientStatusUpdateDto updateClientStatus,
+                         BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("clientStatus", updateClientStatus);
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            return "redirect:/clientStatuses/" + id;
+        }
+
+        return clientStatusService.update(id, updateClientStatus)
                 .map(it -> "redirect:/clientStatuses/{id}")
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }

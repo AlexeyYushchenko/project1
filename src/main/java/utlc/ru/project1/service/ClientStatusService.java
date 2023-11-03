@@ -4,7 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import utlc.ru.project1.database.repository.ClientStatusRepository;
-import utlc.ru.project1.dto.ClientStatusDto;
+import utlc.ru.project1.dto.ClientStatusReadDto;
+import utlc.ru.project1.dto.ClientStatusUpdateDto;
 import utlc.ru.project1.mapper.ClientStatusMapper;
 
 import java.util.List;
@@ -18,20 +19,20 @@ public class ClientStatusService {
     private final ClientStatusRepository clientStatusRepository;
     private final ClientStatusMapper clientStatusMapper;
 
-    public List<ClientStatusDto> findAll() {
+    public List<ClientStatusReadDto> findAll() {
         return clientStatusRepository.findAll().stream()
                 .map(clientStatusMapper::toDto)
                 .toList();
     }
 
-    public Optional<ClientStatusDto> findById(Integer id) {
+    public Optional<ClientStatusReadDto> findById(Integer id) {
         return clientStatusRepository.findById(id)
                 .map(clientStatusMapper::toDto);
     }
 
     @Transactional
-    public ClientStatusDto create(ClientStatusDto clientStatusDto) {
-        return Optional.of(clientStatusDto)
+    public ClientStatusReadDto create(ClientStatusReadDto clientStatusReadDto) {
+        return Optional.of(clientStatusReadDto)
                 .map(clientStatusMapper::toEntity)
                 .map(clientStatusRepository::save)
                 .map(clientStatusMapper::toDto)
@@ -39,7 +40,7 @@ public class ClientStatusService {
     }
 
     @Transactional
-    public Optional<ClientStatusDto> update(Integer id, ClientStatusDto dto) {
+    public Optional<ClientStatusReadDto> update(Integer id, ClientStatusUpdateDto dto) {
         return clientStatusRepository.findById(id)
                 .map(entity -> clientStatusMapper.update(entity, dto))
                 .map(clientStatusRepository::saveAndFlush) //no request to the db without 'flush', thus we can get exception on dif.level

@@ -31,6 +31,7 @@ dependencies {
 	implementation("org.liquibase:liquibase-core")
 
 	implementation("org.springframework.kafka:spring-kafka")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
 
 //	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6") I will need it later
 
