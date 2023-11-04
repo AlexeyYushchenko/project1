@@ -10,72 +10,72 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import utlc.ru.project1.dto.clientstatus.ClientStatusReadDto;
-import utlc.ru.project1.dto.clientstatus.ClientStatusUpdateDto;
-import utlc.ru.project1.service.ClientStatusService;
+import utlc.ru.project1.dto.priority.PriorityReadDto;
+import utlc.ru.project1.dto.priority.PriorityUpdateDto;
+import utlc.ru.project1.service.PriorityService;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/clientStatuses")
-public class ClientStatusController {
+@RequestMapping("/priorities")
+public class PriorityController {
 
-    private final ClientStatusService clientStatusService;
+    private final PriorityService priorityService;
 
     @GetMapping
-    public String findAll(Model model, ModelAndView modelAndView){
-        var clientStatuses = clientStatusService.findAll();
-        model.addAttribute("clientStatuses", clientStatuses);
-        return "clientStatus/clientStatuses";
+    public String findAll(Model model, ModelAndView modelAndView) {
+        var priorityes = priorityService.findAll();
+        model.addAttribute("priorities", priorityes);
+        return "priority/priorities";
     }
 
     @GetMapping("/{id}")
     public String findById(@PathVariable("id") Integer id,
                            Model model) {
-         return clientStatusService.findById(id)
-                .map(clientStatus -> {
-                    model.addAttribute("clientStatus", clientStatus);
-                    return "clientStatus/clientStatus";
+        return priorityService.findById(id)
+                .map(priority -> {
+                    model.addAttribute("priority", priority);
+                    return "priority/priority";
                 })
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
-    public String create(@ModelAttribute @Validated ClientStatusReadDto clientStatusReadDto,
+    public String create(@ModelAttribute @Validated PriorityReadDto priorityReadDto,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("clientStatus", clientStatusReadDto);
+            redirectAttributes.addFlashAttribute("priority", priorityReadDto);
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/clientStatuses";
+            return "redirect:/priorities";
         }
-        clientStatusService.create(clientStatusReadDto);
-        return "redirect:/clientStatuses";
+        priorityService.create(priorityReadDto);
+        return "redirect:/priorities";
     }
 
     @PostMapping("/{id}")
     public String update(@PathVariable("id") Integer id,
-                         @ModelAttribute @Validated ClientStatusUpdateDto updateClientStatus,
+                         @ModelAttribute @Validated PriorityUpdateDto updatePriority,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("clientStatus", updateClientStatus);
+            redirectAttributes.addFlashAttribute("priority", updatePriority);
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/clientStatuses/" + id;
+            return "redirect:/priorities/" + id;
         }
 
-        return clientStatusService.update(id, updateClientStatus)
-                .map(it -> "redirect:/clientStatuses/{id}")
+        return priorityService.update(id, updatePriority)
+                .map(it -> "redirect:/priorities/{id}")
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable("id") Integer id) {
-        if (!clientStatusService.delete(id)) {
+        if (!priorityService.delete(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        return "redirect:/clientStatuses";
+        return "redirect:/priorities";
     }
 
 }

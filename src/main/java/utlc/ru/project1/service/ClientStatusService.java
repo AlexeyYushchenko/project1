@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import utlc.ru.project1.database.repository.ClientStatusRepository;
-import utlc.ru.project1.dto.ClientStatusReadDto;
-import utlc.ru.project1.dto.ClientStatusUpdateDto;
+import utlc.ru.project1.dto.clientstatus.ClientStatusReadDto;
+import utlc.ru.project1.dto.clientstatus.ClientStatusUpdateDto;
 import utlc.ru.project1.mapper.ClientStatusMapper;
 
 import java.util.List;

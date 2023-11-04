@@ -6,8 +6,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import utlc.ru.project1.dto.ClientStatusReadDto;
-import utlc.ru.project1.dto.ClientStatusUpdateDto;
+import utlc.ru.project1.dto.clientstatus.ClientStatusReadDto;
+import utlc.ru.project1.dto.clientstatus.ClientStatusUpdateDto;
 import utlc.ru.project1.service.ClientStatusService;
 import java.util.List;
 
@@ -18,14 +18,12 @@ public class ClientStatusRestController {
 
     private final ClientStatusService clientStatusService;
 
-    // Get all client statuses
     @GetMapping()
     public ResponseEntity<List<ClientStatusReadDto>> getAll() {
         List<ClientStatusReadDto> statuses = clientStatusService.findAll();
         return ResponseEntity.ok(statuses);
     }
 
-    // Get a single client status by ID
     @GetMapping("/{id}")
     public ResponseEntity<ClientStatusReadDto> getById(@PathVariable Integer id) {
         return clientStatusService.findById(id)

@@ -2,86 +2,57 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Books</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        th, td {
-            border: 1px solid #000;
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #87CEFA;
-            color: white;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        .delete-link {
-            color: red;
-        }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+    <title>Client Statuses</title>
 </head>
+
 <body>
-<h1>Book list</h1>
-<table>
+<h1>Client Statuses</h1>
+<table id="shipmentStatusesTable">
+    <thead>
     <tr>
         <th>ID</th>
-        <th>Title</th>
-        <th>Author</th>
-        <th>Price</th>
-        <th>View</th>
-        <th>Delete</th>
+        <th>Name</th>
+        <th>Created At</th>
+        <th>Modified At</th>
+        <th>Created By</th>
+        <th>Modified By</th>
     </tr>
-    <tr th:each="book : ${books}">
-        <td th:text="${book.id}">ID</td>
-        <td th:text="${book.title}">Title</td>
-        <td th:text="${book.author.name}">Author</td>
-        <td th:text="${book.price}">Price</td>
-        <td><a th:href="@{'/books/' + ${book.id}}">Edit</a></td>
-        <td>
-            <form th:action="@{/books/{bookId}/delete(bookId=${book.id})}" method="post">
-                <input type="hidden" name="_method" value="DELETE">
-                <button type="submit">Delete</button>
-            </form>
-        </td>
+    </thead>
+    <tbody>
+    <tr th:each="shipmentStatus : ${shipmentStatuses}">
+        <td th:text="${shipmentStatus.id}">ID</td>
+        <td><a th:href="@{'/shipmentStatuses/' + ${shipmentStatus.id}}" th:text="${shipmentStatus.name}">Name</a></td>
+        <td th:text="${shipmentStatus.createdAt}">Created At</td>
+        <td th:text="${shipmentStatus.modifiedAt}">Modified At</td>
+        <td th:text="${shipmentStatus.createdBy}">Created By</td>
+        <td th:text="${shipmentStatus.modifiedBy}">Modified By</td>
     </tr>
+    </tbody>
 </table>
 
-<h1>Add a book</h1>
-<form th:action="@{/books}" method="post">
-    <label for="title">Название:
-        <input id="title" type="text" name="title">
-    </label>
-    <br>
-    <label for="authorId">Автор:
-        <select id="authorId" name="authorId">
-<!--            <option value="">Select an author</option>-->
-            <option th:each="author : ${authors}"
-                    th:text="${author.name}"
-                    th:value="${author.id}"></option>
-        </select>
-    </label>
-    <br>
-    <label for="price">Стоимость:
-        <input id="price" type="text" name="price">
-    </label>
-    <br>
+<script>
+    $(document).ready(function() {
+        $('#shipmentStatusesTable').DataTable();
+    });
+</script>
 
-    <button type="submit">Add new book</button>
+<br>
+
+<h3>Add new shipment status</h3>
+<form th:action="@{/shipmentStatuses}" method="post">
+    <label for="name">
+        <input id="name" type="text" name="name">
+    </label>
+    <button type="submit">Add</button>
 </form>
+<br>
 
 <div>
-    <a th:href="@{/authors}">Go to Authors</a>
+    <a th:href="@{/menu}">Go to Main menu</a>
 </div>
+
+<dif th:insert="~{fragments::errors}"></dif>
 
 </body>
 </html>

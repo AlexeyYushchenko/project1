@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Priority</title>
+  <link rel="stylesheet" type="text/css" href="/templates/styles.css">
+</head>
+<body>
+
+<h1>PRIORITY</h1>
+
+<form th:action="@{/priorities/{priorityId}(priorityId=${priority.id()})}" method="post" th:object="${priority}">
+  <fieldset>
+    <legend>Priority Details</legend>
+
+    <label for="name">Name:
+      <input id="name" type="text" name="name" th:value="*{name}" aria-label="Priority Name">
+    </label>
+    <br>
+    <button type="submit">Update</button>
+  </fieldset>
+</form>
+
+<form th:action="@{/priorities/{priorityId}/delete(priorityId=${priority.id()})}" method="post">
+  <button type="submit">Remove</button>
+</form>
+
+<div>
+  <a th:href="@{/priorities}">Go back</a>
+</div>
+
+<div th:insert="~{fragments::errors}"></div>
+
+</body>
+</html>

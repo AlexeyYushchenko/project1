@@ -2,14 +2,49 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
     <title>Client Statuses</title>
 </head>
 <body>
+
 <h1>Client Statuses</h1>
-<div th:each="clientStatus : ${clientStatuses}">
-    <a th:href="@{'/clientStatuses/' + ${clientStatus.id()}}" th:text="|${clientStatus.id()}. ${clientStatus.name()}|">Client Status</a>
-</div>
-<br>
+
+<table id="clientStatusesTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Created At</th>
+        <th>Modified At</th>
+        <th>Created By</th>
+        <th>Modified By</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="clientStatus : ${clientStatuses}">
+        <td th:text="${clientStatus.id}">ID</td>
+        <td><a th:href="@{'/clientStatuses/' + ${clientStatus.id}}" th:text="${clientStatus.name}">Name</a></td>
+        <td th:text="${clientStatus.createdAt}">Created At</td>
+        <td th:text="${clientStatus.modifiedAt}">Modified At</td>
+        <td th:text="${clientStatus.createdBy}">Created By</td>
+        <td th:text="${clientStatus.modifiedBy}">Modified By</td>
+        <td>
+            <form th:action="@{/clientStatuses/{clientStatusId}/delete(clientStatusId=${clientStatus.id})}"
+                  method="post">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function() {
+        $('#clientStatusesTable').DataTable();
+    });
+</script>
 
 <h3>Add new client status</h3>
 <form th:action="@{/clientStatuses}" method="post">
@@ -28,3 +63,4 @@
 
 </body>
 </html>
+

@@ -15,7 +15,7 @@ import jakarta.persistence.GenerationType;
 @AllArgsConstructor
 @Entity
 @Table(name = "client_status")
-public class ClientStatus {
+public class ClientStatus extends AuditingEntity<Integer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

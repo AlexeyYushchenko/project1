@@ -4,14 +4,22 @@
 CREATE TABLE client_status
 (
     id   SERIAL PRIMARY KEY,
-    name VARCHAR(50) UNIQUE
+    name VARCHAR(50) UNIQUE,
+    created_at  TIMESTAMP DEFAULT NOW(),
+    modified_at TIMESTAMP DEFAULT NOW(),
+    created_by  VARCHAR(64) DEFAULT 'YAE',
+    modified_by VARCHAR(64)
 );
 
---changeset ayushchenko:2
+--changeset ayushchenko:2f
 CREATE TABLE shipment_status
 (
     id   SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL UNIQUE
+    name VARCHAR(255) NOT NULL UNIQUE,
+    created_at  TIMESTAMP DEFAULT NOW(),
+    modified_at TIMESTAMP DEFAULT NOW(),
+    created_by  VARCHAR(64) DEFAULT 'YAE',
+    modified_by VARCHAR(64)
 );
 
 --changeset ayushchenko:3
@@ -46,7 +54,7 @@ CREATE TABLE IF NOT EXISTS administrator
     role        VARCHAR(50)        NOT NULL,
     created_at  TIMESTAMP DEFAULT NOW(),
     modified_at TIMESTAMP DEFAULT NOW(),
-    created_by  VARCHAR(64),
+    created_by  VARCHAR(64) DEFAULT 'YAE',
     modified_by VARCHAR(64)
 );
 
@@ -59,7 +67,7 @@ CREATE TABLE IF NOT EXISTS country
     is_active   BOOLEAN   DEFAULT true,
     created_at  TIMESTAMP DEFAULT NOW(),
     modified_at TIMESTAMP DEFAULT NOW(),
-    created_by  VARCHAR(64),
+    created_by  VARCHAR(64) DEFAULT 'YAE',
     modified_by VARCHAR(64)
 );
 
@@ -81,7 +89,7 @@ CREATE TABLE IF NOT EXISTS agent
     commentary  TEXT,
     created_at  TIMESTAMP DEFAULT NOW(),
     modified_at TIMESTAMP DEFAULT NOW(),
-    created_by  VARCHAR(64),
+    created_by  VARCHAR(64) DEFAULT 'YAE',
     modified_by VARCHAR(64)
 );
 
@@ -95,7 +103,7 @@ CREATE TABLE IF NOT EXISTS manufacturer
     commentary  TEXT,
     created_at  TIMESTAMP DEFAULT NOW(),
     modified_at TIMESTAMP DEFAULT NOW(),
-    created_by  VARCHAR(64),
+    created_by  VARCHAR(64) DEFAULT 'YAE',
     modified_by VARCHAR(64)
 );
 
@@ -109,7 +117,7 @@ CREATE TABLE IF NOT EXISTS warehouse
     commentary  TEXT,
     created_at  TIMESTAMP DEFAULT NOW(),
     modified_at TIMESTAMP DEFAULT NOW(),
-    created_by  VARCHAR(64),
+    created_by  VARCHAR(64) DEFAULT 'YAE',
     modified_by VARCHAR(64),
     UNIQUE (name, country_id)
 );
