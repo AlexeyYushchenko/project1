@@ -1,15 +1,16 @@
 package utlc.ru.project1.database.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+
 @EqualsAndHashCode(callSuper=true)
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -25,4 +26,11 @@ public class IndustryType extends AuditingEntity<Integer> {
 
     @Column(name = "description")
     private String description;
+
+    @Builder.Default
+    @ElementCollection
+    @CollectionTable(name = "industry_type_localization", joinColumns = @JoinColumn(name = "industry_type_id"))
+    @MapKeyColumn(name = "language_code")
+    @Column(name = "localized_name")
+    private Map<String, String> locales = new HashMap<>();
 }

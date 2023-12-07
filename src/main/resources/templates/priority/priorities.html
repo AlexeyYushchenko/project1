@@ -1,10 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+    <title>Priorities</title>
 </head>
 <body>
 
+<h1>Priorities</h1>
+
+<table id="prioritiesTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Created At</th>
+        <th>Modified At</th>
+        <th>Created By</th>
+        <th>Modified By</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="priority : ${priorities}">
+        <td th:text="${priority.id}">ID</td>
+        <td><a th:href="@{'/priorities/' + ${priority.id}}" th:text="${priority.name}">Name</a></td>
+        <td th:text="${priority.description}">Description</td>
+        <td th:text="${priority.createdAt}">Created At</td>
+        <td th:text="${priority.modifiedAt}">Modified At</td>
+        <td th:text="${priority.createdBy}">Created By</td>
+        <td th:text="${priority.modifiedBy}">Modified By</td>
+        <td>
+            <form th:action="@{/priorities/{priorityId}/delete(priorityId=${priority.id})}"
+                  method="post">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function() {
+        $('#prioritiesTable').DataTable();
+    });
+</script>
+
+<h3>Add a new priority</h3>
+<form th:action="@{/priorities}" method="post">
+    <label for="name">
+        <input id="name" type="text" name="name">
+    </label>
+    <button type="submit">Add</button>
+</form>
+<br>
+
+<div>
+    <a th:href="@{/menu}">Go to Main menu</a>
+</div>
+
+<dif th:insert="~{fragments::errors}"></dif>
+
 </body>
 </html>
+

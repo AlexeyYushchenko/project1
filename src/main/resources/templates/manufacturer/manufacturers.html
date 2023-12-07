@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+  <!--  <link rel="stylesheet" th:href="@{/css/style.css}"/>-->
+  <title>Manufacturers</title>
+</head>
+<body>
+
+<h1>Manufacturers</h1>
+
+<table id="manufacturersTable">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Country</th>
+    <th>Address</th>
+    <th>Commentary</th>
+    <th>Created At</th>
+    <th>Modified At</th>
+    <th>Created By</th>
+    <th>Modified By</th>
+    <th>Delete</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="manufacturer : ${manufacturers}">
+    <td th:text="${manufacturer.id}">ID</td>
+    <td><a th:href="@{'/manufacturers/' + ${manufacturer.id}}" th:text="${manufacturer.name}">Name</a></td>
+    <td th:text="${manufacturer.country.name}">Country name</td>
+    <td th:text="${manufacturer.address}">Address</td>
+    <td th:text="${manufacturer.commentary}">Commentary</td>
+    <td th:text="${manufacturer.createdAt}">Created At</td>
+    <td th:text="${manufacturer.modifiedAt}">Modified At</td>
+    <td th:text="${manufacturer.createdBy}">Created By</td>
+    <td th:text="${manufacturer.modifiedBy}">Modified By</td>
+    <td>
+      <form th:action="@{/manufacturers/{manufacturerId}/delete(manufacturerId=${manufacturer.id})}"
+            method="post">
+        <input type="hidden" name="_method" value="DELETE">
+        <button type="submit">Delete</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<script>
+  $(document).ready(function() {
+    $('#manufacturersTable').DataTable();
+  });
+</script>
+
+<div>
+  <a th:href="@{/menu}">Go to Main menu</a>
+</div>
+
+<dif th:insert="~{fragments::errors}"></dif>
+
+</body>
+</html>

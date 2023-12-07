@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 public record ClientStatusReadDto(
 
@@ -14,8 +15,8 @@ public record ClientStatusReadDto(
         @Pattern(regexp = ".*\\S.*", message = "Status name must contain non-whitespace characters")
         @Size(min = 2, max = 50, message = "Status name must be between 2 and 50 characters")
         String name,
-        Instant createdAt,
-        Instant modifiedAt,
+        LocalDateTime createdAt,
+        LocalDateTime modifiedAt,
         String createdBy,
         String modifiedBy
 ) {}

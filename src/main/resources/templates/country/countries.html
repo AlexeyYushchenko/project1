@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+    <title>Countries</title>
+</head>
+<body>
+
+<h1>Countries</h1>
+
+<table id="countriesTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Code</th>
+        <th>Name</th>
+        <th>isActive</th>
+        <th>Created At</th>
+        <th>Modified At</th>
+        <th>Created By</th>
+        <th>Modified By</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="country : ${countries}">
+        <td th:text="${country.id}">ID</td>
+        <td th:text="${country.code}">Code</td>
+        <td><a th:href="@{'/countries/' + ${country.id}}" th:text="${country.name}">Name</a></td>
+        <td th:text="${country.isActive}">isActive</td>
+        <td th:text="${country.createdAt}">Created At</td>
+        <td th:text="${country.modifiedAt}">Modified At</td>
+        <td th:text="${country.createdBy}">Created By</td>
+        <td th:text="${country.modifiedBy}">Modified By</td>
+        <td>
+            <form th:action="@{/countries/{countryId}/delete(countryId=${country.id})}"
+                  method="post">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function() {
+        $('#countriesTable').DataTable();
+    });
+</script>
+
+<h3>Add a new country</h3>
+<form th:action="@{/countries}" method="post">
+    <label for="name">
+        <input id="name" type="text" name="name">
+    </label>
+    <button type="submit">Add</button>
+</form>
+<br>
+
+<div>
+    <a th:href="@{/menu}">Go to Main menu</a>
+</div>
+
+<dif th:insert="~{fragments::errors}"></dif>
+
+</body>
+</html>
+

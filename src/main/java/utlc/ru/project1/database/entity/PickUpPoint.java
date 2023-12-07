@@ -1,18 +1,14 @@
 package utlc.ru.project1.database.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
 @EqualsAndHashCode(callSuper=true)
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -32,4 +28,11 @@ public class PickUpPoint extends AuditingEntity<Integer> {
 
     @Column(name = "address", nullable = false)
     private String address;
+
+    @Builder.Default
+    @ElementCollection
+    @CollectionTable(name = "pick_up_point_localization", joinColumns = @JoinColumn(name = "pick_up_point_id"))
+    @MapKeyColumn(name = "language_code")
+    @Column(name = "localized_name")
+    private Map<String, String> locales = new HashMap<>();
 }

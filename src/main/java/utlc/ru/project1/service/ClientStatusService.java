@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import utlc.ru.project1.database.repository.ClientStatusRepository;
+import utlc.ru.project1.dto.clientstatus.ClientStatusCreateUpdateDto;
 import utlc.ru.project1.dto.clientstatus.ClientStatusReadDto;
-import utlc.ru.project1.dto.clientstatus.ClientStatusUpdateDto;
 import utlc.ru.project1.mapper.ClientStatusMapper;
 
 import java.util.List;
@@ -31,8 +31,8 @@ public class ClientStatusService {
     }
 
     @Transactional
-    public ClientStatusReadDto create(ClientStatusReadDto clientStatusReadDto) {
-        return Optional.of(clientStatusReadDto)
+    public ClientStatusReadDto create(ClientStatusCreateUpdateDto createUpdateDto) {
+        return Optional.of(createUpdateDto)
                 .map(clientStatusMapper::toEntity)
                 .map(clientStatusRepository::save)
                 .map(clientStatusMapper::toDto)
@@ -40,9 +40,9 @@ public class ClientStatusService {
     }
 
     @Transactional
-    public Optional<ClientStatusReadDto> update(Integer id, ClientStatusUpdateDto dto) {
+    public Optional<ClientStatusReadDto> update(Integer id, ClientStatusCreateUpdateDto createUpdateDto) {
         return clientStatusRepository.findById(id)
-                .map(entity -> clientStatusMapper.update(entity, dto))
+                .map(entity -> clientStatusMapper.update(entity, createUpdateDto))
                 .map(clientStatusRepository::saveAndFlush) //no request to the db without 'flush', thus we can get exception on dif.level
                 .map(clientStatusMapper::toDto);
     }

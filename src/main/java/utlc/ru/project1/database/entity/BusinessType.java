@@ -1,22 +1,21 @@
 package utlc.ru.project1.database.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
 @EqualsAndHashCode(callSuper=true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-
+@Builder
 @Table(name = "business_type")
 public class BusinessType extends AuditingEntity<Integer> {
 
@@ -29,4 +28,11 @@ public class BusinessType extends AuditingEntity<Integer> {
 
     @Column(name = "description")
     private String description;
+
+    @Builder.Default
+    @ElementCollection
+    @CollectionTable(name = "business_type_localization", joinColumns = @JoinColumn(name = "business_type_id"))
+    @MapKeyColumn(name = "language_code")
+    @Column(name = "localized_name")
+    private Map<String, String> locales = new HashMap<>();
 }

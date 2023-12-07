@@ -2,8 +2,13 @@ package utlc.ru.project1.database.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-@EqualsAndHashCode(callSuper=true)
+
+import java.util.HashMap;
+import java.util.Map;
+
 @Data
+@Builder
+@EqualsAndHashCode(callSuper=true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -22,4 +27,11 @@ public class Country extends AuditingEntity<Integer> {
 
     @Column(name = "is_active", nullable = false, columnDefinition = "BOOLEAN DEFAULT true")
     private Boolean isActive;
+
+    @Builder.Default
+    @ElementCollection
+    @CollectionTable(name = "country_status_localization", joinColumns = @JoinColumn(name = "country_status_id"))
+    @MapKeyColumn(name = "language_code")
+    @Column(name = "localized_name")
+    private Map<String, String> locales = new HashMap<>();
 }

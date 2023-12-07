@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import utlc.ru.project1.dto.priority.PriorityReadDto;
-import utlc.ru.project1.dto.priority.PriorityUpdateDto;
+import utlc.ru.project1.dto.priority.PriorityCreateUpdateDto;
 import utlc.ru.project1.service.PriorityService;
 
 @Controller
@@ -23,8 +22,8 @@ public class PriorityController {
 
     @GetMapping
     public String findAll(Model model, ModelAndView modelAndView) {
-        var priorityes = priorityService.findAll();
-        model.addAttribute("priorities", priorityes);
+        var priorities = priorityService.findAll();
+        model.addAttribute("priorities", priorities);
         return "priority/priorities";
     }
 
@@ -40,32 +39,32 @@ public class PriorityController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute @Validated PriorityReadDto priorityReadDto,
+    public String create(@ModelAttribute @Validated PriorityCreateUpdateDto createUpdateDto,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("priority", priorityReadDto);
+            redirectAttributes.addFlashAttribute("priority", createUpdateDto);
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/priorities";
         }
-        priorityService.create(priorityReadDto);
+        priorityService.create(createUpdateDto);
         return "redirect:/priorities";
     }
 
     @PostMapping("/{id}")
     public String update(@PathVariable("id") Integer id,
-                         @ModelAttribute @Validated PriorityUpdateDto updatePriority,
+                         @ModelAttribute @Validated PriorityCreateUpdateDto createUpdateDto,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("priority", updatePriority);
+            redirectAttributes.addFlashAttribute("priority", createUpdateDto);
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/priorities/" + id;
         }
 
-        return priorityService.update(id, updatePriority)
+        return priorityService.update(id, createUpdateDto)
                 .map(it -> "redirect:/priorities/{id}")
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }

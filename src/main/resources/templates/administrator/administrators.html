@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+    <title>Administrators</title>
+</head>
+<body>
+
+<h1>Administrators</h1>
+
+<form action="/administrators/registration">
+    <button type="submit">Registration</button>
+</form>
+
+<table id="administratorsTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Created At</th>
+        <th>Modified At</th>
+        <th>Created By</th>
+        <th>Modified By</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="administrator : ${administrators}">
+        <td th:text="${administrator.id}">ID</td>
+        <td><a th:href="@{'/administrators/' + ${administrator.id}}" th:text="${administrator.username}">Username</a>
+        </td>
+        <td th:text="${administrator.email}">Email</td>
+        <td th:text="${administrator.firstname}">Firstname</td>
+        <td th:text="${administrator.lastname}">Lastname</td>
+
+        <td th:text="${administrator.createdAt}">Created At</td>
+        <td th:text="${administrator.modifiedAt}">Modified At</td>
+        <td th:text="${administrator.createdBy}">Created By</td>
+        <td th:text="${administrator.modifiedBy}">Modified By</td>
+        <td>
+            <form th:action="@{/administrators/{administratorId}/delete(administratorId=${administrator.id})}"
+                  method="post">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        $('#administratorsTable').DataTable();
+    });
+</script>
+
+<div>
+    <a th:href="@{/menu}">Go to Main menu</a>
+</div>
+
+<dif th:insert="~{fragments::errors}"></dif>
+
+</body>
+</html>

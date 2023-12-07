@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Industry Type</title>
+    <!--  <link rel="stylesheet" type="text/css" href="/templates/style.css">-->
+    <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+</head>
+<body>
+
+<h1>Industry Type</h1>
+
+<form th:action="@{/industryTypes/{industryTypeId}(industryTypeId=${industryType.id()})}" method="post" th:object="${industryType}">
+    <fieldset>
+        <legend>Industry Type Details</legend>
+
+        <div class="form-group">
+            <label for="name" class="form-label">Name:</label>
+            <input id="name" type="text" name="name" th:value="*{name}" aria-label="Industry Type Name" class="form-input">
+        </div>
+        <div class="form-group">
+            <label for="description" class="form-label">Description:</label>
+            <input id="description" type="text" name="description" th:value="*{description}" aria-label="Industry Type description" class="form-input">
+        </div>
+
+        <button type="submit">Update</button>
+    </fieldset>
+</form>
+<br>
+<form th:action="@{/industryTypes/{industryTypeId}/delete(industryTypeId=${industryType.id()})}" method="post">
+    <button type="submit">Remove</button>
+</form>
+
+<div>
+    <a th:href="@{/industryTypes}">Go back</a>
+</div>
+
+<div th:insert="~{fragments::errors}"></div>
+
+</body>
+</html>

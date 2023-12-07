@@ -3,299 +3,32 @@
 --changeset ayushchenko:1
 CREATE TABLE client_status
 (
-    id   SERIAL PRIMARY KEY,
-    name VARCHAR(50) UNIQUE,
+    id          SERIAL PRIMARY KEY,
+    name        VARCHAR(50) UNIQUE,
     created_at  TIMESTAMP DEFAULT NOW(),
     modified_at TIMESTAMP DEFAULT NOW(),
-    created_by  VARCHAR(64) DEFAULT 'YAE',
+    created_by  VARCHAR(64),
     modified_by VARCHAR(64)
 );
 
---changeset ayushchenko:2f
+--changeset ayushchenko:2
 CREATE TABLE shipment_status
 (
-    id   SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL UNIQUE,
+    id          SERIAL PRIMARY KEY,
+    name        VARCHAR(255) NOT NULL UNIQUE,
     created_at  TIMESTAMP DEFAULT NOW(),
     modified_at TIMESTAMP DEFAULT NOW(),
-    created_by  VARCHAR(64) DEFAULT 'YAE',
+    created_by  VARCHAR(64),
     modified_by VARCHAR(64)
-);
-
---changeset ayushchenko:3
-CREATE TABLE client_status_localization
-(
-    id               SERIAL PRIMARY KEY,
-    client_status_id INT REFERENCES client_status (id),
-    language_code    VARCHAR(5),
-    localized_name   VARCHAR(50),
-    UNIQUE (client_status_id, language_code)
 );
 
 --changeset ayushchenko:4
-CREATE TABLE shipment_status_localization
-(
-    id                 SERIAL PRIMARY KEY,
-    shipment_status_id INT REFERENCES shipment_status (id),
-    language_code      VARCHAR(5),
-    localized_name     VARCHAR(255),
-    UNIQUE (shipment_status_id, language_code)
-);
-
---changeset ayushchenko:5
-CREATE TABLE IF NOT EXISTS administrator
+CREATE TABLE IF NOT EXISTS invoice_status
 (
     id          SERIAL PRIMARY KEY,
-    username    VARCHAR(50) UNIQUE NOT NULL,
-    password    VARCHAR(128)       NOT NULL,
-    email       VARCHAR(50) UNIQUE NOT NULL,
-    firstname   VARCHAR(50)        NOT NULL,
-    lastname    VARCHAR(50)        NOT NULL,
-    role        VARCHAR(50)        NOT NULL,
-    created_at  TIMESTAMP DEFAULT NOW(),
-    modified_at TIMESTAMP DEFAULT NOW(),
-    created_by  VARCHAR(64) DEFAULT 'YAE',
-    modified_by VARCHAR(64)
-);
-
---changeset ayushchenko:6
-CREATE TABLE IF NOT EXISTS country
-(
-    id          SERIAL PRIMARY KEY,
-    code        VARCHAR(3) UNIQUE   NOT NULL,
-    name        VARCHAR(255) UNIQUE NOT NULL,
-    is_active   BOOLEAN   DEFAULT true,
-    created_at  TIMESTAMP DEFAULT NOW(),
-    modified_at TIMESTAMP DEFAULT NOW(),
-    created_by  VARCHAR(64) DEFAULT 'YAE',
-    modified_by VARCHAR(64)
-);
-
---changeset ayushchenko:7
-CREATE TABLE IF NOT EXISTS country_localization
-(
-    country_id  INT REFERENCES country (id) ON DELETE CASCADE,
-    lang        VARCHAR(5),
-    description VARCHAR(255) NOT NULL,
-    PRIMARY KEY (country_id, lang)
-);
-
---changeset ayushchenko:8
-CREATE TABLE IF NOT EXISTS agent
-(
-    id          SERIAL PRIMARY KEY,
-    name        VARCHAR(50) NOT NULL UNIQUE,
-    phone       VARCHAR(15),
-    commentary  TEXT,
-    created_at  TIMESTAMP DEFAULT NOW(),
-    modified_at TIMESTAMP DEFAULT NOW(),
-    created_by  VARCHAR(64) DEFAULT 'YAE',
-    modified_by VARCHAR(64)
-);
-
---changeset ayushchenko:9
-CREATE TABLE IF NOT EXISTS manufacturer
-(
-    id          SERIAL PRIMARY KEY,
-    name        VARCHAR(50)                 NOT NULL UNIQUE,
-    country_id  INT REFERENCES country (id) NOT NULL,
-    address     VARCHAR(255),
-    commentary  TEXT,
-    created_at  TIMESTAMP DEFAULT NOW(),
-    modified_at TIMESTAMP DEFAULT NOW(),
-    created_by  VARCHAR(64) DEFAULT 'YAE',
-    modified_by VARCHAR(64)
-);
-
---changeset ayushchenko:10
-CREATE TABLE IF NOT EXISTS warehouse
-(
-    id          SERIAL PRIMARY KEY,
-    name        VARCHAR(50)                 NOT NULL,
-    country_id  INT REFERENCES country (id) NOT NULL,
-    address     VARCHAR(255), --NOT NULL
-    commentary  TEXT,
-    created_at  TIMESTAMP DEFAULT NOW(),
-    modified_at TIMESTAMP DEFAULT NOW(),
-    created_by  VARCHAR(64) DEFAULT 'YAE',
-    modified_by VARCHAR(64),
-    UNIQUE (name, country_id)
-);
-
---changeset ayushchenko:11
-CREATE TABLE IF NOT EXISTS business_type
-(
-    id          SERIAL PRIMARY KEY,
-    name        VARCHAR(50) NOT NULL UNIQUE,
-    description TEXT,
+    name        VARCHAR(255) NOT NULL UNIQUE,
     created_at  TIMESTAMP DEFAULT NOW(),
     modified_at TIMESTAMP DEFAULT NOW(),
     created_by  VARCHAR(64),
     modified_by VARCHAR(64)
 );
-
---changeset ayushchenko:12
-CREATE TABLE IF NOT EXISTS industry_type
-(
-    id          SERIAL PRIMARY KEY,
-    name        VARCHAR(50) NOT NULL UNIQUE,
-    description TEXT,
-    created_at  TIMESTAMP DEFAULT NOW(),
-    modified_at TIMESTAMP DEFAULT NOW(),
-    created_by  VARCHAR(64),
-    modified_by VARCHAR(64)
-);
-
---changeset ayushchenko:13
-CREATE TABLE IF NOT EXISTS client
-(
-    id            SERIAL PRIMARY KEY,
-    name          VARCHAR(50)                       NOT NULL UNIQUE,
-    full_name     VARCHAR(100),
-    status_id     INT REFERENCES client_status (id) NOT NULL,
-    business_type INT REFERENCES business_type (id) NOT NULL,
-    industry_type INT REFERENCES industry_type (id) NOT NULL,
-    address       VARCHAR(255),
-    created_at    TIMESTAMP DEFAULT NOW(),
-    modified_at   TIMESTAMP DEFAULT NOW(),
-    created_by    VARCHAR(64),
-    modified_by   VARCHAR(64)
-);
-
---changeset ayushchenko:14
-CREATE TABLE IF NOT EXISTS priority
-(
-    id          SERIAL PRIMARY KEY,
-    name        VARCHAR(50) NOT NULL UNIQUE,
-    description TEXT,
-    created_at  TIMESTAMP DEFAULT NOW(),
-    modified_at TIMESTAMP DEFAULT NOW(),
-    created_by  VARCHAR(64),
-    modified_by VARCHAR(64)
-);
-
---changeset ayushchenko:15
-CREATE TABLE IF NOT EXISTS shipment_status
-(
-    id          SERIAL PRIMARY KEY,
-    name        VARCHAR(50) NOT NULL UNIQUE,
-    description TEXT,
-    created_at  TIMESTAMP DEFAULT NOW(),
-    modified_at TIMESTAMP DEFAULT NOW(),
-    created_by  VARCHAR(64),
-    modified_by VARCHAR(64)
-);
-
---changeset ayushchenko:16
-CREATE TABLE IF NOT EXISTS route
-(
-    id                     BIGSERIAL PRIMARY KEY,
-    transport_type         VARCHAR(20),                       -- e.g., 'road', 'sea', 'air', 'railway'
-    is_international       BOOLEAN     NOT NULL DEFAULT TRUE, -- flag for international/domestic
-    country_of_departure   INT REFERENCES country (id),       -- Foreign key reference to 'country'
-    country_of_destination INT REFERENCES country (id),       -- Foreign key reference to 'country'
-    customs_post           VARCHAR(50) NULL,                  -- NULL for domestic routes
-    departure_date         DATE,                         -- The scheduled departure date
-    arrival_date           DATE,                         -- The scheduled arrival date
-    status                 VARCHAR(20),                       -- e.g., 'Scheduled', 'In-Progress', 'Completed', 'Cancelled'
-    created_at             TIMESTAMP            DEFAULT NOW(),
-    modified_at            TIMESTAMP            DEFAULT NOW(),
-    created_by             VARCHAR(64),
-    modified_by            VARCHAR(64)
-);
-
---changeset ayushchenko:17
-CREATE TABLE IF NOT EXISTS road_transport
-(
-    id                   BIGINT PRIMARY KEY REFERENCES route (id),
-    identifier           VARCHAR(50) NOT NULL UNIQUE,
-    truck_plate_number   VARCHAR(20),
-    trailer_plate_number VARCHAR(20),
-    cmr                  VARCHAR(50),
-    truck_type           VARCHAR(20) NOT NULL,  -- e.g., '90_feet', '120_feet'
-    movement_plan        TEXT,                 -- Plan for the movement of the truck
-    comments             TEXT,                 -- Additional comments
-    created_at           TIMESTAMP DEFAULT NOW(),
-    modified_at          TIMESTAMP DEFAULT NOW(),
-    created_by           VARCHAR(64),
-    modified_by          VARCHAR(64)
-);
-
---changeset ayushchenko:18
-CREATE TABLE IF NOT EXISTS pick_up_point
-(
-    id          SERIAL PRIMARY KEY,
-    name        VARCHAR(100)                NOT NULL UNIQUE,
-    country_id  INT REFERENCES country (id) NOT NULL,
-    address     VARCHAR(255)                NOT NULL,
-    created_at  TIMESTAMP DEFAULT NOW(),
-    modified_at TIMESTAMP DEFAULT NOW(),
-    created_by  VARCHAR(64),
-    modified_by VARCHAR(64)
-);
-
---changeset ayushchenko:19
-CREATE TABLE IF NOT EXISTS shipment
-(
-    id                      BIGSERIAL PRIMARY KEY,
-    status_id               INT REFERENCES shipment_status (id)    NOT NULL,
-    client_id               INT REFERENCES client (id)             NOT NULL,
-    priority_id             INT REFERENCES priority (id) DEFAULT 1 NOT NULL,
-    route_id                BIGINT REFERENCES route (id),
-    internal_comment        TEXT,
-    client_comment          TEXT,
-    warehouse_comment       TEXT,
-    date_placed             TIMESTAMP,
-    date_checked            TIMESTAMP,
-    date_ready_dispatch     TIMESTAMP,
-    date_reached_warehouse  TIMESTAMP,
-    date_loading            TIMESTAMP,
-    date_unloading          TIMESTAMP,
-
-    -- Delivery Type and Address
-    delivery_type           VARCHAR(20)                            NOT NULL,
-    date_confirmed_dispatch TIMESTAMP, -- e.g., 'pick-up', 'door-to-door'
-    pick_up_point_id        INT REFERENCES pick_up_point (id),
-    final_address           VARCHAR(255),
-
-    -- client-provided information
-    client_pcs              INT,
-    client_volume_m3        FLOAT,
-    client_weight_kg        FLOAT,
-    shipment_type           VARCHAR(50)                            NOT NULL,
-    shipment_description    TEXT,
-
-    -- Verified warehouse information
-    warehouse_pcs           INT,
-    warehouse_volume_m3     FLOAT,
-    warehouse_weight_kg     FLOAT,
-    warehouse_diff_comment  TEXT,
-
-    -- Origin and Destination
-    country_of_departure    INT REFERENCES country (id),
-    manufacturer_id         INT REFERENCES manufacturer (id),
-    country_of_destination  INT REFERENCES country (id),
-
-    -- Auditing
-    created_at              TIMESTAMP                    DEFAULT NOW(),
-    modified_at             TIMESTAMP                    DEFAULT NOW(),
-    created_by              VARCHAR(64),
-    modified_by             VARCHAR(64)
-);
-
---changeset ayushchenko:20
-ALTER SEQUENCE shipment_id_seq RESTART WITH 50000;
-
---changeset ayushchenko:21
-CREATE TABLE IF NOT EXISTS shipment_status_history
-(
-    id          BIGSERIAL PRIMARY KEY,
-    shipment_id BIGINT REFERENCES shipment (id),
-    status_id   INT REFERENCES shipment_status (id),
-    status_date TIMESTAMP DEFAULT NOW(),
-    modified_by VARCHAR(64),
-    comment     TEXT
-);
---заявка на расчет
---заявка на доставку
-

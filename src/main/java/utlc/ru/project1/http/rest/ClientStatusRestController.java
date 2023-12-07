@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import utlc.ru.project1.dto.clientstatus.ClientStatusReadDto;
-import utlc.ru.project1.dto.clientstatus.ClientStatusUpdateDto;
+import utlc.ru.project1.dto.clientstatus.ClientStatusCreateUpdateDto;
 import utlc.ru.project1.service.ClientStatusService;
 import java.util.List;
 
@@ -32,14 +32,14 @@ public class ClientStatusRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ClientStatusReadDto> create(@RequestBody @Validated ClientStatusReadDto newClientStatus) {
-        ClientStatusReadDto createdStatus = clientStatusService.create(newClientStatus);
+    public ResponseEntity<ClientStatusReadDto> create(@RequestBody @Validated ClientStatusCreateUpdateDto createUpdateDto) {
+        ClientStatusReadDto createdStatus = clientStatusService.create(createUpdateDto);
         return new ResponseEntity<>(createdStatus, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClientStatusReadDto> update(@PathVariable("id") Integer id, @RequestBody @Validated ClientStatusUpdateDto updatedStatus) {
-        return clientStatusService.update(id, updatedStatus)
+    public ResponseEntity<ClientStatusReadDto> update(@PathVariable("id") Integer id, @RequestBody @Validated ClientStatusCreateUpdateDto createUpdateDto) {
+        return clientStatusService.update(id, createUpdateDto)
                 .map(status -> new ResponseEntity<>(status, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

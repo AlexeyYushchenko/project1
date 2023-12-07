@@ -20,10 +20,9 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-data-rest")
-//	implementation("org.springframework.boot:spring-boot-starter-jdbc") I don't think I'll need it
 	implementation("org.springframework.boot:spring-boot-starter-mail")
-//	implementation("org.springframework.boot:spring-boot-starter-oauth2-client") I will need it later
-//	implementation("org.springframework.boot:spring-boot-starter-security") I will need it later
+//	implementation("org.springframework.boot:spring-boot-starter-oauth2-client") //I will need it later
+	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
@@ -33,9 +32,9 @@ dependencies {
 	implementation("org.springframework.kafka:spring-kafka")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
 
-//	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6") I will need it later
+//	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6") //I will need it later
 
-//	developmentOnly("org.springframework.boot:spring-boot-devtools") what is that for?
+//	developmentOnly("org.springframework.boot:spring-boot-devtools") //what is that for?
 	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 
 	runtimeOnly("org.postgresql:postgresql")

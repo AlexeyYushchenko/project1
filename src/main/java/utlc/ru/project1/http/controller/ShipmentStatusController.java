@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import utlc.ru.project1.dto.shipmentstatus.ShipmentStatusReadDto;
-import utlc.ru.project1.dto.shipmentstatus.ShipmentStatusUpdateDto;
+import utlc.ru.project1.dto.shipmentstatus.ShipmentStatusCreateUpdateDto;
 import utlc.ru.project1.service.ShipmentStatusService;
 
 @Controller
@@ -40,32 +39,32 @@ public class ShipmentStatusController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute @Validated ShipmentStatusReadDto shipmentStatusReadDto,
+    public String create(@ModelAttribute @Validated ShipmentStatusCreateUpdateDto createUpdateDto,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("shipmentStatus", shipmentStatusReadDto);
+            redirectAttributes.addFlashAttribute("shipmentStatus", createUpdateDto);
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/shipmentStatuses";
         }
-        shipmentStatusService.create(shipmentStatusReadDto);
+        shipmentStatusService.create(createUpdateDto);
         return "redirect:/shipmentStatuses";
     }
 
     @PostMapping("/{id}")
     public String update(@PathVariable("id") Integer id,
-                         @ModelAttribute @Validated ShipmentStatusUpdateDto updateShipmentStatus,
+                         @ModelAttribute @Validated ShipmentStatusCreateUpdateDto createUpdateDto,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("shipmentStatus", updateShipmentStatus);
+            redirectAttributes.addFlashAttribute("shipmentStatus", createUpdateDto);
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/shipmentStatuses/" + id;
         }
 
-        return shipmentStatusService.update(id, updateShipmentStatus)
+        return shipmentStatusService.update(id, createUpdateDto)
                 .map(it -> "redirect:/shipmentStatuses/{id}")
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }

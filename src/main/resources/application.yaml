@@ -5,13 +5,46 @@ spring:
     password: postgres
     driver-class-name: org.postgresql.Driver
   jpa:
-    properties.hibernate:
-      show_sql: true
-      format_sql: true
-#      hbm2ddl.auto: create
-      batch_size: 50
-      fetch_size: 50
-    hibernate:
-      naming:
-        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
     open-in-view: false
+    properties:
+      hibernate:
+        naming:
+          implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+        show_sql: true
+        format_sql: true
+#        hbm2ddl.auto: create
+#        batch_size: 50
+#        fetch_size: 50
+#        jdbc:
+#          time-zone: European/Moscow
+  messages:
+    basename: messages
+
+logging:
+  level:
+    sql: debug
+    org.hibernate.orm.jdbc.bind: trace
+
+#spring.jpa.properties.hibernate.jdbc.time_zone=UTC
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

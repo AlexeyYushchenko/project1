@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import utlc.ru.project1.database.repository.ShipmentStatusRepository;
+import utlc.ru.project1.dto.shipmentstatus.ShipmentStatusCreateUpdateDto;
 import utlc.ru.project1.dto.shipmentstatus.ShipmentStatusReadDto;
-import utlc.ru.project1.dto.shipmentstatus.ShipmentStatusUpdateDto;
 import utlc.ru.project1.mapper.ShipmentStatusMapper;
 import java.util.List;
 import java.util.Optional;
@@ -30,8 +30,8 @@ public class ShipmentStatusService {
     }
 
     @Transactional
-    public ShipmentStatusReadDto create(ShipmentStatusReadDto shipmentStatusReadDto) {
-        return Optional.of(shipmentStatusReadDto)
+    public ShipmentStatusReadDto create(ShipmentStatusCreateUpdateDto createUpdateDto) {
+        return Optional.of(createUpdateDto)
                 .map(shipmentStatusMapper::toEntity)
                 .map(shipmentStatusRepository::save)
                 .map(shipmentStatusMapper::toDto)
@@ -39,9 +39,9 @@ public class ShipmentStatusService {
     }
 
     @Transactional
-    public Optional<ShipmentStatusReadDto> update(Integer id, ShipmentStatusUpdateDto dto) {
+    public Optional<ShipmentStatusReadDto> update(Integer id, ShipmentStatusCreateUpdateDto createUpdateDto) {
         return shipmentStatusRepository.findById(id)
-                .map(entity -> shipmentStatusMapper.update(entity, dto))
+                .map(entity -> shipmentStatusMapper.update(entity, createUpdateDto))
                 .map(shipmentStatusRepository::saveAndFlush) //no request to the db without 'flush', thus we can get exception on dif.level
                 .map(shipmentStatusMapper::toDto);
     }

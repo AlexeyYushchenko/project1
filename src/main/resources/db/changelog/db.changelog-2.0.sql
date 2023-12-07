@@ -1,302 +1,303 @@
 --liquibase formatted sql
 
 --changeset ayushchenko:1
-INSERT INTO client_status (name)
-VALUES ('active'),
-       ('passive');
+CREATE TABLE IF NOT EXISTS administrator
+(
+    id          SERIAL PRIMARY KEY,
+    username    VARCHAR(50) UNIQUE NOT NULL,
+    password    VARCHAR(128)       NOT NULL DEFAULT '{noop}1234',
+    email       VARCHAR(50) UNIQUE NOT NULL,
+    firstname   VARCHAR(50)        NOT NULL,
+    lastname    VARCHAR(50)        NOT NULL,
+    role        VARCHAR(50)        NOT NULL,
+    created_at  TIMESTAMP                   DEFAULT NOW(),
+    modified_at TIMESTAMP                   DEFAULT NOW(),
+    created_by  VARCHAR(64),
+    modified_by VARCHAR(64)
+);
 
 --changeset ayushchenko:2
-INSERT INTO client_status_localization (client_status_id, language_code, localized_name)
-VALUES (1, 'en', 'active'),
-       (1, 'ru', 'активный'),
-       (2, 'en', 'passive'),
-       (2, 'ru', 'пассивный');
+CREATE TABLE IF NOT EXISTS country
+(
+    id          SERIAL PRIMARY KEY,
+    code        VARCHAR(3) UNIQUE   NOT NULL,
+    name        VARCHAR(255) UNIQUE NOT NULL,
+    is_active   BOOLEAN   DEFAULT true,
+    created_at  TIMESTAMP DEFAULT NOW(),
+    modified_at TIMESTAMP DEFAULT NOW(),
+    created_by  VARCHAR(64),
+    modified_by VARCHAR(64)
+);
 
 --changeset ayushchenko:3
-INSERT INTO shipment_status (name)
-VALUES ('Checking order data'),
-       ('Attention(!)'),
-       ('Clarifying order details with the sender'),
-       ('Sent vehicle to the sender''s warehouse'),
-       ('Picked up and en route to the consolidation warehouse'),
-       ('consolidation warehouse (Europe)'),
-       ('consolidation warehouse (China)'),
-       ('consolidation warehouse (USA)'),
-       ('In transit (sea)'),
-       ('In transit (air)'),
-       ('In transit (Europe)'),
-       ('Crossing the border'),
-       ('Customs clearance'),
-       ('Arriving at the pickup warehouse'),
-       ('Ready for pickup'),
-       ('In storage'),
-       ('Delivered'),
-       ('Cancelled');
+CREATE TABLE IF NOT EXISTS agent
+(
+    id          SERIAL PRIMARY KEY,
+    name        VARCHAR(50) NOT NULL UNIQUE,
+    phone       VARCHAR(20),
+    commentary  TEXT,
+    created_at  TIMESTAMP DEFAULT NOW(),
+    modified_at TIMESTAMP DEFAULT NOW(),
+    created_by  VARCHAR(64),
+    modified_by VARCHAR(64)
+);
 
 --changeset ayushchenko:4
-INSERT INTO shipment_status_localization (shipment_status_id, language_code, localized_name)
-VALUES (1, 'en', 'Checking order data'),
-       (1, 'ru', 'Проверяем данные заявки'),
-       (2, 'en', 'Attention(!)'),
-       (2, 'ru', 'Внимание(!)'),
-       (3, 'en', 'Clarifying order details with the sender'),
-       (3, 'ru', 'Уточняем детали заказа с отправителем'),
-       (4, 'en', 'Sent vehicle to the sender''s warehouse'),
-       (4, 'ru', 'Отправили машину на склад отправителя'),
-       (5, 'en', 'Picked up and en route to the consolidation warehouse'),
-       (5, 'ru', 'Забран и едет на склад консолидации'),
-       (6, 'en', 'Consolidation warehouse (Europe)'),
-       (6, 'ru', 'Склад консолидации (Европа)'),
-       (7, 'en', 'Consolidation warehouse (China)'),
-       (7, 'ru', 'Склад консолидации (Китай)'),
-       (8, 'en', 'Consolidation warehouse (USA)'),
-       (8, 'ru', 'Склад консолидации (США)'),
-       (9, 'en', 'In transit (sea)'),
-       (9, 'ru', 'В пути (море)'),
-       (10, 'en', 'In transit (air)'),
-       (10, 'ru', 'В пути (Самолет)'),
-       (11, 'en', 'In transit (Europe)'),
-       (11, 'ru', 'В пути (Европа)'),
-       (12, 'en', 'Crossing the border'),
-       (12, 'ru', 'Проходит границу'),
-       (13, 'en', 'Customs clearance'),
-       (13, 'ru', 'Таможенное оформление'),
-       (14, 'en', 'Arriving at the pickup warehouse'),
-       (14, 'ru', 'Прибывает на склад выдачи'),
-       (15, 'en', 'Ready for pickup'),
-       (15, 'ru', 'Готов к выдаче'),
-       (16, 'en', 'In storage'),
-       (16, 'ru', 'На хранении'),
-       (17, 'en', 'Delivered'),
-       (17, 'ru', 'Доставлен'),
-       (18, 'en', 'Cancelled'),
-       (18, 'ru', 'Отменен');
-
+CREATE TABLE IF NOT EXISTS manufacturer
+(
+    id          SERIAL PRIMARY KEY,
+    name        VARCHAR(50)                 NOT NULL UNIQUE,
+    country_id  INT REFERENCES country (id) NOT NULL,
+    address     VARCHAR(255),
+    commentary  TEXT,
+    created_at  TIMESTAMP DEFAULT NOW(),
+    modified_at TIMESTAMP DEFAULT NOW(),
+    created_by  VARCHAR(64),
+    modified_by VARCHAR(64)
+);
 
 --changeset ayushchenko:5
-INSERT INTO administrator (username, password, email, firstname, lastname, role)
-VALUES ('COM', '1234', 'com@u-tlc.ru', 'Алексей', 'Ющенко', 'ADMIN'),
-       ('USER', '1234', '13yae13@gmail.com', 'Василий', 'Николаевич', 'USER');
+CREATE TABLE IF NOT EXISTS warehouse
+(
+    id          SERIAL PRIMARY KEY,
+    name        VARCHAR(50)                 NOT NULL,
+    country_id  INT REFERENCES country (id) NOT NULL,
+    address     VARCHAR(255), --NOT NULL
+    commentary  TEXT,
+    created_at  TIMESTAMP DEFAULT NOW(),
+    modified_at TIMESTAMP DEFAULT NOW(),
+    created_by  VARCHAR(64),
+    modified_by VARCHAR(64),
+    UNIQUE (name, country_id)
+);
 
 --changeset ayushchenko:6
-INSERT INTO country (name, code)
-VALUES ('AUSTRALIA', 'AU'),
-       ('AUSTRIA', 'AT'),
-       ('BELGIUM', 'BE'),
-       ('BELORUSSIA', 'BY'),
-       ('BOSNIA & HERZEGOVINA', 'BA'),
-       ('BRASIL', 'BR'),
-       ('BRITISH VIRGIN ISLANDS', 'BV'),
-       ('BULGARIA', 'BG'),
-       ('BANGLADESH', 'BD'),
-       ('CANADA', 'CA'),
-       ('CHINA', 'CN'),
-       ('CROATIA', 'HR'),
-       ('CYPRUS', 'CY'),
-       ('CZECH REPUBLIC', 'CZ'),
-       ('DENMARK', 'DM'),
-       ('ENGLAND', 'UK'),
-       ('ESTONIA', 'EE'),
-       ('FINLAND', 'FI'),
-       ('FRANCE', 'FR'),
-       ('GERMANY', 'DE'),
-       ('GREECE', 'GR'),
-       ('HUNGARY', 'HU'),
-       ('INDIA', 'IN'),
-       ('INDONESIA', 'ID'),
-       ('IRELAND', 'IR'),
-       ('ISRAIL', 'IL'),
-       ('ITALY', 'IT'),
-       ('JAPAN', 'JP'),
-       ('KAZAHSTAN', 'KZ'),
-       ('LATVIA', 'LV'),
-       ('LIECHTENSTEIN', 'LI'),
-       ('LITHUANIA', 'LT'),
-       ('MALAYSIA', 'MY'),
-       ('MONTENEGRO', 'MO'),
-       ('NEPAL', 'NP'),
-       ('NETHERLANDS', 'NL'),
-       ('NEW ZEALAND', 'NZ'),
-       ('PAKISTAN', 'PK'),
-       ('PHILIPPINES', 'PH'),
-       ('POLAND', 'PL'),
-       ('PORTUGAL', 'PT'),
-       ('RUSSIA', 'RU'),
-       ('SLOVAKIA', 'SK'),
-       ('SLOVENIJA', 'SL'),
-       ('SPAIN', 'ES'),
-       ('SWEDEN', 'SE'),
-       ('SWITZERLAND', 'CH'),
-       ('TAIWAN', 'TW'),
-       ('THAILAND', 'TH'),
-       ('TURKEY', 'TR'),
-       ('UNITED ARABIAN EMIRATES', 'AE'),
-       ('UNITED STATES OF AMERICA', 'US'),
-       ('UZBEKISTAN', 'UZ'),
-       ('VIETNAM', 'VN');
+CREATE TABLE IF NOT EXISTS business_type
+(
+    id          SERIAL PRIMARY KEY,
+    name        VARCHAR(50) NOT NULL UNIQUE,
+    description TEXT,
+    created_at  TIMESTAMP DEFAULT NOW(),
+    modified_at TIMESTAMP DEFAULT NOW(),
+    created_by  VARCHAR(64),
+    modified_by VARCHAR(64)
+);
 
 --changeset ayushchenko:7
-INSERT INTO country_localization (country_id, lang, description)
-VALUES (1, 'en', 'AUSTRALIA'),
-       (1, 'ru', 'АВСТРАЛИЯ'),
-       (2, 'en', 'AUSTRIA'),
-       (2, 'ru', 'АВСТРИЯ'),
-       (3, 'en', 'BELGIUM'),
-       (3, 'ru', 'БЕЛЬГИЯ'),
-       (4, 'en', 'BELARUS'),
-       (4, 'ru', 'БЕЛАРУСЬ'),
-       (5, 'en', 'BOSNIA & HERZEGOVINA'),
-       (5, 'ru', 'БОСНИЯ И ГЕРЦЕГОВИНА'),
-       (6, 'en', 'BRAZIL'),
-       (6, 'ru', 'БРАЗИЛИЯ'),
-       (7, 'en', 'BRITISH VIRGIN ISLANDS'),
-       (7, 'ru', 'БРИТАНСКИЕ ВИРГИНСКИЕ ОСТРОВА'),
-       (8, 'en', 'BULGARIA'),
-       (8, 'ru', 'БОЛГАРИЯ'),
-       (9, 'en', 'BANGLADESH'),
-       (9, 'ru', 'БАНГЛАДЕШ'),
-       (10, 'en', 'CANADA'),
-       (10, 'ru', 'КАНАДА'),
-       (11, 'en', 'CHINA'),
-       (11, 'ru', 'КИТАЙ'),
-       (12, 'en', 'CROATIA'),
-       (12, 'ru', 'ХОРВАТИЯ'),
-       (13, 'en', 'CYPRUS'),
-       (13, 'ru', 'КИПР'),
-       (14, 'en', 'CZECH REPUBLIC'),
-       (14, 'ru', 'ЧЕШСКАЯ РЕСПУБЛИКА'),
-       (15, 'en', 'DENMARK'),
-       (15, 'ru', 'ДАНИЯ'),
-       (16, 'en', 'ENGLAND'),
-       (16, 'ru', 'АНГЛИЯ'),
-       (17, 'en', 'ESTONIA'),
-       (17, 'ru', 'ЭСТОНИЯ'),
-       (18, 'en', 'FINLAND'),
-       (18, 'ru', 'ФИНЛЯНДИЯ'),
-       (19, 'en', 'FRANCE'),
-       (19, 'ru', 'ФРАНЦИЯ'),
-       (20, 'en', 'GERMANY'),
-       (20, 'ru', 'ГЕРМАНИЯ'),
-       (21, 'en', 'GREECE'),
-       (21, 'ru', 'ГРЕЦИЯ'),
-       (22, 'en', 'HUNGARY'),
-       (22, 'ru', 'ВЕНГРИЯ'),
-       (23, 'en', 'INDIA'),
-       (23, 'ru', 'ИНДИЯ'),
-       (24, 'en', 'INDONESIA'),
-       (24, 'ru', 'ИНДОНЕЗИЯ'),
-       (25, 'en', 'IRELAND'),
-       (25, 'ru', 'ИРЛАНДИЯ'),
-       (26, 'en', 'ISRAEL'),
-       (26, 'ru', 'ИЗРАИЛЬ'),
-       (27, 'en', 'ITALY'),
-       (27, 'ru', 'ИТАЛИЯ'),
-       (28, 'en', 'JAPAN'),
-       (28, 'ru', 'ЯПОНИЯ'),
-       (29, 'en', 'KAZAHSTAN'),
-       (29, 'ru', 'КАЗАХСТАН'),
-       (30, 'en', 'LATVIA'),
-       (30, 'ru', 'ЛАТВИЯ'),
-       (31, 'en', 'LIECHTENSTEIN'),
-       (31, 'ru', 'ЛИХТЕНШТЕЙН'),
-       (32, 'en', 'LITHUANIA'),
-       (32, 'ru', 'ЛИТВА'),
-       (33, 'en', 'MALAYSIA'),
-       (33, 'ru', 'МАЛАЙЗИЯ'),
-       (34, 'en', 'MONTENEGRO'),
-       (34, 'ru', 'ЧЕРНОГОРИЯ'),
-       (35, 'en', 'NEPAL'),
-       (35, 'ru', 'НЕПАЛ'),
-       (36, 'en', 'NETHERLANDS'),
-       (36, 'ru', 'НИДЕРЛАНДЫ'),
-       (37, 'en', 'NEW ZEALAND'),
-       (37, 'ru', 'НОВАЯ ЗЕЛАНДИЯ'),
-       (38, 'en', 'PAKISTAN'),
-       (38, 'ru', 'ПАКИСТАН'),
-       (39, 'en', 'PHILIPPINES'),
-       (39, 'ru', 'ФИЛИППИНЫ'),
-       (40, 'en', 'POLAND'),
-       (40, 'ru', 'ПОЛЬША'),
-       (41, 'en', 'PORTUGAL'),
-       (41, 'ru', 'ПОРТУГАЛИЯ'),
-       (42, 'en', 'RUSSIA'),
-       (42, 'ru', 'РОССИЯ'),
-       (43, 'en', 'SLOVAKIA'),
-       (43, 'ru', 'СЛОВАКИЯ'),
-       (44, 'en', 'SLOVENIA'),
-       (44, 'ru', 'CЛОВЕНИЯ'),
-       (45, 'en', 'SPAIN'),
-       (45, 'ru', 'ИСПАНИЯ'),
-       (46, 'en', 'SWEDEN'),
-       (46, 'ru', 'ШВЕЦИЯ'),
-       (47, 'en', 'SWITZERLAND'),
-       (47, 'ru', 'ШВЕЙЦАРИЯ'),
-       (48, 'en', 'TAIWAN'),
-       (48, 'ru', 'ТАЙВАНЬ'),
-       (49, 'en', 'THAILAND'),
-       (49, 'ru', 'ТАИЛАНД'),
-       (50, 'en', 'TURKEY'),
-       (50, 'ru', 'ТУРЦИЯ'),
-       (51, 'en', 'UNITED ARABIAN EMIRATES'),
-       (51, 'ru', 'ОБЪЕДИНЕННЫЕ АРАБСКИЕ ЭМИРАТЫ'),
-       (52, 'en', 'UNITED STATES OF AMERICA'),
-       (52, 'ru', 'СОЕДИНЕННЫЕ ШТАТЫ АМЕРИКИ'),
-       (53, 'en', 'UZBEKISTAN'),
-       (53, 'ru', 'УЗБЕКИСТАН'),
-       (54, 'en', 'VIETNAM'),
-       (54, 'ru', 'ВЬЕТНАМ');
+CREATE TABLE IF NOT EXISTS industry_type
+(
+    id          SERIAL PRIMARY KEY,
+    name        VARCHAR(50) NOT NULL UNIQUE,
+    description TEXT,
+    created_at  TIMESTAMP DEFAULT NOW(),
+    modified_at TIMESTAMP DEFAULT NOW(),
+    created_by  VARCHAR(64),
+    modified_by VARCHAR(64)
+);
 
 --changeset ayushchenko:8
-INSERT INTO manufacturer (name, country_id)
-VALUES ('ALTAMODA', 27),
-       ('ANGELO CAPPELLINI', 27);
+CREATE TABLE IF NOT EXISTS client
+(
+    id            SERIAL PRIMARY KEY,
+    name          VARCHAR(50)                       NOT NULL UNIQUE,
+    full_name     VARCHAR(100),
+    status_id     INT REFERENCES client_status (id) NOT NULL,
+    business_type INT REFERENCES business_type (id) NOT NULL,
+    industry_type INT REFERENCES industry_type (id) NOT NULL,
+    address       VARCHAR(255),
+    created_at    TIMESTAMP DEFAULT NOW(),
+    modified_at   TIMESTAMP DEFAULT NOW(),
+    created_by    VARCHAR(64),
+    modified_by   VARCHAR(64)
+);
 
 --changeset ayushchenko:9
-INSERT INTO warehouse (name, country_id)
-VALUES ('P & B Terminal', 30),
-       ('ABX Terminal', 30),
-       ('ANDREETTO & ZANON', 27),
-       ('AN TRANSPORTS', 30),
-       ('ARROW', 30),
-       ('EXCELLENCE', 45),
-       ('IHS', 20),
-       ('KONEKTA CARGO', 32),
-       ('LASL', 52),
-       ('MINISPED', 45),
-       ('MPG INTERNATIONAL', 20),
-       ('N LOGISTIKS', 30),
-       ('NTZ', 20),
-       ('RESKO', 32),
-       ('ROSTERMINALS', 30),
-       ('STO EXPRESS', 42),
-       ('SVO GROUP UAB', 30),
-       ('TRUST LINE', 42),
-       ('Ю-ТЛК МОСКВА', 42),
-       ('VINGES', 32),
-       ('VLADIVOSTOK 1', 42);
+CREATE TABLE IF NOT EXISTS priority
+(
+    id          SERIAL PRIMARY KEY,
+    name        VARCHAR(50) NOT NULL UNIQUE,
+    description TEXT,
+    created_at  TIMESTAMP DEFAULT NOW(),
+    modified_at TIMESTAMP DEFAULT NOW(),
+    created_by  VARCHAR(64),
+    modified_by VARCHAR(64)
+);
 
 --changeset ayushchenko:10
-INSERT INTO business_type (name, description)
-VALUES ('Микропредприятие', 'до 15 человек или оборот до 120 млн рублей'),
-       ('Малый бизнес', '16-100 человек или оборот до 800 млн рублей'),
-       ('Средний бизнес', '101-250 человек или оборот до 2 млрд рублей'),
-       ('Крупный бизнес', '251< человек или оборот от 2 млрд рублей'),
-       ('Физлицо', 'Частное лицо, совершающее покупки для личных, некоммерческих целей');
+CREATE TABLE IF NOT EXISTS shipment_status
+(
+    id          SERIAL PRIMARY KEY,
+    name        VARCHAR(50) NOT NULL UNIQUE,
+    description TEXT,
+    created_at  TIMESTAMP DEFAULT NOW(),
+    modified_at TIMESTAMP DEFAULT NOW(),
+    created_by  VARCHAR(64),
+    modified_by VARCHAR(64)
+);
 
 --changeset ayushchenko:11
-INSERT INTO industry_type (name)
-VALUES ('Производство'),
-       ('Розничная торговля'),
-       ('Фармацевтика'),
-       ('Автомобильная промышленность'),
-       ('Технологии и электроника'),
-       ('Строительство'),
-       ('Пищевая Промышленность'),
-       ('eCommerce'),
-       ('Агропромышленный Сектор');
+CREATE TABLE IF NOT EXISTS route
+(
+    id                     BIGSERIAL PRIMARY KEY,
+    transport_type         VARCHAR(20),                       -- e.g., 'road', 'sea', 'air', 'railway'
+    is_international       BOOLEAN     NOT NULL DEFAULT TRUE, -- flag for international/domestic
+    country_of_departure   INT REFERENCES country (id),       -- Foreign key reference to 'countryId'
+    country_of_destination INT REFERENCES country (id),       -- Foreign key reference to 'countryId'
+    customs_post           VARCHAR(50) NULL,                  -- NULL for domestic routes
+    departure_date         DATE,                              -- The scheduled departure date
+    arrival_date           DATE,                              -- The scheduled arrival date
+    status                 VARCHAR(20),                       -- e.g., 'Scheduled', 'In-Progress', 'Completed', 'Cancelled'
+    created_at             TIMESTAMP            DEFAULT NOW(),
+    modified_at            TIMESTAMP            DEFAULT NOW(),
+    created_by             VARCHAR(64),
+    modified_by            VARCHAR(64)
+);
 
 --changeset ayushchenko:12
-INSERT INTO priority (name)
-VALUES ('Стандартный'),
-       ('Высокий');
+CREATE TABLE IF NOT EXISTS road_transport
+(
+    id                   BIGINT PRIMARY KEY REFERENCES route (id),
+    identifier           VARCHAR(50) NOT NULL UNIQUE,
+    truck_plate_number   VARCHAR(20),
+    trailer_plate_number VARCHAR(20),
+    cmr                  VARCHAR(50),
+    truck_type           VARCHAR(20) NOT NULL, -- e.g., '90_feet', '120_feet'
+    movement_plan        TEXT,                 -- Plan for the movement of the truck
+    comments             TEXT,                 -- Additional comments
+    created_at           TIMESTAMP DEFAULT NOW(),
+    modified_at          TIMESTAMP DEFAULT NOW(),
+    created_by           VARCHAR(64),
+    modified_by          VARCHAR(64)
+);
 
+--changeset ayushchenko:13
+CREATE TABLE IF NOT EXISTS pick_up_point
+(
+    id          SERIAL PRIMARY KEY,
+    name        VARCHAR(100)                NOT NULL UNIQUE,
+    country_id  INT REFERENCES country (id) NOT NULL,
+    address     VARCHAR(255)                NOT NULL,
+    created_at  TIMESTAMP DEFAULT NOW(),
+    modified_at TIMESTAMP DEFAULT NOW(),
+    created_by  VARCHAR(64),
+    modified_by VARCHAR(64)
+);
+
+--changeset ayushchenko:14
+CREATE TABLE IF NOT EXISTS shipment
+(
+    id                      BIGSERIAL PRIMARY KEY,
+    status_id               INT REFERENCES shipment_status (id)    NOT NULL,
+    client_id               INT REFERENCES client (id)             NOT NULL,
+    priority_id             INT REFERENCES priority (id) DEFAULT 1 NOT NULL,
+    route_id                BIGINT REFERENCES route (id),
+    internal_comment        TEXT,
+    client_comment          TEXT,
+    warehouse_comment       TEXT,
+    date_placed             TIMESTAMP,
+    date_checked            TIMESTAMP,
+    date_ready_dispatch     TIMESTAMP,
+    date_reached_warehouse  TIMESTAMP,
+    date_loading            TIMESTAMP,
+    date_unloading          TIMESTAMP,
+
+    -- Delivery Type and Address
+    delivery_type           VARCHAR(20)                            NOT NULL,
+    date_confirmed_dispatch TIMESTAMP, -- e.g., 'pick-up', 'door-to-door'
+    pick_up_point_id        INT REFERENCES pick_up_point (id),
+    final_address           VARCHAR(255),
+
+    -- client-provided information
+    client_pcs              INT,
+    client_volume_m3        FLOAT,
+    client_weight_kg        FLOAT,
+    shipment_type           VARCHAR(50)                            NOT NULL,
+    shipment_description    TEXT,
+
+    -- Verified warehouse information
+    warehouse_pcs           INT,
+    warehouse_volume_m3     FLOAT,
+    warehouse_weight_kg     FLOAT,
+    warehouse_diff_comment  TEXT,
+
+    -- Origin and Destination
+    country_of_departure    INT REFERENCES country (id),
+    manufacturer_id         INT REFERENCES manufacturer (id),
+    country_of_destination  INT REFERENCES country (id),
+
+    -- Auditing
+    created_at              TIMESTAMP                    DEFAULT NOW(),
+    modified_at             TIMESTAMP                    DEFAULT NOW(),
+    created_by              VARCHAR(64),
+    modified_by             VARCHAR(64)
+);
+
+--changeset ayushchenko:15
+CREATE TABLE IF NOT EXISTS shipment_status_history
+(
+    id          BIGSERIAL PRIMARY KEY,
+    shipment_id BIGINT REFERENCES shipment (id),
+    status_id   INT REFERENCES shipment_status (id),
+    status_date TIMESTAMP DEFAULT NOW(),
+    modified_by VARCHAR(64),
+    comment     TEXT
+);
+
+--changeset ayushchenko:16
+CREATE TABLE IF NOT EXISTS invoice
+(
+    id           BIGSERIAL PRIMARY KEY,
+    shipment_id  BIGINT,
+    total_amount DECIMAL(10, 2),
+    currency     VARCHAR(3), -- ISO currency code (e.g., USD, EUR)
+    status_id    BIGINT,
+    issue_date   DATE,
+    due_date     DATE,
+    commentary   TEXT,
+
+    created_at   TIMESTAMP DEFAULT NOW(),
+    modified_at  TIMESTAMP DEFAULT NOW(),
+    created_by   VARCHAR(64),
+    modified_by  VARCHAR(64),
+
+    FOREIGN KEY (shipment_id) REFERENCES shipment (id),
+    FOREIGN KEY (status_id) REFERENCES invoice_status (id)
+);
+
+--changeset ayushchenko:17
+CREATE TABLE IF NOT EXISTS payment
+(
+    id                BIGSERIAL PRIMARY KEY,
+    client_id         INT,
+    amount            DECIMAL(10, 2),
+    currency          VARCHAR(3), -- ISO currency code
+    payment_date_time TIMESTAMP,
+    payment_method    VARCHAR(50),
+
+    created_at        TIMESTAMP DEFAULT NOW(),
+    modified_at       TIMESTAMP DEFAULT NOW(),
+    created_by        VARCHAR(64),
+    modified_by       VARCHAR(64),
+
+    FOREIGN KEY (client_id) REFERENCES client (id)
+);
+
+--changeset ayushchenko:18
+CREATE TABLE IF NOT EXISTS payment_invoice
+(
+    id               BIGSERIAL PRIMARY KEY,
+    payment_id       BIGINT NOT NULL REFERENCES payment (id) ON DELETE CASCADE,
+    invoice_id       BIGINT NOT NULL REFERENCES invoice (id) ON DELETE CASCADE,
+    allocated_amount DECIMAL(10, 2),
+    UNIQUE (payment_id, invoice_id)
+);
+
+-- CREATE TABLE IF NOT EXISTS payment_allocation
+-- (
+--     payment_id       INT,
+--     invoice_id       INT,
+--     allocated_amount DECIMAL(10, 2),
+--     PRIMARY KEY (payment_id, invoice_id),
+--     FOREIGN KEY (payment_id) REFERENCES payment (id),
+--     FOREIGN KEY (invoice_id) REFERENCES invoice (id)
+-- );

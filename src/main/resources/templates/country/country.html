@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Country</title>
+    <!--  <link rel="stylesheet" type="text/css" href="/templates/style.css">-->
+    <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+</head>
+<body>
+
+<h1>Country</h1>
+
+<form th:action="@{/countries/{countryId}(countryId=${country.id()})}" method="post" th:object="${country}">
+    <fieldset>
+        <legend>Country Details</legend>
+
+        <div class="form-group">
+            <label for="code" class="form-label">Code:</label>
+            <input id="code" type="text" name="code" th:value="*{code}" aria-label="Country code" class="form-input">
+        </div>
+        <div class="form-group">
+            <label for="name" class="form-label">Name:</label>
+            <input id="name" type="text" name="name" th:value="*{name}" aria-label="Country Name" class="form-input">
+        </div>
+        <div class="form-group">
+            <label for="isActive" class="form-label">isActive:</label>
+            <input id="isActive" type="text" name="isActive" th:value="*{isActive}" aria-label="Country is active" class="form-input">
+        </div>
+
+        <button type="submit">Update</button>
+    </fieldset>
+</form>
+<br>
+<form th:action="@{/countries/{countryId}/delete(countryId=${country.id()})}" method="post">
+    <button type="submit">Remove</button>
+</form>
+
+<div>
+    <a th:href="@{/countries}">Go back</a>
+</div>
+
+<div th:insert="~{fragments::errors}"></div>
+
+</body>
+</html>

@@ -1,18 +1,18 @@
 package utlc.ru.project1.database.entity;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "client_status")
 public class ClientStatus extends AuditingEntity<Integer> {
@@ -23,4 +23,11 @@ public class ClientStatus extends AuditingEntity<Integer> {
 
     @Column(name = "name", unique = true, length = 50)
     private String name;
+
+    @Builder.Default
+    @ElementCollection
+    @CollectionTable(name = "client_status_localization", joinColumns = @JoinColumn(name = "client_status_id"))
+    @MapKeyColumn(name = "language_code")
+    @Column(name = "localized_name")
+    private Map<String, String> locales = new HashMap<>();
 }

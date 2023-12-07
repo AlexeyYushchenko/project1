@@ -18,7 +18,7 @@ public class Agent extends AuditingEntity<Integer> {
     @Column(name = "name", unique = true, nullable = false, length = 50)
     private String name;
 
-    @Column(name = "phone", length = 15)
+    @Column(name = "phone", length = 20)
     private String phone;
 
     @Column(name = "commentary")

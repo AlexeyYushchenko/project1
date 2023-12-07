@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import utlc.ru.project1.dto.shipmentstatus.ShipmentStatusReadDto;
-import utlc.ru.project1.dto.shipmentstatus.ShipmentStatusUpdateDto;
+import utlc.ru.project1.dto.shipmentstatus.ShipmentStatusCreateUpdateDto;
 import utlc.ru.project1.service.ShipmentStatusService;
 import java.util.List;
 
@@ -32,14 +32,14 @@ public class ShipmentStatusRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ShipmentStatusReadDto> create(@RequestBody @Validated ShipmentStatusReadDto newShipmentStatus) {
-        ShipmentStatusReadDto createdStatus = shipmentStatusService.create(newShipmentStatus);
+    public ResponseEntity<ShipmentStatusReadDto> create(@RequestBody @Validated ShipmentStatusCreateUpdateDto createUpdateDto) {
+        ShipmentStatusReadDto createdStatus = shipmentStatusService.create(createUpdateDto);
         return new ResponseEntity<>(createdStatus, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ShipmentStatusReadDto> update(@PathVariable("id") Integer id, @RequestBody @Validated ShipmentStatusUpdateDto updatedStatus) {
-        return shipmentStatusService.update(id, updatedStatus)
+    public ResponseEntity<ShipmentStatusReadDto> update(@PathVariable("id") Integer id, @RequestBody @Validated ShipmentStatusCreateUpdateDto createUpdateDto) {
+        return shipmentStatusService.update(id, createUpdateDto)
                 .map(status -> new ResponseEntity<>(status, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

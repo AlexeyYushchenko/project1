@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <title th:text="#{login.title}">Login</title>
+  <style>
+    body {
+      background-color: #fafafa;
+      font-family: Arial, sans-serif;
+    }
+
+    /*HORIZONTAL ALIGNING*/
+    /*body, html {*/
+    /*  height: 100%;*/
+    /*  margin: 0;*/
+    /*  display: flex;*/
+    /*  justify-content: center;*/
+    /*  align-items: flex-start;*/
+    /*}*/
+
+    .container {
+      max-width: 400px;
+      /*margin-top: 50px;*/
+      background: white;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #333333;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .form-control {
+      margin-bottom: 10px;
+    }
+    /*.login-button {*/
+    /*  background-color: #f0c14b;*/
+    /*  border-color: #a88734 #9c7e31 #846a29;*/
+    /*  color: #111;*/
+    /*  width: fit-content;*/
+    /*}*/
+    /*.login-button:hover {*/
+    /*  background-color: #f3d078;*/
+    /*}*/
+
+    .login-button {
+      height: auto;
+      width: 100%; /* Full width of the parent container */
+      padding: 10px 0; /* Vertical padding */
+      background-color: #013e80; /* Amazon-style button color */
+      /*border: 5px solid #005fc7; !* Border color *!*/
+      border-radius: 6px; /* Slightly rounded corners */
+      color: #ffffff; /* Text color */
+      font-size: 16px; /* Text size */
+      cursor: pointer; /* Change cursor to indicate button */
+      transition: background-color 1.3s;
+    }
+
+    .login-button:hover {
+      color: #ffffff;
+      background-color: #012750; /* Lighter color on hover */
+    }
+
+    .error {
+      color: red;
+      margin-bottom: 15px;
+    }
+
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100px; /* Adjust as needed */
+      width: 100%; /* Adjust if you want a specific width */
+    }
+
+    .logo-container img {
+      /* Additional styling for your logo if needed */
+      max-width: 100%; /* Ensures the image is responsive */
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+
+<div class="logo-container">
+  <img th:src="@{/images/UTL.svg}" alt="logo">
+</div>
+
+<div class="container">
+  <h1 th:text="#{login.welcome}">Sign in to UTL</h1>
+
+  <form th:action="@{/login}" method="POST" class="mb-3">
+    <div th:if="${param.error}" class="error">
+      Bad Credentials
+    </div>
+    <div class="form-group">
+      <label for="username" th:text="#{login.username}">Username:</label>
+      <input id="username" type="text" name="username" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="password" th:text="#{login.password}">Password:</label>
+      <input id="password" type="password" name="password" class="form-control">
+    </div>
+    <button type="submit" class="btn login-button" th:text="#{login.button}">Log in</button>
+  </form>
+</div>
+
+</body>
+</html>

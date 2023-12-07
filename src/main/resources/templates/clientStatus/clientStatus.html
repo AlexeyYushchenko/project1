@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Client Status</title>
-    <link rel="stylesheet" type="text/css" href="/templates/styles.css">
+    <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
 </head>
 <body>
 
@@ -20,7 +20,7 @@
         <button type="submit">Update</button>
     </fieldset>
 </form>
-
+<br>
 <form th:action="@{/clientStatuses/{clientStatusId}/delete(clientStatusId=${clientStatus.id()})}" method="post">
     <button type="submit">Remove</button>
 </form>

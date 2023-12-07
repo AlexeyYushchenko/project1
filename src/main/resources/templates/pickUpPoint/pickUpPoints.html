@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><!DOCTYPE html>
+      <html lang="en" xmlns:th="http://www.thymeleaf.org">
+      <head>
+      <meta charset="UTF-8">
+      <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+      <!--  <link rel="stylesheet" th:href="@{/css/style.css}"/>-->
+      <title>Pick-Up Points</title>
+</head>
+<body>
+
+<h1>Pick-Up Points</h1>
+
+<table id="pickUpPointsTable">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Country</th>
+    <th>Address</th>
+    <th>Created At</th>
+    <th>Modified At</th>
+    <th>Created By</th>
+    <th>Modified By</th>
+    <th>Delete</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="pickUpPoint : ${pickUpPoints}">
+    <td th:text="${pickUpPoint.id}">ID</td>
+    <td><a th:href="@{'/pickUpPoints/' + ${pickUpPoint.id}}" th:text="${pickUpPoint.name}">Name</a></td>
+    <td th:text="${pickUpPoint.country.name}">Country name</td>
+    <td th:text="${pickUpPoint.address}">Address</td>
+    <td th:text="${pickUpPoint.createdAt}">Created At</td>
+    <td th:text="${pickUpPoint.modifiedAt}">Modified At</td>
+    <td th:text="${pickUpPoint.createdBy}">Created By</td>
+    <td th:text="${pickUpPoint.modifiedBy}">Modified By</td>
+    <td>
+      <form th:action="@{/pickUpPoints/{pickUpPointId}/delete(pickUpPointId=${pickUpPoint.id})}"
+            method="post">
+        <input type="hidden" name="_method" value="DELETE">
+        <button type="submit">Delete</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<script>
+  $(document).ready(function() {
+    $('#pickUpPointsTable').DataTable();
+  });
+</script>
+
+<div>
+  <a th:href="@{/menu}">Go to Main menu</a>
+</div>
+
+<dif th:insert="~{fragments::errors}"></dif>
+
+</body>
+</html>

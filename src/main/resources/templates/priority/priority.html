@@ -3,24 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <title>Priority</title>
-  <link rel="stylesheet" type="text/css" href="/templates/styles.css">
+<!--  <link rel="stylesheet" type="text/css" href="/templates/style.css">-->
+  <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
 </head>
 <body>
 
-<h1>PRIORITY</h1>
+<h1>Priority</h1>
 
 <form th:action="@{/priorities/{priorityId}(priorityId=${priority.id()})}" method="post" th:object="${priority}">
   <fieldset>
     <legend>Priority Details</legend>
 
-    <label for="name">Name:
-      <input id="name" type="text" name="name" th:value="*{name}" aria-label="Priority Name">
-    </label>
-    <br>
+    <div class="form-group">
+      <label for="name" class="form-label">Name:</label>
+      <input id="name" type="text" name="name" th:value="*{name}" aria-label="Priority Name" class="form-input">
+    </div>
+    <div class="form-group">
+      <label for="description" class="form-label">Description:</label>
+      <input id="description" type="text" name="description" th:value="*{description}" aria-label="Priority description" class="form-input">
+    </div>
+
     <button type="submit">Update</button>
   </fieldset>
 </form>
-
+<br>
 <form th:action="@{/priorities/{priorityId}/delete(priorityId=${priority.id()})}" method="post">
   <button type="submit">Remove</button>
 </form>

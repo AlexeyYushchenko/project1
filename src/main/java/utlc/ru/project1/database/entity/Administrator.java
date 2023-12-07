@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @EqualsAndHashCode(callSuper=true)
 @Data
@@ -12,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "administrator")
-public class Administrator extends AuditingEntity<Integer>{
+public class Administrator extends AuditingEntity<Integer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,5 +37,6 @@ public class Administrator extends AuditingEntity<Integer>{
     private String lastname;
 
     @Column(name = "role", nullable = false, length = 50)
-    private String role;
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
 }

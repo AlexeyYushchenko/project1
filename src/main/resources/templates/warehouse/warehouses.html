@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+<!--  <link rel="stylesheet" th:href="@{/css/style.css}"/>-->
+  <title>Warehouses</title>
+</head>
+<body>
+
+<h1>Warehouses</h1>
+
+<table id="warehousesTable">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Country</th>
+    <th>Address</th>
+    <th>Commentary</th>
+    <th>Created At</th>
+    <th>Modified At</th>
+    <th>Created By</th>
+    <th>Modified By</th>
+    <th>Delete</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="warehouse : ${warehouses}">
+    <td th:text="${warehouse.id}">ID</td>
+    <td><a th:href="@{'/warehouses/' + ${warehouse.id}}" th:text="${warehouse.name}">Name</a></td>
+    <td th:text="${warehouse.country.name}">Country name</td>
+    <td th:text="${warehouse.address}">Address</td>
+    <td th:text="${warehouse.commentary}">Commentary</td>
+    <td th:text="${warehouse.createdAt}">Created At</td>
+    <td th:text="${warehouse.modifiedAt}">Modified At</td>
+    <td th:text="${warehouse.createdBy}">Created By</td>
+    <td th:text="${warehouse.modifiedBy}">Modified By</td>
+    <td>
+      <form th:action="@{/warehouses/{warehouseId}/delete(warehouseId=${warehouse.id})}"
+            method="post">
+        <input type="hidden" name="_method" value="DELETE">
+        <button type="submit">Delete</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<script>
+  $(document).ready(function() {
+    $('#warehousesTable').DataTable();
+  });
+</script>x
+
+<!--<h3>Add a new warehouse</h3>-->
+<!--<form th:action="@{/warehouses}" method="post" class="warehouse-form">-->
+<!--  <div class="form-group">-->
+<!--    <label for="name">Name:</label>-->
+<!--    <input id="name" type="text" name="name" class="form-input">-->
+<!--  </div>-->
+<!--  <div class="form-group">-->
+<!--    <label for="phone">Phone:</label>-->
+<!--    <input id="phone" type="text" name="phone" class="form-input">-->
+<!--  </div>-->
+<!--  <div class="form-group">-->
+<!--    <label for="commentary">Commentary:</label>-->
+<!--    <textarea id="commentary" name="commentary" class="form-textarea"></textarea>-->
+<!--  </div>-->
+<!--  <button type="submit" class="submit-button">Add</button>-->
+<!--</form>-->
+
+<div>
+  <a th:href="@{/menu}">Go to Main menu</a>
+</div>
+
+<dif th:insert="~{fragments::errors}"></dif>
+
+</body>
+</html>

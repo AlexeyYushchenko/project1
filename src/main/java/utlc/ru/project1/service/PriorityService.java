@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import utlc.ru.project1.database.repository.PriorityRepository;
 import utlc.ru.project1.dto.priority.PriorityReadDto;
-import utlc.ru.project1.dto.priority.PriorityUpdateDto;
+import utlc.ru.project1.dto.priority.PriorityCreateUpdateDto;
 import utlc.ru.project1.mapper.PriorityMapper;
 import java.util.List;
 import java.util.Optional;
@@ -30,8 +30,8 @@ public class PriorityService {
     }
 
     @Transactional
-    public PriorityReadDto create(PriorityReadDto priorityReadDto) {
-        return Optional.of(priorityReadDto)
+    public PriorityReadDto create(PriorityCreateUpdateDto createUpdateDto) {
+        return Optional.of(createUpdateDto)
                 .map(priorityMapper::toEntity)
                 .map(priorityRepository::save)
                 .map(priorityMapper::toDto)
@@ -39,9 +39,9 @@ public class PriorityService {
     }
 
     @Transactional
-    public Optional<PriorityReadDto> update(Integer id, PriorityUpdateDto dto) {
+    public Optional<PriorityReadDto> update(Integer id, PriorityCreateUpdateDto createUpdateDto) {
         return priorityRepository.findById(id)
-                .map(entity -> priorityMapper.update(entity, dto))
+                .map(entity -> priorityMapper.update(entity, createUpdateDto))
                 .map(priorityRepository::saveAndFlush) //no request to the db without 'flush', thus we can get exception on dif.level
                 .map(priorityMapper::toDto);
     }
