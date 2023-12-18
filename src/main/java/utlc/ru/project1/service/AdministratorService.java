@@ -8,11 +8,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import utlc.ru.project1.database.repository.AdministratorRepository;
-import utlc.ru.project1.dto.administrator.AdministratorCreateDto;
+import utlc.ru.project1.dto.administrator.AdministratorCreateUpdateDto;
 import utlc.ru.project1.dto.administrator.AdministratorReadDto;
-import utlc.ru.project1.dto.administrator.AdministratorUpdateDto;
 import utlc.ru.project1.mapper.AdministratorMapper;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -37,8 +35,8 @@ public class AdministratorService implements UserDetailsService {
     }
 
     @Transactional
-    public AdministratorReadDto create(AdministratorCreateDto administratorCreateDto) {
-        return Optional.of(administratorCreateDto)
+    public AdministratorReadDto create(AdministratorCreateUpdateDto dto) {
+        return Optional.of(dto)
                 .map(administratorMapper::toEntity)
                 .map(administratorRepository::save)
                 .map(administratorMapper::toDto)
@@ -46,7 +44,7 @@ public class AdministratorService implements UserDetailsService {
     }
 
     @Transactional
-    public Optional<AdministratorReadDto> update(Integer id, AdministratorUpdateDto dto) {
+    public Optional<AdministratorReadDto> update(Integer id, AdministratorCreateUpdateDto dto) {
         return administratorRepository.findById(id)
                 .map(entity -> administratorMapper.update(entity, dto))
                 .map(administratorRepository::saveAndFlush) //no request to the db without 'flush', thus we can get exception on dif.level

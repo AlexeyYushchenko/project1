@@ -4,11 +4,16 @@
   <meta charset="UTF-8">
   <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
   <!--  <link rel="stylesheet" th:href="@{/css/style.css}"/>-->
-  <title>Manufacturers</title>
+  <title th:text="#{entity.manufacturer.list.page.title}">Manufacturers</title>
+  <script>initializeDataTable('manufacturersTable');</script>
 </head>
 <body>
 
-<h1>Manufacturers</h1>
+<h1 th:text="#{entity.manufacturer.list.page.label}">Manufacturers</h1>
+
+<form action="/manufacturers/create">
+  <button type="submit" th:text="#{entity.manufacturer.create.button.label}">Add a new Manufacturer</button>
+</form>
 
 <table id="manufacturersTable">
   <thead>
@@ -18,11 +23,11 @@
     <th>Country</th>
     <th>Address</th>
     <th>Commentary</th>
-    <th>Created At</th>
-    <th>Modified At</th>
-    <th>Created By</th>
-    <th>Modified By</th>
-    <th>Delete</th>
+    <th th:text="#{common.field.created_by}">Created By</th>
+    <th th:text="#{common.field.created_at}">Created At</th>
+    <th th:text="#{common.field.modified_by}">Modified By</th>
+    <th th:text="#{common.field.modified_at}">Modified At</th>
+    <th th:text="#{ui.button.remove.label}">Delete</th>
   </tr>
   </thead>
   <tbody>
@@ -32,10 +37,10 @@
     <td th:text="${manufacturer.country.name}">Country name</td>
     <td th:text="${manufacturer.address}">Address</td>
     <td th:text="${manufacturer.commentary}">Commentary</td>
-    <td th:text="${manufacturer.createdAt}">Created At</td>
-    <td th:text="${manufacturer.modifiedAt}">Modified At</td>
     <td th:text="${manufacturer.createdBy}">Created By</td>
+    <td th:text="${manufacturer.createdAt}">Created At</td>
     <td th:text="${manufacturer.modifiedBy}">Modified By</td>
+    <td th:text="${manufacturer.modifiedAt}">Modified At</td>
     <td>
       <form th:action="@{/manufacturers/{manufacturerId}/delete(manufacturerId=${manufacturer.id})}"
             method="post">
@@ -47,14 +52,8 @@
   </tbody>
 </table>
 
-<script>
-  $(document).ready(function() {
-    $('#manufacturersTable').DataTable();
-  });
-</script>
-
 <div>
-  <a th:href="@{/menu}">Go to Main menu</a>
+  <a th:href="@{/menu}" th:text="#{ui.button.mainMenu}">Go back</a>
 </div>
 
 <dif th:insert="~{fragments::errors}"></dif>

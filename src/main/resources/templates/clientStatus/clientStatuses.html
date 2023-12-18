@@ -3,32 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
-    <title>Client Statuses</title>
+    <title th:text="#{entity.clientStatus.list.page.title}">Client Statuses</title>
+    <script>initializeDataTable('clientStatusesTable');</script>
 </head>
 <body>
 
-<h1>Client Statuses</h1>
+<h1 th:text="#{entity.clientStatus.list.page.label}">Client Statuses</h1>
+
+<form action="/clientStatuses/create">
+    <button type="submit" th:text="#{entity.clientStatus.create.button.label}">Add a new Client Status</button>
+</form>
 
 <table id="clientStatusesTable">
     <thead>
     <tr>
         <th>ID</th>
-        <th>Name</th>
-        <th>Created At</th>
-        <th>Modified At</th>
-        <th>Created By</th>
-        <th>Modified By</th>
-        <th>Delete</th>
+        <th th:text="#{entity.businessType.field.name}">Name</th>
+        <th th:text="#{common.field.created_by}">Created By</th>
+        <th th:text="#{common.field.created_at}">Created At</th>
+        <th th:text="#{common.field.modified_by}">Modified By</th>
+        <th th:text="#{common.field.modified_at}">Modified At</th>
+        <th th:text="#{ui.button.remove.label}">Delete</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="clientStatus : ${clientStatuses}">
         <td th:text="${clientStatus.id}">ID</td>
         <td><a th:href="@{'/clientStatuses/' + ${clientStatus.id}}" th:text="${clientStatus.name}">Name</a></td>
-        <td th:text="${clientStatus.createdAt}">Created At</td>
-        <td th:text="${clientStatus.modifiedAt}">Modified At</td>
         <td th:text="${clientStatus.createdBy}">Created By</td>
+        <td th:text="${clientStatus.createdAt}">Created At</td>
         <td th:text="${clientStatus.modifiedBy}">Modified By</td>
+        <td th:text="${clientStatus.modifiedAt}">Modified At</td>
         <td>
             <form th:action="@{/clientStatuses/{clientStatusId}/delete(clientStatusId=${clientStatus.id})}"
                   method="post">
@@ -40,23 +45,8 @@
     </tbody>
 </table>
 
-<script>
-    $(document).ready(function() {
-        $('#clientStatusesTable').DataTable();
-    });
-</script>
-
-<h3>Add new client status</h3>
-<form th:action="@{/clientStatuses}" method="post">
-    <label for="name">
-        <input id="name" type="text" name="name">
-    </label>
-    <button type="submit">Add</button>
-</form>
-<br>
-
 <div>
-    <a th:href="@{/menu}">Go to Main menu</a>
+    <a th:href="@{/menu}" th:text="#{ui.button.mainMenu}">Go back</a>
 </div>
 
 <dif th:insert="~{fragments::errors}"></dif>

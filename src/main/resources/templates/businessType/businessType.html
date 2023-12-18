@@ -2,36 +2,47 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Business Type</title>
+    <title th:text="#{entity.businessType.edit.page.title}">Business Type</title>
     <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
 </head>
 <body>
 
-<h1>Business Type</h1>
+<h1 th:text="#{entity.businessType.edit.page.label}">Business Type</h1>
 
 <form th:action="@{/businessTypes/{businessTypeId}(businessTypeId=${businessType.id()})}" method="post" th:object="${businessType}">
     <fieldset>
-        <legend>Business Type Details</legend>
+        <legend th:text="#{entity.businessType.edit.page.details.label}">Business Type Details</legend>
 
         <div class="form-group">
-            <label for="name" class="form-label">Name:</label>
+            <label for="name" class="form-label" th:text="#{entity.businessType.field.name}">Name:</label>
             <input id="name" type="text" name="name" th:value="*{name}" aria-label="Business Type Name" class="form-input">
         </div>
+
         <div class="form-group">
-            <label for="description" class="form-label">Description:</label>
-            <input id="description" type="text" name="description" th:value="*{description}" aria-label="Business Type description" class="form-input">
+            <label for="description" class="form-label" th:text="#{entity.businessType.field.description}">Description:</label>
+            <input id="description" type="text" name="description" th:value="*{description}" aria-label="Business Type Description" class="form-input">
         </div>
 
-        <button type="submit">Update</button>
+        <button type="submit" th:text="#{ui.button.update.label}">Update</button>
+
     </fieldset>
 </form>
-
+<br>
 <form th:action="@{/businessTypes/{businessTypeId}/delete(businessTypeId=${businessType.id()})}" method="post">
-    <button type="submit">Remove</button>
+    <button type="submit"
+            id="removeButton"
+            class="btn btn-danger"
+            th:text="#{ui.button.remove.label}"
+            th:data-confirm-message="#{entity.businessType.remove.button.confirmation.message}">
+        <i class="fa fa-trash"></i> Remove
+    </button>
 </form>
 
 <div>
-    <a th:href="@{/businessTypes}">Go back</a>
+    <a th:href="@{/businessTypes}" th:text="#{ui.button.goBack}">Go back</a>
+</div>
+<div>
+    <a th:href="@{/menu}" th:text="#{ui.button.mainMenu}">Go to Main</a>
 </div>
 
 <div th:insert="~{fragments::errors}"></div>

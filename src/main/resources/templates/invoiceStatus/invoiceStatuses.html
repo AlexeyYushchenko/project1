@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+    <title th:text="#{entity.invoiceStatus.list.page.title}">Invoice Statuses</title>
+    <script>initializeDataTable('invoiceStatusesTable');</script>
+</head>
+<body>
+
+<h1 th:text="#{entity.invoiceStatus.list.page.label}">Invoice Statuses</h1>
+
+<form action="/invoiceStatuses/create">
+    <button type="submit" th:text="#{entity.invoiceStatus.create.button.label}">Add a new Invoice Status</button>
+</form>
+
+<table id="invoiceStatusesTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th th:text="#{entity.invoiceStatus.field.name}">Name</th>
+        <th th:text="#{common.field.created_by}">Created By</th>
+        <th th:text="#{common.field.created_at}">Created At</th>
+        <th th:text="#{common.field.modified_by}">Modified By</th>
+        <th th:text="#{common.field.modified_at}">Modified At</th>
+        <th th:text="#{ui.button.remove.label}">Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="invoiceStatus : ${invoiceStatuses}">
+        <td th:text="${invoiceStatus.id}">ID</td>
+        <td><a th:href="@{'/invoiceStatuses/' + ${invoiceStatus.id}}" th:text="${invoiceStatus.name}">Name</a></td>
+        <td th:text="${invoiceStatus.createdBy}">Created By</td>
+        <td th:text="${invoiceStatus.createdAt}">Created At</td>
+        <td th:text="${invoiceStatus.modifiedBy}">Modified By</td>
+        <td th:text="${invoiceStatus.modifiedAt}">Modified At</td>
+        <td>
+            <form th:action="@{/invoiceStatuses/{invoiceStatusId}/delete(invoiceStatusId=${invoiceStatus.id})}"
+                  method="post">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div>
+    <a th:href="@{/menu}" th:text="#{ui.button.mainMenu}">Go back</a>
+</div>
+
+<dif th:insert="~{fragments::errors}"></dif>
+
+</body>
+</html>
+

@@ -291,13 +291,3 @@ CREATE TABLE IF NOT EXISTS payment_invoice
     allocated_amount DECIMAL(10, 2),
     UNIQUE (payment_id, invoice_id)
 );
-
--- CREATE TABLE IF NOT EXISTS payment_allocation
--- (
---     payment_id       INT,
---     invoice_id       INT,
---     allocated_amount DECIMAL(10, 2),
---     PRIMARY KEY (payment_id, invoice_id),
---     FOREIGN KEY (payment_id) REFERENCES payment (id),
---     FOREIGN KEY (invoice_id) REFERENCES invoice (id)
--- );

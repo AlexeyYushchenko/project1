@@ -1,6 +1,8 @@
 package utlc.ru.project1.http.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,9 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import utlc.ru.project1.database.entity.Role;
 import utlc.ru.project1.dto.industrytype.IndustryTypeCreateUpdateDto;
 import utlc.ru.project1.service.IndustryTypeService;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/industryTypes")
@@ -38,18 +42,29 @@ public class IndustryTypeController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/create")
+    public String create(Model model, @ModelAttribute("industryType") IndustryTypeCreateUpdateDto createDto) {
+        model.addAttribute("industryType", createDto);
+        model.addAttribute("roles", Role.values());
+        return "industryType/create";
+    }
+
     @PostMapping
-    public String create(@ModelAttribute @Validated IndustryTypeCreateUpdateDto industryTypeCreateUpdateDto,
+    public String create(@ModelAttribute @Validated IndustryTypeCreateUpdateDto dto,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("industryType", industryTypeCreateUpdateDto);
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/industryTypes";
+        if (!bindingResult.hasErrors()){
+            try {
+                industryTypeService.create(dto);
+                return "redirect:/industryTypes";
+            } catch (DataIntegrityViolationException e) {
+                bindingResult.reject("database error", "error.database.industryType.uniqueConstraintViolation");
+            }
         }
-        industryTypeService.create(industryTypeCreateUpdateDto);
-        return "redirect:/industryTypes";
+        redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+        redirectAttributes.addFlashAttribute("industryType", dto);
+        return "redirect:/industryTypes/create";
     }
 
     @PostMapping("/{id}")

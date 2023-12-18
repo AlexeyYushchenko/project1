@@ -24,43 +24,49 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)  //todo remove the '.disable' option
-                .httpBasic(Customizer.withDefaults())
+
+        http
                 .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/images/**", "/css/**", "/js/**")
-                        .permitAll()  // Allow static resources
-
-                        .requestMatchers("/login",
-                                "/administrators/registration",
-                                "/v3/api-docs/**")
-                        .permitAll()
-
-                        .requestMatchers(HttpMethod.POST,
-                                "/administrators")
-                        .permitAll()
-
-                        .requestMatchers(
-                                RegexRequestMatcher.regexMatcher(
-                                        HttpMethod.POST,
-                                        "/administrators/\\d+/delete"))
-                        .hasAuthority(ADMIN.getAuthority())
-
-                        .requestMatchers(
-                                "/administrators/**",
-                                "/swagger-ui/**")
-                        .hasAuthority(ADMIN.getAuthority())
-
-                        .anyRequest().authenticated()
-                )
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login")
-                        .deleteCookies("JSESSIONID"))
-                .formLogin(login -> login
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/menu")
-                        .permitAll());
+                        .anyRequest().permitAll()); // Permit all requests without authentication
         return http.build();
+
+//        http.csrf(AbstractHttpConfigurer::disable)  //todo remove the '.disable' option
+//                .httpBasic(Customizer.withDefaults())
+//                .authorizeHttpRequests((authz) -> authz
+//                        .requestMatchers("/images/**", "/css/**", "/js/**")
+//                        .permitAll()  // Allow static resources
+//
+//                        .requestMatchers("/login",
+//                                "/administrators/registration",
+//                                "/v3/api-docs/**")
+//                        .permitAll()
+//
+//                        .requestMatchers(HttpMethod.POST,
+//                                "/administrators")
+//                        .permitAll()
+//
+//                        .requestMatchers(
+//                                RegexRequestMatcher.regexMatcher(
+//                                        HttpMethod.POST,
+//                                        "/administrators/\\d+/delete"))
+//                        .hasAuthority(ADMIN.getAuthority())
+//
+//                        .requestMatchers(
+//                                "/administrators/**",
+//                                "/swagger-ui/**")
+//                        .hasAuthority(ADMIN.getAuthority())
+//
+//                        .anyRequest().authenticated()
+//                )
+//                .logout(logout -> logout
+//                        .logoutUrl("/logout")
+//                        .logoutSuccessUrl("/login")
+//                        .deleteCookies("JSESSIONID"))
+//                .formLogin(login -> login
+//                        .loginPage("/login")
+//                        .defaultSuccessUrl("/menu")
+//                        .permitAll());
+//        return http.build();
     }
 
 

@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<h1>Country</h1>
+<h1 th:text="#{entity.country.edit.page.label}">Country</h1>
 
 <form th:action="@{/countries/{countryId}(countryId=${country.id()})}" method="post" th:object="${country}">
     <fieldset>
@@ -20,23 +20,32 @@
         </div>
         <div class="form-group">
             <label for="name" class="form-label">Name:</label>
-            <input id="name" type="text" name="name" th:value="*{name}" aria-label="Country Name" class="form-input">
+            <input id="name" type="text" name="name" th:value="*{name}" aria-label="Country name" class="form-input">
         </div>
         <div class="form-group">
             <label for="isActive" class="form-label">isActive:</label>
             <input id="isActive" type="text" name="isActive" th:value="*{isActive}" aria-label="Country is active" class="form-input">
         </div>
 
-        <button type="submit">Update</button>
+        <button type="submit" th:text="#{ui.button.update.label}">Update</button>
     </fieldset>
 </form>
 <br>
 <form th:action="@{/countries/{countryId}/delete(countryId=${country.id()})}" method="post">
-    <button type="submit">Remove</button>
+    <button type="submit"
+            id="removeButton"
+            class="btn btn-danger"
+            th:text="#{ui.button.remove.label}"
+            th:data-confirm-message="#{entity.country.remove.button.confirmation.message}">
+        <i class="fa fa-trash"></i> Remove
+    </button>
 </form>
 
 <div>
-    <a th:href="@{/countries}">Go back</a>
+    <a th:href="@{/countries}" th:text="#{ui.button.goBack}">Go back</a>
+</div>
+<div>
+    <a th:href="@{/menu}" th:text="#{ui.button.mainMenu}">Go to Main</a>
 </div>
 
 <div th:insert="~{fragments::errors}"></div>

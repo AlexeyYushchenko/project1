@@ -3,11 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
-    <title>Industry Types</title>
+    <title th:text="#{entity.industryType.list.page.title}">Industry Types</title>
+    <script>initializeDataTable('industryTypesTable');</script>
 </head>
 <body>
 
-<h1>Industry Types</h1>
+<h1 th:text="#{entity.industryType.list.page.label}">Industry Types</h1>
+
+<form action="/industryTypes/create">
+    <button type="submit" th:text="#{entity.industryType.create.button.label}">Add a new Industry Type</button>
+</form>
 
 <table id="industryTypesTable">
     <thead>
@@ -15,11 +20,11 @@
         <th>ID</th>
         <th>Name</th>
         <th>Description</th>
-        <th>Created At</th>
-        <th>Modified At</th>
-        <th>Created By</th>
-        <th>Modified By</th>
-        <th>Delete</th>
+        <th th:text="#{common.field.created_by}">Created By</th>
+        <th th:text="#{common.field.created_at}">Created At</th>
+        <th th:text="#{common.field.modified_by}">Modified By</th>
+        <th th:text="#{common.field.modified_at}">Modified At</th>
+        <th th:text="#{ui.button.remove.label}">Delete</th>
     </tr>
     </thead>
     <tbody>
@@ -27,10 +32,10 @@
         <td th:text="${industryType.id}">ID</td>
         <td><a th:href="@{'/industryTypes/' + ${industryType.id}}" th:text="${industryType.name}">Name</a></td>
         <td th:text="${industryType.description}">Description</td>
-        <td th:text="${industryType.createdAt}">Created At</td>
-        <td th:text="${industryType.modifiedAt}">Modified At</td>
         <td th:text="${industryType.createdBy}">Created By</td>
+        <td th:text="${industryType.createdAt}">Created At</td>
         <td th:text="${industryType.modifiedBy}">Modified By</td>
+        <td th:text="${industryType.modifiedAt}">Modified At</td>
         <td>
             <form th:action="@{/industryTypes/{industryTypeId}/delete(industryTypeId=${industryType.id})}"
                   method="post">
@@ -42,23 +47,8 @@
     </tbody>
 </table>
 
-<script>
-    $(document).ready(function() {
-        $('#industryTypesTable').DataTable();
-    });
-</script>
-
-<h3>Add a new industry type</h3>
-<form th:action="@{/industryTypes}" method="post">
-    <label for="name">
-        <input id="name" type="text" name="name">
-    </label>
-    <button type="submit">Add</button>
-</form>
-<br>
-
 <div>
-    <a th:href="@{/menu}">Go to Main menu</a>
+    <a th:href="@{/menu}" th:text="#{ui.button.mainMenu}">Go back</a>
 </div>
 
 <dif th:insert="~{fragments::errors}"></dif>

@@ -5,17 +5,16 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record WarehouseCreateUpdateDto(
-
-        @NotNull(message = "Warehouse name is required")
-        @Pattern(regexp = ".*\\S.*", message = "Warehouse name must include at least one non-space character")
-        @Size(min = 2, max = 150, message = "Warehouse name must be between 2 and 150 characters")
+        @NotNull(message = "validation.warehouse.name.required")
+        @Pattern(regexp = ".*\\S.*", message = "validation.warehouse.name.pattern")
+        @Size(min = 2, max = 150, message = "validation.warehouse.name.size")
         String name,
 
-        @NotNull(message = "Country is required")
+        @NotNull(message = "validation.warehouse.country.required")
         Integer countryId,
 
-        @NotNull(message = "address is required")
-        @Size(min = 2, max = 255, message = "Warehouse address must be between 2 and 150 characters")
+        @NotNull(message = "validation.warehouse.address.required")
+        @Size(min = 2, max = 255, message = "validation.warehouse.address.size")
         String address,
 
         String commentary

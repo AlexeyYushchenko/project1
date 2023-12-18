@@ -2,70 +2,85 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Administrator</title>
+    <title th:text="#{entity.administrator.edit.page.title}">Administrator</title>
     <!--  <link rel="stylesheet" type="text/css" href="/templates/style.css">-->
     <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
 </head>
 <body>
 
-<h1>Administrator</h1>
+<h1 th:text="#{entity.administrator.edit.page.label}">Administrator</h1>
 
 <form th:action="@{/administrators/{administratorId}(administratorId=${administrator.id()})}" method="post"
       th:object="${administrator}">
 
     <fieldset>
 
-        <legend>Administrator Details</legend>
+    <legend th:text="#{entity.administrator.edit.page.details.label}">Administrator Details</legend>
 
         <div class="form-group">
-            <label for="username" class="form-label">Username:</label>
+            <label for="username" class="form-label" th:text="#{entity.administrator.field.username}">Username:</label>
             <input id="username" type="text" name="username" th:value="*{username}"
                    aria-label="Username"
                    class="form-input">
         </div>
 
         <div class="form-group">
-            <label for="password" class="form-label">Password:</label>
+            <label for="password" class="form-label" th:text="#{entity.administrator.field.password}">Password:</label>
             <input id="password" type="password" name="password"
                    aria-label="Password"
                    class="form-input">
         </div>
 
         <div class="form-group">
-            <label for="email" class="form-label">Email:</label>
+            <label for="email" class="form-label" th:text="#{entity.administrator.field.email}">Email:</label>
             <input id="email" type="text" name="email" th:value="*{email}" aria-label="Email"
                    class="form-input">
         </div>
 
         <div class="form-group">
-            <label for="firstname" class="form-label">First name:</label>
+            <label for="firstname" class="form-label" th:text="#{entity.administrator.field.firstname}">First name:</label>
             <input id="firstname" type="text" name="firstname" th:value="*{firstname}"
                    aria-label="firstname" class="form-input">
         </div>
 
         <div class="form-group">
-            <label for="lastname" class="form-label">Last name:</label>
+            <label for="lastname" class="form-label" th:text="#{entity.administrator.field.lastname}">Last name:</label>
             <input id="lastname" type="text" name="lastname" th:value="*{lastname}"
                    aria-label="lastname" class="form-input">
         </div>
 
         <div class="form-group">
-            <label for="role" class="form-label">Role:</label>
-            <input id="role" type="text" name="role" th:value="*{role}"
-                   aria-label="role" class="form-input">
+            <label for="roleSelect" th:text="#{entity.administrator.field.role}">Role</label>
+            <select id="roleSelect" class="form-control" name="role">
+                <option th:each="role : ${roles}"
+                        th:value="${role}"
+                        th:text="${role.name()}"
+                        th:selected="${role == administrator.role}">
+                    Role name
+                </option>
+            </select>
         </div>
 
-        <button type="submit">Update</button>
+        <button type="submit" th:text="#{ui.button.update.label}">Update</button>
 
     </fieldset>
 </form>
 <br>
 <form th:action="@{/administrators/{administratorId}/delete(administratorId=${administrator.id()})}" method="post">
-    <button type="submit">Remove</button>
+    <button type="submit"
+            id="removeButton"
+            class="btn btn-danger"
+            th:text="#{ui.button.remove.label}"
+            th:data-confirm-message="#{entity.administrator.remove.button.confirmation.message}">
+        <i class="fa fa-trash"></i> Remove
+    </button>
 </form>
 
 <div>
-    <a th:href="@{/administrators}">Go back</a>
+    <a th:href="@{/administrators}" th:text="#{ui.button.goBack}">Go back</a>
+</div>
+<div>
+    <a th:href="@{/menu}" th:text="#{ui.button.mainMenu}">Go to Main</a>
 </div>
 
 <div th:insert="~{fragments::errors}"></div>

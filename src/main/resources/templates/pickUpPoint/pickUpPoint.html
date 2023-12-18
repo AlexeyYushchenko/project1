@@ -12,7 +12,7 @@
 </head>
 <body>
 
-<h1>Pick-Up Point</h1>
+<h1 th:text="#{entity.pickUpPoint.edit.page.label}">Pick-Up Point</h1>
 
 <form th:action="@{/pickUpPoints/{pickUpPointId}(pickUpPointId=${pickUpPoint.id()})}" method="post" th:object="${pickUpPoint}">
   <fieldset>
@@ -37,16 +37,25 @@
       <input id="address" type="text" name="address" th:value="*{address}" aria-label="Address" class="form-input">
     </div>
 
-    <button type="submit">Update</button>
+    <button type="submit" th:text="#{ui.button.update.label}">Update</button>
   </fieldset>
 </form>
 <br>
 <form th:action="@{/pickUpPoints/{pickUpPointId}/delete(pickUpPointId=${pickUpPoint.id()})}" method="post">
-  <button type="submit">Remove</button>
+  <button type="submit"
+          id="removeButton"
+          class="btn btn-danger"
+          th:text="#{ui.button.remove.label}"
+          th:data-confirm-message="#{entity.pickUpPoint.remove.button.confirmation.message}">
+    <i class="fa fa-trash"></i> Remove
+  </button>
 </form>
 
 <div>
-  <a th:href="@{/pickUpPoints}">Go back</a>
+  <a th:href="@{/pickUpPoints}" th:text="#{ui.button.goBack}">Go back</a>
+</div>
+<div>
+  <a th:href="@{/menu}" th:text="#{ui.button.mainMenu}">Go to Main</a>
 </div>
 
 <div th:insert="~{fragments::errors}"></div>

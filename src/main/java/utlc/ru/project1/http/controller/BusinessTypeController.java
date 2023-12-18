@@ -1,6 +1,8 @@
 package utlc.ru.project1.http.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,9 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import utlc.ru.project1.database.entity.Role;
 import utlc.ru.project1.dto.businesstype.BusinessTypeCreateUpdateDto;
 import utlc.ru.project1.service.BusinessTypeService;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/businessTypes")
@@ -38,18 +42,29 @@ public class BusinessTypeController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/create")
+    public String create(Model model, @ModelAttribute("businessType") BusinessTypeCreateUpdateDto createDto) {
+        model.addAttribute("businessType", createDto);
+        model.addAttribute("roles", Role.values());
+        return "businessType/create";
+    }
+
     @PostMapping
-    public String create(@ModelAttribute @Validated BusinessTypeCreateUpdateDto createUpdateDto,
+    public String create(@ModelAttribute @Validated BusinessTypeCreateUpdateDto dto,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("businessType", createUpdateDto);
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/businessTypes";
+        if (!bindingResult.hasErrors()){
+            try {
+                businessTypeService.create(dto);
+                return "redirect:/businessTypes";
+            } catch (DataIntegrityViolationException e) {
+                bindingResult.reject("database error", "error.database.businessType.uniqueConstraintViolation");
+            }
         }
-        businessTypeService.create(createUpdateDto);
-        return "redirect:/businessTypes";
+        redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+        redirectAttributes.addFlashAttribute("businessType", dto);
+        return "redirect:/businessTypes/create";
     }
 
     @PostMapping("/{id}")

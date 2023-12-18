@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+    <title th:text="#{entity.administrator.label.registration}">Create a new administrator</title>
+</head>
+<body>
+
+<div th:insert="~{fragments::locale}"></div>
+
+<h1 th:text="#{entity.administrator.create.page.label}">Administrator registration</h1>
+
+<h3 th:text="#{entity.administrator.label.add}">Add a new administrator</h3>
+
+<form th:action="@{/administrators}" method="post" class="administrator-form" th:object="${administrator}">
+
+    <div class="form-group">
+        <label for="username" th:text="#{entity.administrator.field.username}">Username:</label>
+        <input id="username" type="text" name="username" class="form-input" th:value="*{username}">
+    </div>
+
+    <div class="form-group">
+        <label for="password" th:text="#{entity.administrator.field.password}">Password:</label>
+        <input id="password" type="password" name="password">
+    </div>
+
+    <div class="form-group">
+        <label for="email" th:text="#{entity.administrator.field.email}">Email:</label>
+        <input id="email" type="email" name="email" th:value="*{email}">
+    </div>
+
+    <div class="form-group">
+        <label for="firstname" th:text="#{entity.administrator.field.firstname}">First name:</label>
+        <input id="firstname" type="text" name="firstname" th:value="*{firstname}">
+    </div>
+
+    <div class="form-group">
+        <label for="lastname" th:text="#{entity.administrator.field.lastname}">Last name:</label>
+        <input id="lastname" type="text" name="lastname" th:value="*{lastname}">
+    </div>
+
+    <div class="form-group">
+        <label for="roleSelect" th:text="#{entity.administrator.field.role}">Role</label>
+        <select id="roleSelect" class="form-control" name="role">
+            <option th:each="role : ${roles}"
+                    th:value="${role}"
+                    th:text="${role.name()}"
+                    th:selected="${role == administrator.role}">
+                Role name
+            </option>
+        </select>
+    </div>
+
+    <button type="submit" th:text="#{ui.button.add.label}" class="submit-button">Add</button>
+</form>
+<br>
+<div>
+    <a th:href="@{/administrators}" th:text="#{ui.button.goBack}">Go back</a>
+</div>
+
+<dif th:insert="~{fragments::errors}"></dif>
+
+</body>
+</html>

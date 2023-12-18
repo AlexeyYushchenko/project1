@@ -1,6 +1,8 @@
 package utlc.ru.project1.http.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,9 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import utlc.ru.project1.database.entity.Role;
 import utlc.ru.project1.dto.country.CountryCreateUpdateDto;
 import utlc.ru.project1.service.CountryService;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/countries")
@@ -33,23 +37,34 @@ public class CountryController {
         return countryService.findById(id)
                 .map(country -> {
                     model.addAttribute("country", country);
-                    return "countryId/countryId";
+                    return "country/country";
                 })
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/create")
+    public String create(Model model, @ModelAttribute("country") CountryCreateUpdateDto createDto) {
+        model.addAttribute("country", createDto);
+        model.addAttribute("roles", Role.values());
+        return "country/create";
+    }
+
     @PostMapping
-    public String create(@ModelAttribute @Validated CountryCreateUpdateDto createUpdateDto,
+    public String create(@ModelAttribute @Validated CountryCreateUpdateDto dto,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("country", createUpdateDto);
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/countries";
+        if (!bindingResult.hasErrors()){
+            try {
+                countryService.create(dto);
+                return "redirect:/countries";
+            } catch (DataIntegrityViolationException e) {
+                bindingResult.reject("database error", "error.database.country.uniqueConstraintViolation");
+            }
         }
-        countryService.create(createUpdateDto);
-        return "redirect:/countries";
+        redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+        redirectAttributes.addFlashAttribute("country", dto);
+        return "redirect:/countries/create";
     }
 
     @PostMapping("/{id}")

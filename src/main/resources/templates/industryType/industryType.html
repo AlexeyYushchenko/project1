@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<h1>Industry Type</h1>
+<h1 th:text="#{entity.industryType.edit.page.label}">Industry Type</h1>
 
 <form th:action="@{/industryTypes/{industryTypeId}(industryTypeId=${industryType.id()})}" method="post" th:object="${industryType}">
     <fieldset>
@@ -23,16 +23,25 @@
             <input id="description" type="text" name="description" th:value="*{description}" aria-label="Industry Type description" class="form-input">
         </div>
 
-        <button type="submit">Update</button>
+        <button type="submit" th:text="#{ui.button.update.label}">Update</button>
     </fieldset>
 </form>
 <br>
 <form th:action="@{/industryTypes/{industryTypeId}/delete(industryTypeId=${industryType.id()})}" method="post">
-    <button type="submit">Remove</button>
+    <button type="submit"
+            id="removeButton"
+            class="btn btn-danger"
+            th:text="#{ui.button.remove.label}"
+            th:data-confirm-message="#{entity.industryType.remove.button.confirmation.message}">
+        <i class="fa fa-trash"></i> Remove
+    </button>
 </form>
 
 <div>
-    <a th:href="@{/industryTypes}">Go back</a>
+    <a th:href="@{/industryTypes}" th:text="#{ui.button.goBack}">Go back</a>
+</div>
+<div>
+    <a th:href="@{/menu}" th:text="#{ui.button.mainMenu}">Go to Main</a>
 </div>
 
 <div th:insert="~{fragments::errors}"></div>

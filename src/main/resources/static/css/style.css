@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f7f7f7;
+    background-color: #ffffff;
     margin: 0;
     padding: 0;
 }
@@ -17,6 +17,51 @@ body {
     justify-content: center;
     padding: 20px;
 }
+
+/*NEON BUTTON-LIKE LINKS*/
+/*.main-container a {*/
+/*    display: inline-block;*/
+/*    background-color: #000000; !* Dark background for contrast *!*/
+/*    color: #ffffff; !* White text color *!*/
+/*    border: none;*/
+/*    padding: 10px 10px;*/
+/*    margin: 5px;*/
+/*    font-size: 16px;*/
+/*    font-family: Arial, sans-serif;*/
+/*    text-decoration: none;*/
+/*    cursor: pointer;*/
+/*    outline: none;*/
+/*    border-radius: 5px;*/
+/*    text-transform: uppercase;*/
+/*    letter-spacing: 1.5px;*/
+/*    position: relative;*/
+/*    transition: all 0.3s ease;*/
+/*}*/
+
+/*.main-container a:hover {*/
+/*    background-color: #303030;*/
+/*}*/
+
+/*.main-container a:before {*/
+/*    content: '';*/
+/*    position: absolute;*/
+/*    top: -5px;*/
+/*    left: -5px;*/
+/*    right: -5px;*/
+/*    bottom: -5px;*/
+/*    z-index: -1;*/
+/*    background: linear-gradient(45deg, #00f5ff, #00f5ff, #00f5ff, #00f5ff, #ff0000, #fb0094, #0000ff, #00ff00, #ffff00, #ff0000);*/
+/*    !*background: linear-gradient(45deg, #fb0094, #0000ff, #00ff00, #ffff00, #ff0000, #fb0094, #0000ff, #00ff00, #ffff00, #ff0000);*!*/
+/*    background-size: 300%;*/
+/*    border-radius: 10px;*/
+/*    transition: all 0.3s ease;*/
+/*    filter: blur(5px);*/
+/*}*/
+
+/*.main-container a:hover:before {*/
+/*    filter: blur(8px);*/
+/*    background-position: 100%;*/
+/*}*/
 
 .sidebar {
     width: 200px;

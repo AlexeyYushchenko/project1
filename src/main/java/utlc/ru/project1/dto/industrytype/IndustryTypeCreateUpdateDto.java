@@ -5,10 +5,9 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record IndustryTypeCreateUpdateDto(
-
-        @NotNull(message = "Industry Type name is required")
-        @Pattern(regexp = ".*\\S.*", message = "Industry Type name must include at least one non-space character")
-        @Size(min = 2, max = 50, message = "Industry Type name must be between 2 and 50 characters")
+        @NotNull(message = "validation.industryType.name.required")
+        @Pattern(regexp = ".*\\S.*", message = "validation.industryType.name.pattern")
+        @Size(min = 2, max = 50, message = "validation.industryType.name.size")
         String name,
         String description
 ) {

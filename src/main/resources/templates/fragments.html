@@ -8,6 +8,8 @@
 <body>
 <!-- Common styles and scripts -->
 <th:block th:fragment="common-head-elements">
+    <script th:src="@{/js/removeButton.js}"></script>
+    <script th:src="@{/js/table.js}"></script>
 
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
 
@@ -60,11 +62,14 @@
 <!--            background-color: #6ce30c;-->
 <!--        }-->
 <!--    </style>-->
-<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">-->
-<!--    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </th:block>
 
 <div th:fragment="header">
@@ -76,12 +81,13 @@
     <div th:insert="~{fragment :: locale}"></div>
 </div>
 
-<div th:fragment="errors"
-     th:if="${errors}">
-    <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
+<div th:fragment="errors" th:if="${errors}">
+    <p style="color: red" th:each="error : ${errors}" th:text="#{${error.defaultMessage}}">Error message</p>
 </div>
 
+<!-- ${error.defaultMessage}-->
 <div th:fragment="locale">
+    <label th:text="#{ui.language.select}">Role</label>
     <form action="">
         <select name="lang" onchange="this.form.submit()">
             <option></option>
@@ -93,7 +99,7 @@
 
 <div th:fragment="logOutButton">
     <form th:action="@{/logout}" method="post">
-        <button type="submit" th:text="#{logout.button}">Log out</button>
+        <button style="background-color: #047901" type="submit" th:text="#{ui.logout.button.label}">Log out</button>
     </form>
 </div>
 

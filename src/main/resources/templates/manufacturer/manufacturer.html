@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<h1>Manufacturer</h1>
+<h1 th:text="#{entity.manufacturer.edit.page.label}">Manufacturer</h1>
 
 <form th:action="@{/manufacturers/{manufacturerId}(manufacturerId=${manufacturer.id()})}" method="post" th:object="${manufacturer}">
   <fieldset>
@@ -37,16 +37,25 @@
       <input id="commentary" type="text" name="commentary" th:value="*{commentary}" aria-label="Commentary" class="form-input">
     </div>
 
-    <button type="submit">Update</button>
+    <button type="submit" th:text="#{ui.button.update.label}">Update</button>
   </fieldset>
 </form>
 <br>
 <form th:action="@{/manufacturers/{manufacturerId}/delete(manufacturerId=${manufacturer.id()})}" method="post">
-  <button type="submit">Remove</button>
+  <button type="submit"
+          id="removeButton"
+          class="btn btn-danger"
+          th:text="#{ui.button.remove.label}"
+          th:data-confirm-message="#{entity.manufacturer.remove.button.confirmation.message}">
+    <i class="fa fa-trash"></i> Remove
+  </button>
 </form>
 
 <div>
-  <a th:href="@{/manufacturers}">Go back</a>
+  <a th:href="@{/manufacturers}" th:text="#{ui.button.goBack}">Go back</a>
+</div>
+<div>
+  <a th:href="@{/menu}" th:text="#{ui.button.mainMenu}">Go to Main</a>
 </div>
 
 <div th:insert="~{fragments::errors}"></div>

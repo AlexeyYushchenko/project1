@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title><!DOCTYPE html>
-      <html lang="en" xmlns:th="http://www.thymeleaf.org">
-      <head>
-      <meta charset="UTF-8">
-      <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
-      <!--  <link rel="stylesheet" th:href="@{/css/style.css}"/>-->
-      <title>Pick-Up Points</title>
+  <meta charset="UTF-8">
+  <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+  <!--  <link rel="stylesheet" th:href="@{/css/style.css}"/>-->
+  <title th:text="#{entity.pickUpPoint.list.page.title}">Pick-Up Points</title>
+  <script>initializeDataTable('pickUpPointsTable');</script>
 </head>
 <body>
 
-<h1>Pick-Up Points</h1>
+<h1 th:text="#{entity.pickUpPoint.list.page.label}">Pick-Up Points</h1>
+
+<form action="/pickUpPoints/create">
+  <button type="submit" th:text="#{entity.pickUpPoint.create.button.label}">Add a new Pick-Up Point</button>
+</form>
 
 <table id="pickUpPointsTable">
   <thead>
@@ -21,11 +22,11 @@
     <th>Name</th>
     <th>Country</th>
     <th>Address</th>
-    <th>Created At</th>
-    <th>Modified At</th>
-    <th>Created By</th>
-    <th>Modified By</th>
-    <th>Delete</th>
+    <th th:text="#{common.field.created_by}">Created By</th>
+    <th th:text="#{common.field.created_at}">Created At</th>
+    <th th:text="#{common.field.modified_by}">Modified By</th>
+    <th th:text="#{common.field.modified_at}">Modified At</th>
+    <th th:text="#{ui.button.remove.label}">Delete</th>
   </tr>
   </thead>
   <tbody>
@@ -34,10 +35,10 @@
     <td><a th:href="@{'/pickUpPoints/' + ${pickUpPoint.id}}" th:text="${pickUpPoint.name}">Name</a></td>
     <td th:text="${pickUpPoint.country.name}">Country name</td>
     <td th:text="${pickUpPoint.address}">Address</td>
-    <td th:text="${pickUpPoint.createdAt}">Created At</td>
-    <td th:text="${pickUpPoint.modifiedAt}">Modified At</td>
     <td th:text="${pickUpPoint.createdBy}">Created By</td>
+    <td th:text="${pickUpPoint.createdAt}">Created At</td>
     <td th:text="${pickUpPoint.modifiedBy}">Modified By</td>
+    <td th:text="${pickUpPoint.modifiedAt}">Modified At</td>
     <td>
       <form th:action="@{/pickUpPoints/{pickUpPointId}/delete(pickUpPointId=${pickUpPoint.id})}"
             method="post">
@@ -49,14 +50,8 @@
   </tbody>
 </table>
 
-<script>
-  $(document).ready(function() {
-    $('#pickUpPointsTable').DataTable();
-  });
-</script>
-
 <div>
-  <a th:href="@{/menu}">Go to Main menu</a>
+  <a th:href="@{/menu}" th:text="#{ui.button.mainMenu}">Go back</a>
 </div>
 
 <dif th:insert="~{fragments::errors}"></dif>

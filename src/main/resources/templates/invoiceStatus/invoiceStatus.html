@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{entity.invoiceStatus.edit.page.title}">Invoice Status</title>
+    <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+</head>
+<body>
+
+<h1 th:text="#{entity.invoiceStatus.edit.page.label}">Invoice Status</h1>
+
+<form th:action="@{/invoiceStatuses/{invoiceStatusId}(invoiceStatusId=${invoiceStatus.id()})}" method="post" th:object="${invoiceStatus}">
+    <fieldset>
+        <legend th:text="#{entity.invoiceStatus.edit.page.details.label}">Invoice Status Details</legend>
+
+        <div class="form-group">
+            <label for="name" class="form-label" th:text="#{entity.invoiceStatus.field.name}">Name:</label>
+            <input id="name" type="text" name="name" th:value="*{name}" aria-label="Invoice Status Name" class="form-input">
+        </div>
+
+        <button type="submit" th:text="#{ui.button.update.label}">Update</button>
+
+    </fieldset>
+</form>
+<br>
+<form th:action="@{/invoiceStatuses/{invoiceStatusId}/delete(invoiceStatusId=${invoiceStatus.id()})}" method="post">
+    <button type="submit"
+            id="removeButton"
+            class="btn btn-danger"
+            th:text="#{ui.button.remove.label}"
+            th:data-confirm-message="#{entity.invoiceStatus.remove.button.confirmation.message}">
+        <i class="fa fa-trash"></i> Remove
+    </button>
+</form>
+
+<div>
+    <a th:href="@{/invoiceStatuses}" th:text="#{ui.button.goBack}">Go back</a>
+</div>
+<div>
+    <a th:href="@{/menu}" th:text="#{ui.button.mainMenu}">Go to Main</a>
+</div>
+
+<div th:insert="~{fragments::errors}"></div>
+
+</body>
+</html>

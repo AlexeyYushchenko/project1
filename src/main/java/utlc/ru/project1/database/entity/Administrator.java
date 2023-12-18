@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-@EqualsAndHashCode(callSuper=true)
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -39,4 +39,12 @@ public class Administrator extends AuditingEntity<Integer> {
     @Column(name = "role", nullable = false, length = 50)
     @Enumerated(value = EnumType.STRING)
     private Role role;
+
+    public void setEmail(String email) {
+        this.email = email != null ? email.toLowerCase() : null;
+    }
+
+    public void setUsername(String username) {
+        this.username = username != null ? username.toLowerCase() : null;
+    }
 }

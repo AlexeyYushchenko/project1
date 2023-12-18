@@ -3,29 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
-    <title>Administrators</title>
+    <title th:text="#{entity.administrator.list.page.title}">Administrators</title>
+    <script>initializeDataTable('administratorsTable');</script>
 </head>
 <body>
 
-<h1>Administrators</h1>
+<h1 th:text="#{entity.administrator.list.page.label}">Administrators</h1>
 
-<form action="/administrators/registration">
-    <button type="submit">Registration</button>
+<form action="/administrators/create">
+    <button type="submit" th:text="#{entity.administrator.create.button.label}">Add a new administrator</button>
 </form>
 
 <table id="administratorsTable">
     <thead>
     <tr>
         <th>ID</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Firstname</th>
-        <th>Lastname</th>
-        <th>Created At</th>
-        <th>Modified At</th>
-        <th>Created By</th>
-        <th>Modified By</th>
-        <th>Delete</th>
+        <th th:text="#{entity.administrator.field.username}">Username</th>
+        <th th:text="#{entity.administrator.field.email}">Email</th>
+        <th th:text="#{entity.administrator.field.firstname}">Firstname</th>
+        <th th:text="#{entity.administrator.field.lastname}">Lastname</th>
+        <th th:text="#{common.field.created_by}">Created By</th>
+        <th th:text="#{common.field.created_at}">Created At</th>
+        <th th:text="#{common.field.modified_by}">Modified By</th>
+        <th th:text="#{common.field.modified_at}">Modified At</th>
+        <th th:text="#{ui.button.remove.label}">Delete</th>
     </tr>
     </thead>
     <tbody>
@@ -36,30 +37,33 @@
         <td th:text="${administrator.email}">Email</td>
         <td th:text="${administrator.firstname}">Firstname</td>
         <td th:text="${administrator.lastname}">Lastname</td>
-
-        <td th:text="${administrator.createdAt}">Created At</td>
-        <td th:text="${administrator.modifiedAt}">Modified At</td>
         <td th:text="${administrator.createdBy}">Created By</td>
+        <td th:text="${administrator.createdAt}">Created At</td>
         <td th:text="${administrator.modifiedBy}">Modified By</td>
+        <td th:text="${administrator.modifiedAt}">Modified At</td>
         <td>
-            <form th:action="@{/administrators/{administratorId}/delete(administratorId=${administrator.id})}"
-                  method="post">
-                <input type="hidden" name="_method" value="DELETE">
-                <button type="submit">Delete</button>
+            <form th:action="@{/administrators/{administratorId}/delete(administratorId=${administrator.id()})}" method="post">
+                <button type="submit"
+                        id="removeButton"
+                        class="btn btn-danger"
+                        th:text="#{ui.button.remove.label}"
+                        th:data-confirm-message="#{entity.administrator.remove.button.confirmation.message}">
+                    <i class="fa fa-trash"></i> Remove
+                </button>
             </form>
         </td>
     </tr>
     </tbody>
 </table>
 
-<script>
-    $(document).ready(function () {
-        $('#administratorsTable').DataTable();
-    });
-</script>
+<!--<script>-->
+<!--    $(document).ready(function () {-->
+<!--        $('#administratorsTable').DataTable();-->
+<!--    });-->
+<!--</script>-->
 
 <div>
-    <a th:href="@{/menu}">Go to Main menu</a>
+    <a th:href="@{/menu}" th:text="#{ui.button.mainMenu}">Go back</a>
 </div>
 
 <dif th:insert="~{fragments::errors}"></dif>

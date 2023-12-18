@@ -1,6 +1,8 @@
 package utlc.ru.project1.http.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,9 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import utlc.ru.project1.database.entity.Role;
 import utlc.ru.project1.dto.clientstatus.ClientStatusCreateUpdateDto;
 import utlc.ru.project1.service.ClientStatusService;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/clientStatuses")
@@ -38,18 +42,29 @@ public class ClientStatusController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/create")
+    public String create(Model model, @ModelAttribute("clientStatus") ClientStatusCreateUpdateDto createDto) {
+        model.addAttribute("clientStatus", createDto);
+        model.addAttribute("roles", Role.values());
+        return "clientStatus/create";
+    }
+
     @PostMapping
-    public String create(@ModelAttribute @Validated ClientStatusCreateUpdateDto createUpdateDto,
+    public String create(@ModelAttribute @Validated ClientStatusCreateUpdateDto dto,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("clientStatus", createUpdateDto);
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/clientStatuses";
+        if (!bindingResult.hasErrors()){
+            try {
+                clientStatusService.create(dto);
+                return "redirect:/clientStatuses";
+            } catch (DataIntegrityViolationException e) {
+                bindingResult.reject("database error", "error.database.clientStatus.uniqueConstraintViolation");
+            }
         }
-        clientStatusService.create(createUpdateDto);
-        return "redirect:/clientStatuses";
+        redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+        redirectAttributes.addFlashAttribute("clientStatus", dto);
+        return "redirect:/clientStatuses/create";
     }
 
     @PostMapping("/{id}")

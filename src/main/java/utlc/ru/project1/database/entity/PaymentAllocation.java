@@ -2,28 +2,28 @@ package utlc.ru.project1.database.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "payment_allocation")
+@Table(name = "payment_invoice")
 public class PaymentAllocation {
 
-    @EmbeddedId
-    private PaymentAllocationId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("paymentId")
     @JoinColumn(name = "payment_id")
     private Payment payment;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("invoiceId")
     @JoinColumn(name = "invoice_id")
     private Invoice invoice;
 

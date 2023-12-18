@@ -1,11 +1,10 @@
 package utlc.ru.project1.database.entity;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import jakarta.persistence.*;
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -34,7 +33,7 @@ public class Payment extends AuditingEntity<Long> {
     private String paymentMethod;
 
     @Column(name = "currency", length = 3, nullable = false)
-    private String currency;
+    private Currency currency;
 
     @OneToMany(mappedBy = "payment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<PaymentAllocation> allocations;

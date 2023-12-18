@@ -1,41 +1,56 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Agent</title>
-  <!--  <link rel="stylesheet" type="text/css" href="/templates/style.css">-->
-  <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+    <meta charset="UTF-8">
+    <title th:text="#{entity.agent.edit.page.title}">Agent</title>
+    <!--  <link rel="stylesheet" type="text/css" href="/templates/style.css">-->
+    <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
 </head>
 <body>
 
-<h1>Agent</h1>
+<h1 th:text="#{entity.agent.edit.page.label}">Agent</h1>
 
 <form th:action="@{/agents/{agentId}(agentId=${agent.id()})}" method="post" th:object="${agent}">
-  <fieldset>
-    <legend>Agent Details</legend>
-    <div class="form-group">
-      <label for="name" class="form-label">Name:</label>
-      <input id="name" type="text" name="name" th:value="*{name}" aria-label="Agent Name" class="form-input">
-    </div>
-    <div class="form-group">
-      <label for="phone" class="form-label">Code:</label>
-      <input id="phone" type="text" name="phone" th:value="*{phone}" aria-label="Agent's phone" class="form-input">
-    </div>
-    <div class="form-group">
-      <label for="commentary" class="form-label">commentary:</label>
-      <input id="commentary" type="text" name="commentary" th:value="*{commentary}" aria-label="Commentary" class="form-input">
-    </div>
 
-    <button type="submit">Update</button>
-  </fieldset>
+    <fieldset>
+        <legend th:text="#{entity.agent.edit.page.details.label}">Agent Details</legend>
+
+        <div class="form-group">
+            <label for="name" class="form-label" th:text="#{entity.agent.field.name}">Name:</label>
+            <input id="name" type="text" name="name" th:value="*{name}" aria-label="Agent Name" class="form-input">
+        </div>
+
+        <div class="form-group">
+            <label for="phone" class="form-label" th:text="#{entity.agent.field.phone}">Phone:</label>
+            <input id="phone" type="text" name="phone" th:value="*{phone}" aria-label="Agent's phone"
+                   class="form-input">
+        </div>
+
+        <div class="form-group">
+            <label for="commentary" class="form-label" th:text="#{entity.agent.field.commentary}">commentary:</label>
+            <input id="commentary" type="text" name="commentary" th:value="*{commentary}" aria-label="Commentary"
+                   class="form-input">
+        </div>
+
+        <button type="submit" th:text="#{ui.button.update.label}">Update</button>
+    </fieldset>
 </form>
 <br>
 <form th:action="@{/agents/{agentId}/delete(agentId=${agent.id()})}" method="post">
-  <button type="submit">Remove</button>
+    <button type="submit"
+            id="removeButton"
+            class="btn btn-danger"
+            th:text="#{ui.button.remove.label}"
+            th:data-confirm-message="#{entity.agent.remove.button.confirmation.message}">
+        <i class="fa fa-trash"></i> Remove
+    </button>
 </form>
 
 <div>
-  <a th:href="@{/agents}">Go back</a>
+    <a th:href="@{/agents}" th:text="#{ui.button.goBack}">Go back</a>
+</div>
+<div>
+    <a th:href="@{/menu}" th:text="#{ui.button.mainMenu}">Go to Main</a>
 </div>
 
 <div th:insert="~{fragments::errors}"></div>

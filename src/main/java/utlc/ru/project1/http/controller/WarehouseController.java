@@ -1,6 +1,8 @@
 package utlc.ru.project1.http.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,10 +12,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import utlc.ru.project1.database.entity.Role;
 import utlc.ru.project1.dto.warehouse.WarehouseCreateUpdateDto;
 import utlc.ru.project1.service.CountryService;
 import utlc.ru.project1.service.WarehouseService;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/warehouses")
@@ -41,18 +45,29 @@ public class WarehouseController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/create")
+    public String create(Model model, @ModelAttribute("warehouse") WarehouseCreateUpdateDto createDto) {
+        model.addAttribute("warehouse", createDto);
+        model.addAttribute("roles", Role.values());
+        return "warehouse/create";
+    }
+
     @PostMapping
-    public String create(@ModelAttribute @Validated WarehouseCreateUpdateDto createUpdateDto,
+    public String create(@ModelAttribute @Validated WarehouseCreateUpdateDto dto,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("warehouse", createUpdateDto);
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/warehouses";
+        if (!bindingResult.hasErrors()){
+            try {
+                warehouseService.create(dto);
+                return "redirect:/warehouses";
+            } catch (DataIntegrityViolationException e) {
+                bindingResult.reject("database error", "error.database.warehouse.uniqueConstraintViolation");
+            }
         }
-        warehouseService.create(createUpdateDto);
-        return "redirect:/warehouses";
+        redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+        redirectAttributes.addFlashAttribute("warehouse", dto);
+        return "redirect:/warehouses/create";
     }
 
     @PostMapping("/{id}")

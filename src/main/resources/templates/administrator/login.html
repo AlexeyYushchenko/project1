@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-  <title th:text="#{login.title}">Login</title>
+  <title th:text="#{ui.login.title}">Login</title>
   <style>
     body {
       background-color: #fafafa;
@@ -90,21 +90,20 @@
 </div>
 
 <div class="container">
-  <h1 th:text="#{login.welcome}">Sign in to UTL</h1>
-
+  <h1 th:text="#{ui.login.welcome.label}">Sign in to UTL</h1>
   <form th:action="@{/login}" method="POST" class="mb-3">
     <div th:if="${param.error}" class="error">
       Bad Credentials
     </div>
     <div class="form-group">
-      <label for="username" th:text="#{login.username}">Username:</label>
+      <label for="username" th:text="#{ui.login.username.label}">Username:</label>
       <input id="username" type="text" name="username" class="form-control">
     </div>
     <div class="form-group">
-      <label for="password" th:text="#{login.password}">Password:</label>
+      <label for="password" th:text="#{ui.login.password.label}">Password:</label>
       <input id="password" type="password" name="password" class="form-control">
     </div>
-    <button type="submit" class="btn login-button" th:text="#{login.button}">Log in</button>
+    <button type="submit" class="btn login-button" th:text="#{ui.login.button.label}">Log in</button>
   </form>
 </div>
 

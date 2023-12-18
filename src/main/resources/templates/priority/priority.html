@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<h1>Priority</h1>
+<h1 th:text="#{entity.priority.edit.page.label}">Priority</h1>
 
 <form th:action="@{/priorities/{priorityId}(priorityId=${priority.id()})}" method="post" th:object="${priority}">
   <fieldset>
@@ -23,16 +23,25 @@
       <input id="description" type="text" name="description" th:value="*{description}" aria-label="Priority description" class="form-input">
     </div>
 
-    <button type="submit">Update</button>
+    <button type="submit" th:text="#{ui.button.update.label}">Update</button>
   </fieldset>
 </form>
 <br>
 <form th:action="@{/priorities/{priorityId}/delete(priorityId=${priority.id()})}" method="post">
-  <button type="submit">Remove</button>
+  <button type="submit"
+          id="removeButton"
+          class="btn btn-danger"
+          th:text="#{ui.button.remove.label}"
+          th:data-confirm-message="#{entity.priority.remove.button.confirmation.message}">
+    <i class="fa fa-trash"></i> Remove
+  </button>
 </form>
 
 <div>
-  <a th:href="@{/priorities}">Go back</a>
+  <a th:href="@{/priorities}" th:text="#{ui.button.goBack}">Go back</a>
+</div>
+<div>
+  <a th:href="@{/menu}" th:text="#{ui.button.mainMenu}">Go to Main</a>
 </div>
 
 <div th:insert="~{fragments::errors}"></div>

@@ -1,23 +1,23 @@
 package utlc.ru.project1.http.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.annotation.CurrentSecurityContext;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import utlc.ru.project1.database.entity.Role;
-import utlc.ru.project1.dto.administrator.AdministratorCreateDto;
-import utlc.ru.project1.dto.administrator.AdministratorUpdateDto;
+import utlc.ru.project1.dto.administrator.AdministratorCreateUpdateDto;
 import utlc.ru.project1.service.AdministratorService;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/administrators")
@@ -38,35 +38,40 @@ public class AdministratorController {
         return administratorService.findById(id)
                 .map(administrator -> {
                     model.addAttribute("administrator", administrator);
+                    model.addAttribute("roles", Role.values());
                     return "administrator/administrator";
                 })
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/registration")
-    public String registration(Model model, @ModelAttribute("administrator") AdministratorCreateDto createDto) {
+    @GetMapping("/create")
+    public String create(Model model, @ModelAttribute("administrator") AdministratorCreateUpdateDto createDto) {
         model.addAttribute("administrator", createDto);
         model.addAttribute("roles", Role.values());
-        return "administrator/registration";
+        return "administrator/create";
     }
 
     @PostMapping
-    public String create(@ModelAttribute @Validated AdministratorCreateDto administratorCreateDto,
+    public String create(@ModelAttribute @Validated AdministratorCreateUpdateDto dto,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("administrator", administratorCreateDto);
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/administrators/registration";
+        if (!bindingResult.hasErrors()){
+            try {
+                administratorService.create(dto);
+                return "redirect:/administrators";
+            } catch (DataIntegrityViolationException e) {
+                bindingResult.reject("database error", "error.database.administrator.uniqueConstraintViolation");
+            }
         }
-        administratorService.create(administratorCreateDto);
-        return "redirect:/administrators";
+        redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+        redirectAttributes.addFlashAttribute("administrator", dto);
+        return "redirect:/administrators/create";
     }
 
     @PostMapping("/{id}")
     public String update(@PathVariable("id") Integer id,
-                         @ModelAttribute @Validated AdministratorUpdateDto updateAdministrator,
+                         @ModelAttribute @Validated AdministratorCreateUpdateDto updateAdministrator,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 

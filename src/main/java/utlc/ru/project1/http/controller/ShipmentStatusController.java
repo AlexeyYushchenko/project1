@@ -1,6 +1,8 @@
 package utlc.ru.project1.http.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,9 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import utlc.ru.project1.database.entity.Role;
 import utlc.ru.project1.dto.shipmentstatus.ShipmentStatusCreateUpdateDto;
 import utlc.ru.project1.service.ShipmentStatusService;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/shipmentStatuses")
@@ -38,18 +42,29 @@ public class ShipmentStatusController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/create")
+    public String create(Model model, @ModelAttribute("shipment") ShipmentStatusCreateUpdateDto createDto) {
+        model.addAttribute("shipment", createDto);
+        model.addAttribute("roles", Role.values());
+        return "shipmentStatus/create";
+    }
+
     @PostMapping
-    public String create(@ModelAttribute @Validated ShipmentStatusCreateUpdateDto createUpdateDto,
+    public String create(@ModelAttribute @Validated ShipmentStatusCreateUpdateDto dto,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("shipmentStatus", createUpdateDto);
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/shipmentStatuses";
+        if (!bindingResult.hasErrors()){
+            try {
+                shipmentStatusService.create(dto);
+                return "redirect:/shipmentStatuses";
+            } catch (DataIntegrityViolationException e) {
+                bindingResult.reject("database error", "error.database.shipmentStatus.uniqueConstraintViolation");
+            }
         }
-        shipmentStatusService.create(createUpdateDto);
-        return "redirect:/shipmentStatuses";
+        redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+        redirectAttributes.addFlashAttribute("shipmentStatus", dto);
+        return "redirect:/shipmentStatuses/create";
     }
 
     @PostMapping("/{id}")
