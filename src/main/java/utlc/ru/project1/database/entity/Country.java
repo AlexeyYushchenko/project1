@@ -30,7 +30,7 @@ public class Country extends AuditingEntity<Integer> {
 
     @Builder.Default
     @ElementCollection
-    @CollectionTable(name = "country_status_localization", joinColumns = @JoinColumn(name = "country_status_id"))
+    @CollectionTable(name = "country_localization", joinColumns = @JoinColumn(name = "country_id"))
     @MapKeyColumn(name = "language_code")
     @Column(name = "localized_name")
     private Map<String, String> locales = new HashMap<>();

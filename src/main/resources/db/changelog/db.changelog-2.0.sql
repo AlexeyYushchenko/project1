@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS administrator
 CREATE TABLE IF NOT EXISTS country
 (
     id          SERIAL PRIMARY KEY,
-    code        VARCHAR(3) UNIQUE   NOT NULL,
+    code        VARCHAR(2) UNIQUE   NOT NULL,
     name        VARCHAR(255) UNIQUE NOT NULL,
     is_active   BOOLEAN   DEFAULT true,
     created_at  TIMESTAMP DEFAULT NOW(),

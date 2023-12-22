@@ -22,11 +22,7 @@
         <th th:text="#{entity.administrator.field.email}">Email</th>
         <th th:text="#{entity.administrator.field.firstname}">Firstname</th>
         <th th:text="#{entity.administrator.field.lastname}">Lastname</th>
-        <th th:text="#{common.field.created_by}">Created By</th>
-        <th th:text="#{common.field.created_at}">Created At</th>
-        <th th:text="#{common.field.modified_by}">Modified By</th>
-        <th th:text="#{common.field.modified_at}">Modified At</th>
-        <th th:text="#{ui.button.remove.label}">Delete</th>
+        <dif th:insert="~{fragments::common_fields}"></dif>
     </tr>
     </thead>
     <tbody>

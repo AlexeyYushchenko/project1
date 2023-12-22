@@ -2,8 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Industry Type</title>
-    <!--  <link rel="stylesheet" type="text/css" href="/templates/style.css">-->
+    <title th:text="#{entity.industryType.edit.page.title}">Industry Type</title>
     <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
 </head>
 <body>
@@ -12,18 +11,20 @@
 
 <form th:action="@{/industryTypes/{industryTypeId}(industryTypeId=${industryType.id()})}" method="post" th:object="${industryType}">
     <fieldset>
-        <legend>Industry Type Details</legend>
+        <legend th:text="#{entity.industryType.edit.page.details.label}">Industry Type Details</legend>
 
         <div class="form-group">
-            <label for="name" class="form-label">Name:</label>
+            <label for="name" class="form-label" th:text="#{entity.industryType.field.name}">Name:</label>
             <input id="name" type="text" name="name" th:value="*{name}" aria-label="Industry Type Name" class="form-input">
         </div>
+
         <div class="form-group">
-            <label for="description" class="form-label">Description:</label>
-            <input id="description" type="text" name="description" th:value="*{description}" aria-label="Industry Type description" class="form-input">
+            <label for="description" class="form-label" th:text="#{entity.industryType.field.description}">Description:</label>
+            <input id="description" type="text" name="description" th:value="*{description}" aria-label="Industry Type Description" class="form-input">
         </div>
 
         <button type="submit" th:text="#{ui.button.update.label}">Update</button>
+
     </fieldset>
 </form>
 <br>

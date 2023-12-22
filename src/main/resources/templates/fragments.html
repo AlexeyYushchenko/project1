@@ -87,14 +87,24 @@
 
 <!-- ${error.defaultMessage}-->
 <div th:fragment="locale">
-    <label th:text="#{ui.language.select}">Role</label>
+    <label th:text="#{ui.language.select}">Select language</label>
     <form action="">
         <select name="lang" onchange="this.form.submit()">
             <option></option>
-            <option value="en">EN</option>
-            <option value="ru">RU</option>
+            <option value="en">English</option>
+            <option value="ru">Русский</option>
+            <option value="it">Italiano</option>
+            <option value="es">Española</option>
         </select>
     </form>
+</div>
+
+<div th:fragment="common_fields">
+<th th:text="#{common.field.created_by}">Created By</th>
+<th th:text="#{common.field.created_at}">Created At</th>
+<th th:text="#{common.field.modified_by}">Modified By</th>
+<th th:text="#{common.field.modified_at}">Modified At</th>
+<th th:text="#{ui.button.remove.label}">Delete</th>
 </div>
 
 <div th:fragment="logOutButton">

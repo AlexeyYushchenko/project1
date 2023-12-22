@@ -18,21 +18,17 @@
     <thead>
     <tr>
         <th>ID</th>
-        <th>Code</th>
-        <th>Name</th>
-        <th>isActive</th>
-        <th th:text="#{common.field.created_by}">Created By</th>
-        <th th:text="#{common.field.created_at}">Created At</th>
-        <th th:text="#{common.field.modified_by}">Modified By</th>
-        <th th:text="#{common.field.modified_at}">Modified At</th>
-        <th th:text="#{ui.button.remove.label}">Delete</th>
+        <th th:text="#{entity.country.field.name}">Name</th>
+        <th th:text="#{entity.country.field.code}">Code</th>
+        <th th:text="#{entity.country.field.isActive}">isActive</th>
+        <dif th:insert="~{fragments::common_fields}"></dif>
     </tr>
     </thead>
     <tbody>
     <tr th:each="country : ${countries}">
         <td th:text="${country.id}">ID</td>
+        <td><a th:href="@{'/countries/' + ${country.id}}" th:text="${country.locales[__${#locale.language}__]} ?: ${country.name}">Country name</a></td>
         <td th:text="${country.code}">Code</td>
-        <td><a th:href="@{'/countries/' + ${country.id}}" th:text="${country.name}">Name</a></td>
         <td th:text="${country.isActive}">isActive</td>
         <td th:text="${country.createdBy}">Created By</td>
         <td th:text="${country.createdAt}">Created At</td>

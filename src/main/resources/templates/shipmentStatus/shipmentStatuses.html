@@ -19,12 +19,8 @@
     <thead>
     <tr>
         <th>ID</th>
-        <th>Name</th>
-        <th th:text="#{common.field.created_by}">Created By</th>
-        <th th:text="#{common.field.created_at}">Created At</th>
-        <th th:text="#{common.field.modified_by}">Modified By</th>
-        <th th:text="#{common.field.modified_at}">Modified At</th>
-        <th th:text="#{ui.button.remove.label}">Delete</th>
+        <th th:text="#{entity.shipmentStatus.field.name}">Name</th>
+        <dif th:insert="~{fragments::common_fields}"></dif>
     </tr>
     </thead>
     <tbody>
@@ -35,6 +31,13 @@
         <td th:text="${shipmentStatus.createdAt}">Created At</td>
         <td th:text="${shipmentStatus.modifiedBy}">Modified By</td>
         <td th:text="${shipmentStatus.modifiedAt}">Modified At</td>
+        <td>
+            <form th:action="@{/shipmentStatuses/{shipmentStatusId}/delete(shipmentStatusId=${shipmentStatus.id})}"
+                  method="post">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>

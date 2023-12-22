@@ -2,8 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Country</title>
-    <!--  <link rel="stylesheet" type="text/css" href="/templates/style.css">-->
+    <title th:text="#{entity.country.edit.page.title}">Country</title>
     <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
 </head>
 <body>
@@ -12,22 +11,72 @@
 
 <form th:action="@{/countries/{countryId}(countryId=${country.id()})}" method="post" th:object="${country}">
     <fieldset>
-        <legend>Country Details</legend>
+        <legend th:text="#{entity.country.edit.page.details.label}">Country Details</legend>
+
+<!--        <div class="form-group">-->
+<!--            <label for="name" class="form-label"-->
+<!--                   th:text="#{entity.country.field.name}">Name:</label>-->
+<!--            <input id="name" type="text" name="name" th:value="*{name}" aria-label="Country Name" class="form-input">-->
+<!--        </div>-->
+<!--th:if="${administrator.role().name() == 'ADMIN'}"-->
+
+<!--        <div th:each="locale : ${country.locales.entrySet()}">-->
+<!--            <div class="form-group">-->
+<!--&lt;!&ndash;                th:if="${#locale.language == locale.key}"&ndash;&gt;-->
+<!--                <label th:for="${'localization-' + locale.key}"-->
+<!--                       class="form-label"-->
+<!--                       th:text="#{entity.country.field.name}">Name:</label>-->
+<!--                <input th:id="locales"-->
+<!--                       type="text"-->
+<!--                       th:name=locale.key-->
+<!--                       th:value="${locale.value} ?: 'en'"-->
+<!--                       class="form-input">-->
+<!--            </div>-->
+<!--        </div>-->
+
 
         <div class="form-group">
-            <label for="code" class="form-label">Code:</label>
-            <input id="code" type="text" name="code" th:value="*{code}" aria-label="Country code" class="form-input">
+            <label for="name" class="form-label" th:text="#{entity.country.field.name} + ' (en)'">Name:</label>
+            <input id="name" type="text" name="name" th:value="*{name}" aria-label="Country Name" class="form-input">
         </div>
-        <div class="form-group">
-            <label for="name" class="form-label">Name:</label>
-            <input id="name" type="text" name="name" th:value="*{name}" aria-label="Country name" class="form-input">
+
+        <div th:each="localeEntry : ${country.locales}">
+            <div class="form-group" th:if="${#locale.language == localeEntry.key}">
+                <label th:for="${'localization-' + localeEntry.key}" class="form-label"
+                       th:text="#{entity.country.field.name} + ${' (' + localeEntry.key + ')'}">Localized Name:</label>
+                <input th:id="${'localization-' + localeEntry.key}"
+                       type="text"
+                       th:field="*{locales[__${localeEntry.key}__]}"
+                       th:name=localeEntry.key
+                       th:value="${localeEntry.value}"
+                       class="form-input">
+            </div>
         </div>
+        <!--                       th:text="${'Localized Name (' + localeEntry.key + ')'}">Localized Name:</label>-->
+
+<!--        <div th:each="localeEntry : ${country.locales.entrySet()}">-->
+<!--            <div class="form-group">-->
+<!--                <label th:for="${'localization-' + localeEntry.key}" class="form-label"-->
+<!--                       th:text="${'Localized Name (' + localeEntry.key + ')'}">Localized Name:</label>-->
+<!--                <input type="text"-->
+<!--                       th:field="*{locales[__${localeEntry.key}__]}" />-->
+<!--            </div>-->
+<!--        </div>-->
+
+        <!--                       th:each="localeEntry : ${country.locales}"-->
+
         <div class="form-group">
-            <label for="isActive" class="form-label">isActive:</label>
-            <input id="isActive" type="text" name="isActive" th:value="*{isActive}" aria-label="Country is active" class="form-input">
+            <label for="code" class="form-label" th:text="#{entity.country.field.code}">Code:</label>
+            <input id="code" type="text" name="code" th:value="*{code}" aria-label="Country Code" class="form-input">
+        </div>
+
+        <div class="form-group">
+            <label for="isActive" class="form-label" th:text="#{entity.country.field.isActive}">isActive:</label>
+            <input id="isActive" type="checkbox" name="isActive" th:checked="*{isActive}" aria-label="Country isActive status">
         </div>
 
         <button type="submit" th:text="#{ui.button.update.label}">Update</button>
+
     </fieldset>
 </form>
 <br>

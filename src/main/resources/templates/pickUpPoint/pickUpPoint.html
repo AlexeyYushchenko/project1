@@ -1,13 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title><!DOCTYPE html>
-      <html lang="en" xmlns:th="http://www.thymeleaf.org">
-      <head>
-      <meta charset="UTF-8">
-      <title>PickUpPoint</title>
-  <!--  <link rel="stylesheet" type="text/css" href="/templates/style.css">-->
+  <meta charset="UTF-8">
+  <title th:text="#{entity.pickUpPoint.edit.page.title}">Pick-Up Point</title>
   <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
 </head>
 <body>
@@ -16,11 +11,13 @@
 
 <form th:action="@{/pickUpPoints/{pickUpPointId}(pickUpPointId=${pickUpPoint.id()})}" method="post" th:object="${pickUpPoint}">
   <fieldset>
-    <legend>PickUpPoint Details</legend>
+    <legend th:text="#{entity.pickUpPoint.edit.page.details.label}">Pick-Up Point Details</legend>
+
     <div class="form-group">
-      <label for="name" class="form-label">Name:</label>
+      <label for="name" class="form-label" th:text="#{entity.pickUpPoint.field.name}">Name:</label>
       <input id="name" type="text" name="name" th:value="*{name}" aria-label="Name" class="form-input">
     </div>
+
     <div class="form-group">
       <label for="country">Country:
         <select id="country" name="countryId">
@@ -32,12 +29,14 @@
         </select>
       </label>
     </div>
+
     <div class="form-group">
-      <label for="address" class="form-label">Address:</label>
+      <label for="address" class="form-label" th:text="#{entity.pickUpPoint.field.address}">Address:</label>
       <input id="address" type="text" name="address" th:value="*{address}" aria-label="Address" class="form-input">
     </div>
 
     <button type="submit" th:text="#{ui.button.update.label}">Update</button>
+
   </fieldset>
 </form>
 <br>

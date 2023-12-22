@@ -19,22 +19,18 @@
   <thead>
   <tr>
     <th>ID</th>
-    <th>Name</th>
-    <th>Country</th>
-    <th>Address</th>
-    <th>Commentary</th>
-    <th th:text="#{common.field.created_by}">Created By</th>
-    <th th:text="#{common.field.created_at}">Created At</th>
-    <th th:text="#{common.field.modified_by}">Modified By</th>
-    <th th:text="#{common.field.modified_at}">Modified At</th>
-    <th th:text="#{ui.button.remove.label}">Delete</th>
+    <th th:text="#{entity.manufacturer.field.name}">Name</th>
+    <th th:text="#{entity.manufacturer.field.country}">Country</th>
+    <th th:text="#{entity.manufacturer.field.address}">Address</th>
+    <th th:text="#{entity.manufacturer.field.commentary}">Commentary</th>
+    <dif th:insert="~{fragments::common_fields}"></dif>
   </tr>
   </thead>
   <tbody>
   <tr th:each="manufacturer : ${manufacturers}">
     <td th:text="${manufacturer.id}">ID</td>
     <td><a th:href="@{'/manufacturers/' + ${manufacturer.id}}" th:text="${manufacturer.name}">Name</a></td>
-    <td th:text="${manufacturer.country.name}">Country name</td>
+    <td th:text="${manufacturer.country.locales[__${#locale.language}__]} ?: ${manufacturer.country.name}">Country name</td>
     <td th:text="${manufacturer.address}">Address</td>
     <td th:text="${manufacturer.commentary}">Commentary</td>
     <td th:text="${manufacturer.createdBy}">Created By</td>

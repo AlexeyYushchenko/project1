@@ -19,34 +19,27 @@
 
         <div class="form-group">
             <label for="username" class="form-label" th:text="#{entity.administrator.field.username}">Username:</label>
-            <input id="username" type="text" name="username" th:value="*{username}"
-                   aria-label="Username"
-                   class="form-input">
+            <input id="username" type="text" name="username" th:value="*{username}" aria-label="Username" class="form-input">
         </div>
 
         <div class="form-group">
             <label for="password" class="form-label" th:text="#{entity.administrator.field.password}">Password:</label>
-            <input id="password" type="password" name="password"
-                   aria-label="Password"
-                   class="form-input">
+            <input id="password" type="password" name="password" aria-label="Password" class="form-input">
         </div>
 
         <div class="form-group">
             <label for="email" class="form-label" th:text="#{entity.administrator.field.email}">Email:</label>
-            <input id="email" type="text" name="email" th:value="*{email}" aria-label="Email"
-                   class="form-input">
+            <input id="email" type="text" name="email" th:value="*{email}" aria-label="Email" class="form-input">
         </div>
 
         <div class="form-group">
             <label for="firstname" class="form-label" th:text="#{entity.administrator.field.firstname}">First name:</label>
-            <input id="firstname" type="text" name="firstname" th:value="*{firstname}"
-                   aria-label="firstname" class="form-input">
+            <input id="firstname" type="text" name="firstname" th:value="*{firstname}" aria-label="firstname" class="form-input">
         </div>
 
         <div class="form-group">
             <label for="lastname" class="form-label" th:text="#{entity.administrator.field.lastname}">Last name:</label>
-            <input id="lastname" type="text" name="lastname" th:value="*{lastname}"
-                   aria-label="lastname" class="form-input">
+            <input id="lastname" type="text" name="lastname" th:value="*{lastname}" aria-label="lastname" class="form-input">
         </div>
 
         <div class="form-group">
@@ -66,7 +59,7 @@
     </fieldset>
 </form>
 <br>
-<form th:action="@{/administrators/{administratorId}/delete(administratorId=${administrator.id()})}" method="post">
+<form th:action="@{/administrators/{administratorId}/delete(administratorId=${administrator.id()})}" method="post" th:if="${administrator.role().name() == 'ADMIN'}">
     <button type="submit"
             id="removeButton"
             class="btn btn-danger"

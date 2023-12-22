@@ -19,14 +19,10 @@
   <thead>
   <tr>
     <th>ID</th>
-    <th>Name</th>
-    <th>Country</th>
-    <th>Address</th>
-    <th th:text="#{common.field.created_by}">Created By</th>
-    <th th:text="#{common.field.created_at}">Created At</th>
-    <th th:text="#{common.field.modified_by}">Modified By</th>
-    <th th:text="#{common.field.modified_at}">Modified At</th>
-    <th th:text="#{ui.button.remove.label}">Delete</th>
+    <th th:text="#{entity.warehouse.field.name}">Name</th>
+    <th th:text="#{entity.warehouse.field.country}">Country</th>
+    <th th:text="#{entity.warehouse.field.address}">Address</th>
+    <dif th:insert="~{fragments::common_fields}"></dif>
   </tr>
   </thead>
   <tbody>
