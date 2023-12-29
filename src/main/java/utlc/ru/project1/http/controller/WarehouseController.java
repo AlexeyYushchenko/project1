@@ -76,15 +76,18 @@ public class WarehouseController {
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("warehouse", createUpdateDto);
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/warehouses/" + id;
+        if (!bindingResult.hasErrors()) {
+            try {
+                return warehouseService.update(id, createUpdateDto)
+                        .map(it -> "redirect:/warehouses/{id}")
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            } catch (DataIntegrityViolationException e) {
+                bindingResult.reject("database error", "error.database.warehouse.uniqueConstraintViolation");
+            }
         }
-
-        return warehouseService.update(id, createUpdateDto)
-                .map(it -> "redirect:/warehouses/{id}")
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        redirectAttributes.addFlashAttribute("warehouse", createUpdateDto);
+        redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+        return "redirect:/warehouses/" + id;
     }
 
     @PostMapping("/{id}/delete")

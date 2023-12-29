@@ -27,5 +27,5 @@ public class ShipmentStatus extends AuditingEntity<Integer> {
     @CollectionTable(name = "shipment_status_localization", joinColumns = @JoinColumn(name = "shipment_status_id"))
     @MapKeyColumn(name = "language_code")
     @Column(name = "localized_name")
-    private Map<String, String> locales = new HashMap<>();
+    private Map<String, String> nameLocales = new HashMap<>();
 }

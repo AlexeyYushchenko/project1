@@ -22,7 +22,7 @@ CREATE TABLE shipment_status
     modified_by VARCHAR(64)
 );
 
---changeset ayushchenko:4
+--changeset ayushchenko:3
 CREATE TABLE IF NOT EXISTS invoice_status
 (
     id          SERIAL PRIMARY KEY,
@@ -32,3 +32,40 @@ CREATE TABLE IF NOT EXISTS invoice_status
     created_by  VARCHAR(64),
     modified_by VARCHAR(64)
 );
+
+--changeset ayushchenko:4
+CREATE TABLE IF NOT EXISTS business_type
+(
+    id          SERIAL PRIMARY KEY,
+    name        VARCHAR(50) NOT NULL UNIQUE,
+    description TEXT,
+    created_at  TIMESTAMP DEFAULT NOW(),
+    modified_at TIMESTAMP DEFAULT NOW(),
+    created_by  VARCHAR(64),
+    modified_by VARCHAR(64)
+);
+
+--changeset ayushchenko:5
+CREATE TABLE IF NOT EXISTS industry_type
+(
+    id          SERIAL PRIMARY KEY,
+    name        VARCHAR(50) NOT NULL UNIQUE,
+    description TEXT,
+    created_at  TIMESTAMP DEFAULT NOW(),
+    modified_at TIMESTAMP DEFAULT NOW(),
+    created_by  VARCHAR(64),
+    modified_by VARCHAR(64)
+);
+
+--changeset ayushchenko:6
+CREATE TABLE IF NOT EXISTS priority
+(
+    id          SERIAL PRIMARY KEY,
+    name        VARCHAR(50) NOT NULL UNIQUE,
+    description TEXT,
+    created_at  TIMESTAMP DEFAULT NOW(),
+    modified_at TIMESTAMP DEFAULT NOW(),
+    created_by  VARCHAR(64),
+    modified_by VARCHAR(64)
+);
+

@@ -34,5 +34,5 @@ public class PickUpPoint extends AuditingEntity<Integer> {
     @CollectionTable(name = "pick_up_point_localization", joinColumns = @JoinColumn(name = "pick_up_point_id"))
     @MapKeyColumn(name = "language_code")
     @Column(name = "localized_name")
-    private Map<String, String> locales = new HashMap<>();
+    private Map<String, String> nameLocales = new HashMap<>();
 }

@@ -44,7 +44,7 @@ public class ShipmentStatusController {
 
     @GetMapping("/create")
     public String create(Model model, @ModelAttribute("shipment") ShipmentStatusCreateUpdateDto createDto) {
-        model.addAttribute("shipment", createDto);
+        model.addAttribute("shipmentStatus", createDto);
         model.addAttribute("roles", Role.values());
         return "shipmentStatus/create";
     }
@@ -73,15 +73,18 @@ public class ShipmentStatusController {
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("shipmentStatus", createUpdateDto);
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/shipmentStatuses/" + id;
+        if (!bindingResult.hasErrors()) {
+            try {
+                return shipmentStatusService.update(id, createUpdateDto)
+                        .map(it -> "redirect:/shipmentStatuses/{id}")
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            } catch (DataIntegrityViolationException e) {
+                bindingResult.reject("database error", "error.database.shipmentStatus.uniqueConstraintViolation");
+            }
         }
-
-        return shipmentStatusService.update(id, createUpdateDto)
-                .map(it -> "redirect:/shipmentStatuses/{id}")
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        redirectAttributes.addFlashAttribute("shipmentStatus", createUpdateDto);
+        redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+        return "redirect:/shipmentStatuses/" + id;
     }
 
     @PostMapping("/{id}/delete")

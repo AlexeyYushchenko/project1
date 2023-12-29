@@ -5,9 +5,10 @@
   <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
   <!--  <link rel="stylesheet" th:href="@{/css/style.css}"/>-->
   <title th:text="#{entity.pickUpPoint.list.page.title}">Pick-Up Points</title>
-  <script>initializeDataTable('pickUpPointsTable');</script>
+  <script th:inline="javascript">initializeDataTable('pickUpPointsTable', [[${#locale.language}]]);</script>
 </head>
 <body>
+<div th:insert="~{fragments::locale}"></div>
 
 <h1 th:text="#{entity.pickUpPoint.list.page.label}">Pick-Up Points</h1>
 

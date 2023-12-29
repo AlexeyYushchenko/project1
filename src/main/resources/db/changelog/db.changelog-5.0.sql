@@ -141,6 +141,8 @@ VALUES (1, 'en', 'AUSTRALIA'),
        (2, 'en', 'AUSTRIA'),
        (2, 'ru', 'АВСТРИЯ'),
        (3, 'en', 'BELGIUM'),
+       (3, 'es', 'BELGICA'),
+       (3, 'it', 'BELGIO'),
        (3, 'ru', 'БЕЛЬГИЯ'),
        (4, 'en', 'BELARUS'),
        (4, 'ru', 'БЕЛАРУСЬ'),
@@ -223,7 +225,7 @@ VALUES (1, 'en', 'AUSTRALIA'),
        (43, 'en', 'SLOVAKIA'),
        (43, 'ru', 'СЛОВАКИЯ'),
        (44, 'en', 'SLOVENIA'),
-       (44, 'ru', 'CЛОВЕНИЯ'),
+       (44, 'ru', 'СЛОВЕНИЯ'),
        (45, 'en', 'SPAIN'),
        (45, 'ru', 'ИСПАНИЯ'),
        (46, 'en', 'SWEDEN'),
@@ -276,41 +278,80 @@ VALUES ('P & B Terminal', 30, 'YAE'),
 
 --changeset ayushchenko:10
 INSERT INTO pick_up_point (name, country_id, address)
-VALUES ('Ю-ТЛК Москва', 42, 'Россия, г. Королёв, Ярославский проезд, 3а'),
-       ('Ю-ТЛК Санкт-Петербург', 42, 'Россия, Санкт-Петербург, ул. Московская, 13');
+VALUES ('UTL MOSCOW', 42, 'Russia, Korolyov, Yaroslavsky proezd, 3а'),
+       ('UTL SAINT-PETERSBURG', 42, 'Russia, Saint-Petersburg, Moscovskaya ul., 13');
 
 --changeset ayushchenko:11
-INSERT INTO business_type (name, description, created_by)
-VALUES ('Микропредприятие', 'до 15 человек или оборот до 120 млн рублей', 'YAE'),
-       ('Малый бизнес', '16-100 человек или оборот до 800 млн рублей', 'YAE'),
-       ('Средний бизнес', '101-250 человек или оборот до 2 млрд рублей', 'YAE'),
-       ('Крупный бизнес', '251< человек или оборот от 2 млрд рублей', 'YAE'),
-       ('Физлицо', 'Частное лицо, совершающее покупки для личных, некоммерческих целей', 'YAE');
+INSERT INTO pick_up_point_localization(pick_up_point_id, language_code, localized_name, localized_address)
+VALUES (1, 'ru', 'Ю-ТЛК Москва', 'Россия, г. Королёв, Ярославский проезд, 3а'),
+       (2, 'ru', 'Ю-ТЛК Санкт-Петербург', 'Россия, Санкт-Петербург, ул. Московская, 13');
 
 --changeset ayushchenko:12
-INSERT INTO industry_type (name, created_by)
-VALUES ('Производство', 'YAE'),
-       ('Розничная торговля', 'YAE'),
-       ('Фармацевтика', 'YAE'),
-       ('Автомобильная промышленность', 'YAE'),
-       ('Технологии и электроника', 'YAE'),
-       ('Строительство', 'YAE'),
-       ('Пищевая Промышленность', 'YAE'),
-       ('eCommerce', 'YAE'),
-       ('Агропромышленный Сектор', 'YAE');
+INSERT INTO business_type (name, description, created_by)
+VALUES ('Microenterprise', 'Up to 15 employees or turnover up to 120 million rubles', 'YAE'),
+       ('Small Business', '16-100 employees or turnover up to 800 million rubles', 'YAE'),
+       ('Medium Business', '101-250 employees or turnover up to 2 billion rubles', 'YAE'),
+       ('Large Business', 'More than 251 employees or turnover from 2 billion rubles', 'YAE'),
+       ('Individual', 'Private individual making purchases for personal, non-commercial purposes', 'YAE');
 
 --changeset ayushchenko:13
-INSERT INTO priority (name, created_by)
-VALUES ('Стандартный', 'YAE'),
-       ('Высокий', 'YAE');
+INSERT INTO business_type_localization(business_type_id, language_code, localized_name, localized_description)
+VALUES (1, 'ru','Микропредприятие', 'до 15 человек или оборот до 120 млн рублей'),
+       (2, 'ru','Малый бизнес', '16-100 человек или оборот до 800 млн рублей'),
+       (3, 'ru','Средний бизнес', '101-250 человек или оборот до 2 млрд рублей'),
+       (4, 'ru','Крупный бизнес', '251< человек или оборот от 2 млрд рублей'),
+       (5, 'ru','Физлицо', 'Частное лицо, совершающее покупки для личных, некоммерческих целей');
 
 --changeset ayushchenko:14
+INSERT INTO industry_type (name, description, created_by)
+VALUES ('Manufacturing', 'The industry involved in the production of goods', 'YAE'),
+       ('Retail', 'The sale of goods directly to end consumers', 'YAE'),
+       ('Pharmaceuticals', 'The industry engaged in the development, production, and marketing of drugs', 'YAE'),
+       ('Automotive Industry', 'The industry involved in the production of automobiles', 'YAE'),
+       ('Technology and Electronics', 'The industry related to the development and production of technological and electronic devices', 'YAE'),
+       ('Construction', 'The industry involved in the building of structures and buildings', 'YAE'),
+       ('Food Industry', 'The industry involved in the production of food products', 'YAE'),
+       ('eCommerce', 'Electronic commerce, associated with buying and selling goods or services over the internet', 'YAE'),
+       ('Agricultural Sector', 'The industry involved in agriculture and processing of agricultural products', 'YAE');
+
+--changeset ayushchenko:15
+INSERT INTO industry_type_localization(industry_type_id, language_code, localized_name, localized_description)
+VALUES
+    (1,'ru', 'Производство', 'Отрасль, связанная с производством товаров'),
+    (2,'ru', 'Розничная торговля', 'Продажа товаров напрямую конечным потребителям'),
+    (3,'ru', 'Фармацевтика', 'Отрасль, занимающаяся разработкой, производством и продажей лекарственных средств'),
+    (4,'ru', 'Автомобильная промышленность', 'Отрасль, занимающаяся производством автомобилей'),
+    (5,'ru', 'Технологии и электроника', 'Отрасль, связанная с разработкой и производством технологических и электронных устройств'),
+    (6,'ru', 'Строительство', 'Отрасль, занимающаяся возведением зданий и сооружений'),
+    (7,'ru', 'Пищевая Промышленность', 'Отрасль, занимающаяся производством пищевых продуктов'),
+    (8,'ru', 'eCommerce', 'Электронная коммерция, связанная с покупкой и продажей товаров или услуг через интернет'),
+    (9,'ru', 'Агропромышленный Сектор', 'Отрасль, занимающаяся сельским хозяйством и обработкой сельскохозяйственной продукции');
+
+--changeset ayushchenko:16
+INSERT INTO priority (name, description, created_by)
+VALUES ('Standard', 'Normal priority level with standard processing times', 'YAE'),
+       ('High', 'Elevated priority level with expedited processing times', 'YAE');
+
+--changeset ayushchenko:17
+INSERT INTO priority_localization(priority_id, language_code, localized_name, localized_description)
+VALUES
+    (1, 'ru', 'Стандартный', 'Обычный уровень приоритета со стандартными сроками обработки'),
+    (2, 'ru', 'Высокий', 'Повышенный уровень приоритета с ускоренными сроками обработки');
+
+--changeset ayushchenko:18
 INSERT INTO agent (name, phone, commentary)
 VALUES ('Test name 1', '+7 383 912 38 58', 'This is a test commentary'),
        ('Test name 2', '+39 5383 912 38 58', 'This is a test commentary');
 
---changeset ayushchenko:15
+--changeset ayushchenko:19
 INSERT INTO invoice_status (name)
 VALUES ('Paid'),
        ('Unpaid'),
        ('Overdue');
+
+--changeset ayushchenko:20
+INSERT INTO invoice_status_localization(invoice_status_id, language_code, localized_name)
+VALUES
+    (1, 'ru', 'Оплачен'),
+    (2, 'ru', 'Неоплачен'),
+    (3, 'ru', 'Просрочен');

@@ -14,17 +14,18 @@ public record CountryCreateUpdateDto(
         String name,
 
         @NotNull(message = "validation.country.code.required")
-        @Size(max = 50, message = "validation.country.code.size")
+        @Size(min = 2, max = 2, message = "validation.country.code.size")
         String code,
 
-        @NotNull(message = "validation.country.isActive.required")
         Boolean isActive,
 
-        Map<String, String> locales
+        Map<String, String> nameLocales
 ) {
-        public CountryCreateUpdateDto {
-                if (locales == null) {
-                        locales = new HashMap<>();
-                }
-        }
+    public CountryCreateUpdateDto {
+        if (nameLocales == null) { nameLocales = new HashMap<>();}
+
+        if (name != null) name = name.toUpperCase();
+
+        if (code != null) code = code.toUpperCase();
+    }
 }

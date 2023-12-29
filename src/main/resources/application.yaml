@@ -1,3 +1,7 @@
+app:
+  default-language: 'ru'
+  default-locale: 'RU'
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5433/utlc_db

@@ -73,15 +73,18 @@ public class ClientStatusController {
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("clientStatus", createUpdateDto);
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/clientStatuses/" + id;
+        if (!bindingResult.hasErrors()) {
+            try{
+                return clientStatusService.update(id, createUpdateDto)
+                        .map(it -> "redirect:/clientStatuses/{id}")
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            }catch (DataIntegrityViolationException e) {
+                bindingResult.reject("database error", "error.database.clientStatus.uniqueConstraintViolation");
+            }
         }
-
-        return clientStatusService.update(id, createUpdateDto)
-                .map(it -> "redirect:/clientStatuses/{id}")
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        redirectAttributes.addFlashAttribute("clientStatus", createUpdateDto);
+        redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+        return "redirect:/clientStatuses/" + id;
     }
 
     @PostMapping("/{id}/delete")

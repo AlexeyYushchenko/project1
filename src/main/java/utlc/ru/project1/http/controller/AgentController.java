@@ -54,7 +54,7 @@ public class AgentController {
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
-        if (!bindingResult.hasErrors()){
+        if (!bindingResult.hasErrors()) {
             try {
                 agentService.create(dto);
                 return "redirect:/agents";
@@ -73,15 +73,18 @@ public class AgentController {
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("agent", createUpdateDto);
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/agents/" + id;
+        if (!bindingResult.hasErrors()) {
+            try {
+                return agentService.update(id, createUpdateDto)
+                        .map(it -> "redirect:/agents/{id}")
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            } catch (DataIntegrityViolationException e) {
+                bindingResult.reject("database error", "error.database.agent.uniqueConstraintViolation");
+            }
         }
-
-        return agentService.update(id, createUpdateDto)
-                .map(it -> "redirect:/agents/{id}")
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        redirectAttributes.addFlashAttribute("agent", createUpdateDto);
+        redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+        return "redirect:/agents/" + id;
     }
 
     @PostMapping("/{id}/delete")

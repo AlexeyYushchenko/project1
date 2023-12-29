@@ -88,13 +88,14 @@
 <!-- ${error.defaultMessage}-->
 <div th:fragment="locale">
     <label th:text="#{ui.language.select}">Select language</label>
-    <form action="">
+    <form action="" method="get">
         <select name="lang" onchange="this.form.submit()">
-            <option></option>
-            <option value="en">English</option>
-            <option value="ru">Русский</option>
-            <option value="it">Italiano</option>
-            <option value="es">Española</option>
+            <option value=''   th:selected="${#locale.language == null}"></option>
+            <option value="ru" th:selected="${#locale.language == 'ru'}">Русский</option>
+            <option value="en" th:selected="${#locale.language == 'en'}">English</option>
+            <option value="it" th:selected="${#locale.language == 'it'}">Italiano</option>
+            <option value="es" th:selected="${#locale.language == 'es'}">Española</option>
+            <option value="de" th:selected="${#locale.language == 'de'}">Deutsch</option>
         </select>
     </form>
 </div>

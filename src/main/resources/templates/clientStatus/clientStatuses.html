@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
     <title th:text="#{entity.clientStatus.list.page.title}">Client Statuses</title>
-    <script>initializeDataTable('clientStatusesTable');</script>
+    <script th:inline="javascript">initializeDataTable('clientStatusesTable', [[${#locale.language}]]);</script>
 </head>
 <body>
+<div th:insert="~{fragments::locale}"></div>
 
 <h1 th:text="#{entity.clientStatus.list.page.label}">Client Statuses</h1>
 
@@ -25,7 +26,7 @@
     <tbody>
     <tr th:each="clientStatus : ${clientStatuses}">
         <td th:text="${clientStatus.id}">ID</td>
-        <td><a th:href="@{'/clientStatuses/' + ${clientStatus.id}}" th:text="${clientStatus.name}">Name</a></td>
+        <td><a th:href="@{'/clientStatuses/' + ${clientStatus.id}}" th:text="${clientStatus.nameLocales[__${#locale.language}__]} ?: ${clientStatus.name}">Name</a></td>
         <td th:text="${clientStatus.createdBy}">Created By</td>
         <td th:text="${clientStatus.createdAt}">Created At</td>
         <td th:text="${clientStatus.modifiedBy}">Modified By</td>

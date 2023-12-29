@@ -30,5 +30,12 @@ public class Priority extends AuditingEntity<Integer> {
     @CollectionTable(name = "priority_localization", joinColumns = @JoinColumn(name = "priority_id"))
     @MapKeyColumn(name = "language_code")
     @Column(name = "localized_name")
-    private Map<String, String> locales = new HashMap<>();
+    private Map<String, String> nameLocales = new HashMap<>();
+
+    @Builder.Default
+    @ElementCollection
+    @CollectionTable(name = "priority_localization", joinColumns = @JoinColumn(name = "priority_id"))
+    @MapKeyColumn(name = "language_code")
+    @Column(name = "localized_description")
+    private Map<String, String> descriptionLocales = new HashMap<>();
 }

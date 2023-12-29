@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
-    <title th:text="#{entity.invoiceStatus.label.registration}">Create a new invoiceStatus</title>
+    <title th:text="#{entity.clientStatus.label.registration}">Create a new clientStatus</title>
 </head>
 
 <body>
 <div th:insert="~{fragments::locale}"></div>
 
-<h1 th:text="#{entity.invoiceStatus.create.page.label}">Invoice Status registration</h1>
+<h1 th:text="#{entity.clientStatus.create.page.label}">Client Status registration</h1>
 
-<h3 th:text="#{entity.invoiceStatus.label.add}">Add a new Invoice Status</h3>
+<h3 th:text="#{entity.clientStatus.label.add}">Add a new Client Status</h3>
 
-<form th:action="@{/invoiceStatuses}" method="post" class="invoiceStatus-form" th:object="${invoiceStatus}">
+<form th:action="@{/clientStatuses}" method="post" class="clientStatus-form" th:object="${clientStatus}">
 
     <div class="form-group">
-        <label for="name" th:text="#{entity.invoiceStatus.field.name}">Name:</label>
+        <label for="name" th:text="#{entity.clientStatus.field.name}">Name:</label>
         <input id="name" type="text" name="name" class="form-input" th:value="*{name}">
     </div>
 
@@ -25,7 +25,7 @@
 </form>
 <br>
 <div>
-    <a th:href="@{/invoiceStatuses}" th:text="#{ui.button.goBack}">Go back</a>
+    <a th:href="@{/clientStatuses}" th:text="#{ui.button.goBack}">Go back</a>
 </div>
 
 <dif th:insert="~{fragments::errors}"></dif>

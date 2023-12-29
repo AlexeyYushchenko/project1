@@ -73,15 +73,18 @@ public class InvoiceStatusController {
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("invoiceStatus", createUpdateDto);
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/invoiceStatuses/" + id;
+        if (!bindingResult.hasErrors()) {
+            try {
+                return invoiceStatusService.update(id, createUpdateDto)
+                        .map(it -> "redirect:/invoiceStatuses/{id}")
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            } catch (DataIntegrityViolationException e) {
+                bindingResult.reject("database error", "error.database.invoiceStatus.uniqueConstraintViolation");
+            }
         }
-
-        return invoiceStatusService.update(id, createUpdateDto)
-                .map(it -> "redirect:/invoiceStatuses/{id}")
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        redirectAttributes.addFlashAttribute("invoiceStatus", createUpdateDto);
+        redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+        return "redirect:/invoiceStatuses/" + id;
     }
 
     @PostMapping("/{id}/delete")

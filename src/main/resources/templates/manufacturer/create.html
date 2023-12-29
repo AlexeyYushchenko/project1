@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+    <title th:text="#{entity.manufacturer.label.registration}">Create a new manufacturer</title>
+</head>
+<body>
+<div th:insert="~{fragments::locale}"></div>
+
+<h1 th:text="#{entity.manufacturer.create.page.label}">Manufacturer registration</h1>
+
+<h3 th:text="#{entity.manufacturer.label.add}">Add a new manufacturer</h3>
+
+<form th:action="@{/manufacturers}" method="post" class="manufacturer-form" th:object="${manufacturer}">
+
+    <div class="form-group">
+        <label for="name" class="form-label" th:text="#{entity.manufacturer.field.name}">Manufacturer's name:</label>
+        <input id="name" type="text" name="name" th:value="*{name}" aria-label="Manufacturer's name" class="form-input">
+    </div>
+
+    <div class="form-group">
+        <label for="country" th:text="#{entity.manufacturer.field.country}">Country:</label>
+        <select id="country" name="countryId">
+            <!--                <option th:each="country : ${countries}"-->
+            <!--                        th:value="${country.id}"-->
+            <!--                        th:selected="${country.id == manufacturer.countryId}"-->
+            <!--                        th:text="${country.nameLocales[__${#locale.language}__]} ?: ${country.name}"-->
+            <!--                        aria-label="Country Name">Country name</option>-->
+
+            <option value="" th:selected="${manufacturer.countryId == null}"></option>
+
+            <!-- Iterating through countries to create options -->
+            <option th:each="country : ${countries}"
+                    th:value="${country.id}"
+                    th:selected="${country.id == manufacturer.countryId}"
+                    th:text="${country.nameLocales[__${#locale.language}__]} ?: ${country.name}"
+                    aria-label="Country Name">Country name
+            </option>
+        </select>
+
+    </div>
+
+    <div class="form-group">
+        <label for="address" class="form-label" th:text="#{entity.manufacturer.field.address}">Address:</label>
+        <input id="address" type="text" name="address" th:value="*{address}" aria-label="Address" class="form-input">
+    </div>
+
+    <div class="form-group">
+        <label for="commentary" class="form-label" th:text="#{entity.manufacturer.field.commentary}">Commentary:</label>
+        <input id="commentary" type="text" name="commentary" th:value="*{commentary}" aria-label="Commentary"
+               class="form-input">
+    </div>
+
+    <button type="submit" th:text="#{ui.button.add.label}" class="submit-button">Add</button>
+</form>
+<br>
+<div>
+    <a th:href="@{/manufacturers}" th:text="#{ui.button.goBack}">Go back</a>
+</div>
+
+<dif th:insert="~{fragments::errors}"></dif>
+
+</body>
+</html>

@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -56,7 +55,7 @@ public class AdministratorController {
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
-        if (!bindingResult.hasErrors()){
+        if (!bindingResult.hasErrors()) {
             try {
                 administratorService.create(dto);
                 return "redirect:/administrators";
@@ -74,16 +73,18 @@ public class AdministratorController {
                          @ModelAttribute @Validated AdministratorCreateUpdateDto updateAdministrator,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
-
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("administrator", updateAdministrator);
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/administrators/" + id;
+        if (!bindingResult.hasErrors()) {
+            try {
+                return administratorService.update(id, updateAdministrator)
+                        .map(it -> "redirect:/administrators/{id}")
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            } catch (DataIntegrityViolationException e) {
+                bindingResult.reject("database error", "error.database.administrator.uniqueConstraintViolation");
+            }
         }
-
-        return administratorService.update(id, updateAdministrator)
-                .map(it -> "redirect:/administrators/{id}")
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        redirectAttributes.addFlashAttribute("administrator", updateAdministrator);
+        redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+        return "redirect:/administrators/" + id;
     }
 
     @PostMapping("/{id}/delete")

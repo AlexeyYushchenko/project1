@@ -54,7 +54,7 @@ public class CountryController {
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
-        if (!bindingResult.hasErrors()){
+        if (!bindingResult.hasErrors()) {
             try {
                 countryService.create(dto);
                 return "redirect:/countries";
@@ -73,15 +73,18 @@ public class CountryController {
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("country", createUpdateDto);
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/countries/" + id;
+        if (!bindingResult.hasErrors()) {
+            try {
+                return countryService.update(id, createUpdateDto)
+                        .map(it -> "redirect:/countries/{id}")
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            } catch (DataIntegrityViolationException e) {
+                bindingResult.reject("database error", "error.database.country.uniqueConstraintViolation");
+            }
         }
-
-        return countryService.update(id, createUpdateDto)
-                .map(it -> "redirect:/countries/{id}")
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        redirectAttributes.addFlashAttribute("country", createUpdateDto);
+        redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+        return "redirect:/countries/" + id;
     }
 
     @PostMapping("/{id}/delete")

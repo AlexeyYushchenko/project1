@@ -8,7 +8,7 @@ public record CountryReadDto(
         String name,
         String code,
         Boolean isActive,
-        Map<String, String> locales,
+        Map<String, String> nameLocales,
         LocalDateTime createdAt,
         LocalDateTime modifiedAt,
         String createdBy,

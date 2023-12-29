@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
     <title th:text="#{entity.invoiceStatus.list.page.title}">Invoice Statuses</title>
-    <script>initializeDataTable('invoiceStatusesTable');</script>
+    <script th:inline="javascript">initializeDataTable('invoiceStatusesTable', [[${#locale.language}]]);</script>
 </head>
 <body>
+<div th:insert="~{fragments::locale}"></div>
 
 <h1 th:text="#{entity.invoiceStatus.list.page.label}">Invoice Statuses</h1>
 
@@ -18,14 +19,14 @@
     <thead>
     <tr>
         <th>ID</th>
-        <th th:text="#{entity.invoiceStatus.field.name}">Name</th>
+        <th th:text="#{entity.businessType.field.name}">Name</th>
         <dif th:insert="~{fragments::common_fields}"></dif>
     </tr>
     </thead>
     <tbody>
     <tr th:each="invoiceStatus : ${invoiceStatuses}">
         <td th:text="${invoiceStatus.id}">ID</td>
-        <td><a th:href="@{'/invoiceStatuses/' + ${invoiceStatus.id}}" th:text="${invoiceStatus.name}">Name</a></td>
+        <td><a th:href="@{'/invoiceStatuses/' + ${invoiceStatus.id}}" th:text="${invoiceStatus.nameLocales[__${#locale.language}__]} ?: ${invoiceStatus.name}">Name</a></td>
         <td th:text="${invoiceStatus.createdBy}">Created By</td>
         <td th:text="${invoiceStatus.createdAt}">Created At</td>
         <td th:text="${invoiceStatus.modifiedBy}">Modified By</td>

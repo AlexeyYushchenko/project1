@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS manufacturer
 CREATE TABLE IF NOT EXISTS warehouse
 (
     id          SERIAL PRIMARY KEY,
-    name        VARCHAR(50)                 NOT NULL,
+    name        VARCHAR(50) UNIQUE          NOT NULL,
     country_id  INT REFERENCES country (id) NOT NULL,
     address     VARCHAR(255), --NOT NULL
     commentary  TEXT,
@@ -72,30 +72,6 @@ CREATE TABLE IF NOT EXISTS warehouse
 );
 
 --changeset ayushchenko:6
-CREATE TABLE IF NOT EXISTS business_type
-(
-    id          SERIAL PRIMARY KEY,
-    name        VARCHAR(50) NOT NULL UNIQUE,
-    description TEXT,
-    created_at  TIMESTAMP DEFAULT NOW(),
-    modified_at TIMESTAMP DEFAULT NOW(),
-    created_by  VARCHAR(64),
-    modified_by VARCHAR(64)
-);
-
---changeset ayushchenko:7
-CREATE TABLE IF NOT EXISTS industry_type
-(
-    id          SERIAL PRIMARY KEY,
-    name        VARCHAR(50) NOT NULL UNIQUE,
-    description TEXT,
-    created_at  TIMESTAMP DEFAULT NOW(),
-    modified_at TIMESTAMP DEFAULT NOW(),
-    created_by  VARCHAR(64),
-    modified_by VARCHAR(64)
-);
-
---changeset ayushchenko:8
 CREATE TABLE IF NOT EXISTS client
 (
     id            SERIAL PRIMARY KEY,
@@ -111,31 +87,7 @@ CREATE TABLE IF NOT EXISTS client
     modified_by   VARCHAR(64)
 );
 
---changeset ayushchenko:9
-CREATE TABLE IF NOT EXISTS priority
-(
-    id          SERIAL PRIMARY KEY,
-    name        VARCHAR(50) NOT NULL UNIQUE,
-    description TEXT,
-    created_at  TIMESTAMP DEFAULT NOW(),
-    modified_at TIMESTAMP DEFAULT NOW(),
-    created_by  VARCHAR(64),
-    modified_by VARCHAR(64)
-);
-
---changeset ayushchenko:10
-CREATE TABLE IF NOT EXISTS shipment_status
-(
-    id          SERIAL PRIMARY KEY,
-    name        VARCHAR(50) NOT NULL UNIQUE,
-    description TEXT,
-    created_at  TIMESTAMP DEFAULT NOW(),
-    modified_at TIMESTAMP DEFAULT NOW(),
-    created_by  VARCHAR(64),
-    modified_by VARCHAR(64)
-);
-
---changeset ayushchenko:11
+--changeset ayushchenko:7
 CREATE TABLE IF NOT EXISTS route
 (
     id                     BIGSERIAL PRIMARY KEY,
@@ -153,7 +105,7 @@ CREATE TABLE IF NOT EXISTS route
     modified_by            VARCHAR(64)
 );
 
---changeset ayushchenko:12
+--changeset ayushchenko:8
 CREATE TABLE IF NOT EXISTS road_transport
 (
     id                   BIGINT PRIMARY KEY REFERENCES route (id),
@@ -170,7 +122,7 @@ CREATE TABLE IF NOT EXISTS road_transport
     modified_by          VARCHAR(64)
 );
 
---changeset ayushchenko:13
+--changeset ayushchenko:9
 CREATE TABLE IF NOT EXISTS pick_up_point
 (
     id          SERIAL PRIMARY KEY,
@@ -183,7 +135,7 @@ CREATE TABLE IF NOT EXISTS pick_up_point
     modified_by VARCHAR(64)
 );
 
---changeset ayushchenko:14
+--changeset ayushchenko:10
 CREATE TABLE IF NOT EXISTS shipment
 (
     id                      BIGSERIAL PRIMARY KEY,
@@ -232,7 +184,7 @@ CREATE TABLE IF NOT EXISTS shipment
     modified_by             VARCHAR(64)
 );
 
---changeset ayushchenko:15
+--changeset ayushchenko:11
 CREATE TABLE IF NOT EXISTS shipment_status_history
 (
     id          BIGSERIAL PRIMARY KEY,
@@ -243,7 +195,7 @@ CREATE TABLE IF NOT EXISTS shipment_status_history
     comment     TEXT
 );
 
---changeset ayushchenko:16
+--changeset ayushchenko:12
 CREATE TABLE IF NOT EXISTS invoice
 (
     id           BIGSERIAL PRIMARY KEY,
@@ -264,7 +216,7 @@ CREATE TABLE IF NOT EXISTS invoice
     FOREIGN KEY (status_id) REFERENCES invoice_status (id)
 );
 
---changeset ayushchenko:17
+--changeset ayushchenko:13
 CREATE TABLE IF NOT EXISTS payment
 (
     id                BIGSERIAL PRIMARY KEY,
@@ -282,7 +234,7 @@ CREATE TABLE IF NOT EXISTS payment
     FOREIGN KEY (client_id) REFERENCES client (id)
 );
 
---changeset ayushchenko:18
+--changeset ayushchenko:14
 CREATE TABLE IF NOT EXISTS payment_invoice
 (
     id               BIGSERIAL PRIMARY KEY,

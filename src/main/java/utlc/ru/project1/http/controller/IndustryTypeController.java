@@ -54,7 +54,7 @@ public class IndustryTypeController {
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
-        if (!bindingResult.hasErrors()){
+        if (!bindingResult.hasErrors()) {
             try {
                 industryTypeService.create(dto);
                 return "redirect:/industryTypes";
@@ -73,15 +73,18 @@ public class IndustryTypeController {
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("industryType", createUpdateDto);
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/industryTypes/" + id;
+        if (!bindingResult.hasErrors()) {
+            try {
+                return industryTypeService.update(id, createUpdateDto)
+                        .map(it -> "redirect:/industryTypes/{id}")
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            } catch (DataIntegrityViolationException e) {
+                bindingResult.reject("database error", "error.database.industryType.uniqueConstraintViolation");
+            }
         }
-
-        return industryTypeService.update(id, createUpdateDto)
-                .map(it -> "redirect:/industryTypes/{id}")
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        redirectAttributes.addFlashAttribute("industryType", createUpdateDto);
+        redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+        return "redirect:/industryTypes/" + id;
     }
 
     @PostMapping("/{id}/delete")

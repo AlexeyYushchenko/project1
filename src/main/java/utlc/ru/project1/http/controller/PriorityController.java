@@ -73,15 +73,18 @@ public class PriorityController {
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("priority", createUpdateDto);
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/priorities/" + id;
+        if (!bindingResult.hasErrors()) {
+            try {
+                return priorityService.update(id, createUpdateDto)
+                        .map(it -> "redirect:/priorities/{id}")
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            } catch (DataIntegrityViolationException e) {
+                bindingResult.reject("database error", "error.database.priority.uniqueConstraintViolation");
+            }
         }
-
-        return priorityService.update(id, createUpdateDto)
-                .map(it -> "redirect:/priorities/{id}")
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        redirectAttributes.addFlashAttribute("priority", createUpdateDto);
+        redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+        return "redirect:/priorities/" + id;
     }
 
     @PostMapping("/{id}/delete")

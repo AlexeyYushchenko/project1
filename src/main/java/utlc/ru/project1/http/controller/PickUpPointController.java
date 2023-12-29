@@ -76,15 +76,18 @@ public class PickUpPointController {
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("pickUpPoint", createUpdateDto);
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/pickUpPoints/" + id;
+        if (!bindingResult.hasErrors()) {
+            try {
+                return pickUpPointService.update(id, createUpdateDto)
+                        .map(it -> "redirect:/pickUpPoints/{id}")
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            } catch (DataIntegrityViolationException e) {
+                bindingResult.reject("database error", "error.database.pickUpPoint.uniqueConstraintViolation");
+            }
         }
-
-        return pickUpPointService.update(id, createUpdateDto)
-                .map(it -> "redirect:/pickUpPoints/{id}")
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        redirectAttributes.addFlashAttribute("pickUpPoint", createUpdateDto);
+        redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+        return "redirect:/pickUpPoints/" + id;
     }
 
     @PostMapping("/{id}/delete")

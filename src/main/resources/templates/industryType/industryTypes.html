@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
     <title th:text="#{entity.industryType.list.page.title}">Industry Types</title>
-    <script>initializeDataTable('industryTypesTable');</script>
+    <script th:inline="javascript">initializeDataTable('industryTypesTable', [[${#locale.language}]]);</script>
 </head>
 <body>
+<div th:insert="~{fragments::locale}"></div>
 
 <h1 th:text="#{entity.industryType.list.page.label}">Industry Types</h1>
 
@@ -26,8 +27,8 @@
     <tbody>
     <tr th:each="industryType : ${industryTypes}">
         <td th:text="${industryType.id}">ID</td>
-        <td><a th:href="@{'/industryTypes/' + ${industryType.id}}" th:text="${industryType.name}">Name</a></td>
-        <td th:text="${industryType.description}">Description</td>
+        <td><a th:href="@{'/industryTypes/' + ${industryType.id}}" th:text="${industryType.nameLocales[__${#locale.language}__]} ?: ${industryType.name}">Name</a></td>
+        <td><a th:href="@{'/industryTypes/' + ${industryType.id}}" th:text="${industryType.descriptionLocales[__${#locale.language}__]} ?: ${industryType.description}">Description</a></td>
         <td th:text="${industryType.createdBy}">Created By</td>
         <td th:text="${industryType.createdAt}">Created At</td>
         <td th:text="${industryType.modifiedBy}">Modified By</td>

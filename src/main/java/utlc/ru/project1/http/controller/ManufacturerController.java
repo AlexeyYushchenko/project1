@@ -48,6 +48,7 @@ public class ManufacturerController {
     @GetMapping("/create")
     public String create(Model model, @ModelAttribute("manufacturer") ManufacturerCreateUpdateDto createDto) {
         model.addAttribute("manufacturer", createDto);
+        model.addAttribute("countries", countryService.findAll());
         model.addAttribute("roles", Role.values());
         return "manufacturer/create";
     }
@@ -76,15 +77,18 @@ public class ManufacturerController {
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("manufacturer", createUpdateDto);
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/manufacturers/" + id;
+        if (!bindingResult.hasErrors()) {
+            try {
+                return manufacturerService.update(id, createUpdateDto)
+                        .map(it -> "redirect:/manufacturers/{id}")
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            } catch (DataIntegrityViolationException e) {
+                bindingResult.reject("database error", "error.database.manufacturer.uniqueConstraintViolation");
+            }
         }
-
-        return manufacturerService.update(id, createUpdateDto)
-                .map(it -> "redirect:/manufacturers/{id}")
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        redirectAttributes.addFlashAttribute("manufacturer", createUpdateDto);
+        redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+        return "redirect:/manufacturers/" + id;
     }
 
     @PostMapping("/{id}/delete")

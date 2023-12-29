@@ -6,6 +6,7 @@
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
+<div th:insert="~{fragments::locale}"></div>
 
 <div class="main-container">
     <h1 th:text="#{ui.main.menu.label}">Main Menu</h1>
@@ -32,8 +33,6 @@
     </ul>
 </div>
 
-<div th:insert="~{fragments::locale}"></div>
-<br>
 <div th:insert="~{fragments::logOutButton}"></div>
 
 </body>

@@ -73,15 +73,18 @@ public class BusinessTypeController {
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("businessType", createUpdateDto);
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/businessTypes/" + id;
+        if (!bindingResult.hasErrors()) {
+            try {
+                return businessTypeService.update(id, createUpdateDto)
+                        .map(it -> "redirect:/businessTypes/{id}")
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            } catch (DataIntegrityViolationException e) {
+                bindingResult.reject("database error", "error.database.businessType.uniqueConstraintViolation");
+            }
         }
-
-        return businessTypeService.update(id, createUpdateDto)
-                .map(it -> "redirect:/businessTypes/{id}")
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+        redirectAttributes.addFlashAttribute("businessType", createUpdateDto);
+        return "redirect:/businessTypes/" + id;
     }
 
     @PostMapping("/{id}/delete")

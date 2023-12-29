@@ -26,7 +26,7 @@ public class InvoiceStatus extends AuditingEntity<Integer> {
     @CollectionTable(name = "invoice_status_localization", joinColumns = @JoinColumn(name = "invoice_status_id"))
     @MapKeyColumn(name = "language_code")
     @Column(name = "localized_name")
-    private Map<String, String> locales = new HashMap<>();
+    private Map<String, String> nameLocales = new HashMap<>();
 
     // Optionally, if you want to track the history of status changes for each invoice
     // @OneToMany(mappedBy = "status")

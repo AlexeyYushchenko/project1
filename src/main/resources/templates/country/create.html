@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+    <title th:text="#{entity.country.label.registration}">Create a new country</title>
+</head>
+<body>
+<div th:insert="~{fragments::locale}"></div>
+
+<h1 th:text="#{entity.country.create.page.label}">Country registration</h1>
+
+<h3 th:text="#{entity.country.label.add}">Add a new country</h3>
+
+<form th:action="@{/countries}" method="post" class="country-form" th:object="${country}">
+
+    <div class="form-group">
+        <label for="name" th:text="#{entity.country.field.name}">Name:</label>
+        <input id="name" type="text" name="name" class="form-input" th:value="*{name}">
+    </div>
+
+    <div class="form-group">
+        <label for="code" th:text="#{entity.country.field.code}">Code:</label>
+        <input id="code" type="text" name="code" class="form-input" th:value="*{code}">
+    </div>
+
+    <div class="form-group">
+        <label for="isActive" class="form-label" th:text="#{entity.country.field.isActive}">isActive:</label>
+        <input id="isActive" type="checkbox" name="isActive" th:checked="*{isActive}" aria-label="Country isActive status">
+    </div>
+
+    <button type="submit" th:text="#{ui.button.add.label}" class="submit-button">Add</button>
+
+</form>
+<br>
+<div>
+    <a th:href="@{/countries}" th:text="#{ui.button.goBack}">Go back</a>
+</div>
+
+<dif th:insert="~{fragments::errors}"></dif>
+
+</body>
+</html>
