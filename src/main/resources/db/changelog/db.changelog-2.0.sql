@@ -78,8 +78,8 @@ CREATE TABLE IF NOT EXISTS client
     name          VARCHAR(50)                       NOT NULL UNIQUE,
     full_name     VARCHAR(100),
     status_id     INT REFERENCES client_status (id) NOT NULL,
-    business_type INT REFERENCES business_type (id) NOT NULL,
-    industry_type INT REFERENCES industry_type (id) NOT NULL,
+    business_type_id INT REFERENCES business_type (id) NOT NULL,
+    industry_type_id INT REFERENCES industry_type (id) NOT NULL,
     address       VARCHAR(255),
     created_at    TIMESTAMP DEFAULT NOW(),
     modified_at   TIMESTAMP DEFAULT NOW(),
@@ -91,16 +91,17 @@ CREATE TABLE IF NOT EXISTS client
 CREATE TABLE IF NOT EXISTS route
 (
     id                     BIGSERIAL PRIMARY KEY,
-    transport_type         VARCHAR(20),                       -- e.g., 'road', 'sea', 'air', 'railway'
-    is_international       BOOLEAN     NOT NULL DEFAULT TRUE, -- flag for international/domestic
-    country_of_departure   INT REFERENCES country (id),       -- Foreign key reference to 'countryId'
-    country_of_destination INT REFERENCES country (id),       -- Foreign key reference to 'countryId'
-    customs_post           VARCHAR(50) NULL,                  -- NULL for domestic routes
-    departure_date         DATE,                              -- The scheduled departure date
-    arrival_date           DATE,                              -- The scheduled arrival date
-    status                 VARCHAR(20),                       -- e.g., 'Scheduled', 'In-Progress', 'Completed', 'Cancelled'
-    created_at             TIMESTAMP            DEFAULT NOW(),
-    modified_at            TIMESTAMP            DEFAULT NOW(),
+    identification_number  VARCHAR(100)                     NOT NULL UNIQUE,
+    status_id              INT REFERENCES route_status (id) NOT NULL,
+    transport_type         VARCHAR(20)                      NOT NULL,              -- e.g., 'road', 'sea', 'air', 'railway'
+    is_international       BOOLEAN                          DEFAULT TRUE, -- flag for international/domestic; CAN BE REMOVED as you can fetch only those rows with different origin/destination countries;
+    country_of_departure_id   INT REFERENCES country (id)      NOT NULL,              -- Foreign key reference to 'countryId'
+    country_of_destination_id INT REFERENCES country (id)      NOT NULL,              -- Foreign key reference to 'countryId'
+    customs_post           VARCHAR(50)                      NULL,                  -- NULL for domestic routes
+    departure_date         TIMESTAMP,                                                   -- The scheduled departure date
+    arrival_date           TIMESTAMP,                                                   -- The scheduled arrival date
+    created_at             TIMESTAMP                                 DEFAULT NOW(),
+    modified_at            TIMESTAMP                                 DEFAULT NOW(),
     created_by             VARCHAR(64),
     modified_by            VARCHAR(64)
 );
@@ -154,10 +155,10 @@ CREATE TABLE IF NOT EXISTS shipment
     date_unloading          TIMESTAMP,
 
     -- Delivery Type and Address
-    delivery_type           VARCHAR(20)                            NOT NULL,
-    date_confirmed_dispatch TIMESTAMP, -- e.g., 'pick-up', 'door-to-door'
+    delivery_type           VARCHAR(20)                            NOT NULL, -- e.g., 'pick-up', 'door-to-door'
+    date_confirmed_dispatch TIMESTAMP,
     pick_up_point_id        INT REFERENCES pick_up_point (id),
-    final_address           VARCHAR(255),
+    destination_address     VARCHAR(255),
 
     -- client-provided information
     client_pcs              INT,

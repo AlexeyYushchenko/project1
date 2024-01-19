@@ -27,7 +27,7 @@ public class PickUpPointController {
     private final CountryService countryService;
 
     @GetMapping
-    public String findAll(Model model, ModelAndView modelAndView) {
+    public String findAll(Model model) {
         var pickUpPoints = pickUpPointService.findAll();
         model.addAttribute("pickUpPoints", pickUpPoints);
         return "pickUpPoint/pickUpPoints";
@@ -48,7 +48,7 @@ public class PickUpPointController {
     @GetMapping("/create")
     public String create(Model model, @ModelAttribute("pickUpPoint") PickUpPointCreateUpdateDto createDto) {
         model.addAttribute("pickUpPoint", createDto);
-        model.addAttribute("roles", Role.values());
+        model.addAttribute("countries", countryService.findAll());
         return "pickUpPoint/create";
     }
 

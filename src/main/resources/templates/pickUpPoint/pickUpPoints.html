@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
@@ -20,18 +20,18 @@
   <thead>
   <tr>
     <th>ID</th>
-    <th th:text="#{entity.warehouse.field.name}">Name</th>
-    <th th:text="#{entity.warehouse.field.country}">Country</th>
-    <th th:text="#{entity.warehouse.field.address}">Address</th>
+    <th th:text="#{entity.pickUpPoint.field.name}">Name</th>
+    <th th:text="#{entity.pickUpPoint.field.country}">Country</th>
+    <th th:text="#{entity.pickUpPoint.field.address}">Address</th>
     <dif th:insert="~{fragments::common_fields}"></dif>
   </tr>
   </thead>
   <tbody>
   <tr th:each="pickUpPoint : ${pickUpPoints}">
     <td th:text="${pickUpPoint.id}">ID</td>
-    <td><a th:href="@{'/pickUpPoints/' + ${pickUpPoint.id}}" th:text="${pickUpPoint.name}">Name</a></td>
-    <td th:text="${pickUpPoint.country.name}">Country name</td>
-    <td th:text="${pickUpPoint.address}">Address</td>
+    <td><a th:href="@{'/pickUpPoints/' + ${pickUpPoint.id}}" th:text="${pickUpPoint.nameLocales[__${#locale.language}__]} ?: ${pickUpPoint.name}">Name</a></td>
+    <td th:text="${pickUpPoint.country.nameLocales[__${#locale.language}__]} ?: ${pickUpPoint.country.name}">Country name</td>
+    <td><a th:href="@{'/pickUpPoints/' + ${pickUpPoint.id}}" th:text="${pickUpPoint.addressLocales[__${#locale.language}__]} ?: ${pickUpPoint.address}">Address</a></td>
     <td th:text="${pickUpPoint.createdBy}">Created By</td>
     <td th:text="${pickUpPoint.createdAt}">Created At</td>
     <td th:text="${pickUpPoint.modifiedBy}">Modified By</td>

@@ -10,6 +10,7 @@ public record WarehouseReadDto(
         CountryReadDto country,
         String address,
         String commentary,
+
         LocalDateTime createdAt,
         LocalDateTime modifiedAt,
         String createdBy,

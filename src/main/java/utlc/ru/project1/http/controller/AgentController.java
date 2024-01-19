@@ -25,7 +25,7 @@ public class AgentController {
     private final AgentService agentService;
 
     @GetMapping
-    public String findAll(Model model, ModelAndView modelAndView) {
+    public String findAll(Model model) {
         var agents = agentService.findAll();
         model.addAttribute("agents", agents);
         return "agent/agents";
@@ -45,7 +45,6 @@ public class AgentController {
     @GetMapping("/create")
     public String create(Model model, @ModelAttribute("agent") AgentCreateUpdateDto createDto) {
         model.addAttribute("agent", createDto);
-        model.addAttribute("roles", Role.values());
         return "agent/create";
     }
 

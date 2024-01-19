@@ -27,8 +27,8 @@
     <tbody>
     <tr th:each="priority : ${priorities}">
         <td th:text="${priority.id}">ID</td>
-        <td><a th:href="@{'/priorities/' + ${priority.id}}" th:text="${priority.name}">Name</a></td>
-        <td th:text="${priority.description}">Description</td>
+        <td><a th:href="@{'/priorities/' + ${priority.id}}" th:text="${priority.nameLocales[__${#locale.language}__]} ?: ${priority.name}">Name</a></td>
+        <td><a th:href="@{'/priorities/' + ${priority.id}}" th:text="${priority.descriptionLocales[__${#locale.language}__]} ?: ${priority.description}">Description</a></td>
         <td th:text="${priority.createdBy}">Created By</td>
         <td th:text="${priority.createdAt}">Created At</td>
         <td th:text="${priority.modifiedBy}">Modified By</td>
@@ -52,4 +52,3 @@
 
 </body>
 </html>
-

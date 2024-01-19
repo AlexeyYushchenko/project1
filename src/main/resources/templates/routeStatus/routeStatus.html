@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{entity.routeStatus.edit.page.title}">Route Status</title>
+    <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+</head>
+<body>
+<div th:insert="~{fragments::locale}"></div>
+
+<h1 th:text="#{entity.routeStatus.edit.page.label}">Route Status</h1>
+
+<form th:action="@{/routeStatuses/{routeStatusId}(routeStatusId=${routeStatus.id()})}" method="post" th:object="${routeStatus}">
+    <fieldset>
+        <legend th:text="#{entity.routeStatus.edit.page.details.label}">Route Status Details</legend>
+
+        <div class="form-group">
+            <label for="name" class="form-label" th:text="#{entity.routeStatus.field.name} + ' (' + #{ui.default.label} + ')'">Name:</label>
+            <input id="name" type="text" name="name" th:value="*{name}" aria-label="Route Status Name" class="form-input">
+        </div>
+
+        <div th:each="localeEntry : ${routeStatus.nameLocales}">
+            <div th:if="${#locale.language == localeEntry.key}" class="form-group">
+                <label th:for="${'localization-' + localeEntry.key}" class="form-label"
+                       th:text="#{entity.routeStatus.field.name} + ${' (' + localeEntry.key + ')'}">Localized Name:</label>
+                <input th:id="${'localization-' + localeEntry.key}" type="text"
+                       th:field="*{nameLocales[__${localeEntry.key}__]}" class="form-input">
+            </div>
+            <div th:if="${#locale.language != localeEntry.key}" class="form-group" style="display: none;">
+                <input th:id="${'localization-' + localeEntry.key}" type="hidden"
+                       th:field="*{nameLocales[__${localeEntry.key}__]}">
+            </div>
+        </div>
+
+        <button type="submit" th:text="#{ui.button.update.label}">Update</button>
+
+    </fieldset>
+</form>
+<br>
+<form th:action="@{/routeStatuses/{routeStatusId}/delete(routeStatusId=${routeStatus.id()})}" method="post">
+    <button type="submit"
+            id="removeButton"
+            class="btn btn-danger"
+            th:text="#{ui.button.remove.label}"
+            th:data-confirm-message="#{entity.routeStatus.remove.button.confirmation.message}">
+        <i class="fa fa-trash"></i> Remove
+    </button>
+</form>
+
+<div>
+    <a th:href="@{/routeStatuses}" th:text="#{ui.button.goBack}">Go back</a>
+</div>
+<div>
+    <a th:href="@{/menu}" th:text="#{ui.button.mainMenu}">Go to Main</a>
+</div>
+
+<div th:insert="~{fragments::errors}"></div>
+
+</body>
+</html>

@@ -27,7 +27,7 @@ public class ManufacturerController {
     private final CountryService countryService;
 
     @GetMapping
-    public String findAll(Model model, ModelAndView modelAndView) {
+    public String findAll(Model model) {
         var manufacturers = manufacturerService.findAll();
         model.addAttribute("manufacturers", manufacturers);
         return "manufacturer/manufacturers";
@@ -49,7 +49,6 @@ public class ManufacturerController {
     public String create(Model model, @ModelAttribute("manufacturer") ManufacturerCreateUpdateDto createDto) {
         model.addAttribute("manufacturer", createDto);
         model.addAttribute("countries", countryService.findAll());
-        model.addAttribute("roles", Role.values());
         return "manufacturer/create";
     }
 

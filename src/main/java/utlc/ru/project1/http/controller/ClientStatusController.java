@@ -25,7 +25,7 @@ public class ClientStatusController {
     private final ClientStatusService clientStatusService;
 
     @GetMapping
-    public String findAll(Model model, ModelAndView modelAndView){
+    public String findAll(Model model){
         var clientStatuses = clientStatusService.findAll();
         model.addAttribute("clientStatuses", clientStatuses);
         return "clientStatus/clientStatuses";
@@ -45,7 +45,6 @@ public class ClientStatusController {
     @GetMapping("/create")
     public String create(Model model, @ModelAttribute("clientStatus") ClientStatusCreateUpdateDto createDto) {
         model.addAttribute("clientStatus", createDto);
-        model.addAttribute("roles", Role.values());
         return "clientStatus/create";
     }
 

@@ -1,11 +1,11 @@
 package utlc.ru.project1.database.entity;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import jakarta.persistence.*;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -46,36 +46,36 @@ public class Shipment extends AuditingEntity<Long> {
     private String warehouseComment;
 
     @Column(name = "date_placed")
-    private Instant datePlaced;
+    private LocalDateTime datePlaced;
 
     @Column(name = "date_checked")
-    private Instant dateChecked;
+    private LocalDateTime dateChecked;
 
     @Column(name = "date_ready_dispatch")
-    private Instant dateReadyDispatch;
+    private LocalDateTime dateReadyDispatch;
 
     @Column(name = "date_reached_warehouse")
-    private Instant dateReachedWarehouse;
+    private LocalDateTime dateReachedWarehouse;
 
     @Column(name = "date_loading")
-    private Instant dateLoading;
+    private LocalDateTime dateLoading;
 
     @Column(name = "date_unloading")
-    private Instant dateUnloading;
+    private LocalDateTime dateUnloading;
 
     //Delivery Type and Address
     @Column(name = "delivery_type", nullable = false)
     private String deliveryType;
 
     @Column(name = "date_confirmed_dispatch", nullable = false)
-    private Instant dateConfirmedDispatch;
+    private LocalDateTime dateConfirmedDispatch;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pick_up_point_id")
     private PickUpPoint pickUpPoint;
 
-    @Column(name = "final_address")
-    private String finalAddress;
+    @Column(name = "destination_address")
+    private String destination_address;
 
     //client-provided information
     @Column(name = "client_pcs")

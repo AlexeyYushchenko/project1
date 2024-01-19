@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+    <title th:text="#{entity.client.label.registration}">Create a new client</title>
+</head>
+<body>
+<div th:insert="~{fragments::locale}"></div>
+
+<h1 th:text="#{entity.client.create.page.label}">Client registration</h1>
+
+<h3 th:text="#{entity.client.label.add}">Add a new client</h3>
+
+<form th:action="@{/clients}" method="post" class="client-form" th:object="${client}">
+
+    <div class="form-group">
+        <label for="name" class="form-label" th:text="#{entity.client.field.name}">Client's name:</label>
+        <input id="name" type="text" name="name" th:value="*{name}" aria-label="Client's name" class="form-input">
+    </div>
+
+    <div class="form-group">
+        <label for="clientStatus" class="form-label" th:text="#{entity.client.field.clientStatus}">Client Status:</label>
+        <select id="clientStatus" name="clientStatusId">
+            <option value="" th:selected="${client.clientStatusId == null}"></option>
+            <option th:each="clientStatus : ${clientStatuses}"
+                    th:value="${clientStatus.id}"
+                    th:selected="${clientStatus.id == client.clientStatusId}"
+                    th:text="${clientStatus.nameLocales[__${#locale.language}__]} ?: ${clientStatus.name}"
+                    aria-label="Name">Client Status</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="businessType" class="form-label" th:text="#{entity.client.field.businessType}">Business Type:</label>
+        <select id="businessType" name="businessTypeId">
+            <option value="" th:selected="${client.businessTypeId == null}"></option>
+            <option th:each="businessType : ${businessTypes}"
+                    th:value="${businessType.id}"
+                    th:selected="${businessType.id == client.businessTypeId}"
+                    th:text="${businessType.nameLocales[__${#locale.language}__]} ?: ${businessType.name}"
+                    aria-label="Name">Business Type</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="industryType" class="form-label" th:text="#{entity.client.field.industryType}">Industry Type:</label>
+        <select id="industryType" name="industryTypeId">
+            <option value="" th:selected="${client.industryTypeId == null}"></option>
+            <option th:each="industryType : ${industryTypes}"
+                    th:value="${industryType.id}"
+                    th:selected="${industryType.id == client.industryTypeId}"
+                    th:text="${industryType.nameLocales[__${#locale.language}__]} ?: ${industryType.name}"
+                    aria-label="Name">Industry Type</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="address" class="form-label" th:text="#{entity.client.field.address}">Address:</label>
+        <input id="address" type="text" name="address" th:value="*{address}" aria-label="Address" class="form-input">
+    </div>
+
+    <button type="submit" th:text="#{ui.button.add.label}" class="submit-button">Add</button>
+</form>
+<br>
+<div>
+    <a th:href="@{/clients}" th:text="#{ui.button.goBack}">Go back</a>
+</div>
+
+<dif th:insert="~{fragments::errors}"></dif>
+
+</body>
+</html>

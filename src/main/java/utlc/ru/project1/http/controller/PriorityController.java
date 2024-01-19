@@ -25,7 +25,7 @@ public class PriorityController {
     private final PriorityService priorityService;
 
     @GetMapping
-    public String findAll(Model model, ModelAndView modelAndView) {
+    public String findAll(Model model) {
         var priorities = priorityService.findAll();
         model.addAttribute("priorities", priorities);
         return "priority/priorities";
@@ -45,7 +45,6 @@ public class PriorityController {
     @GetMapping("/create")
     public String create(Model model, @ModelAttribute("priority") PriorityCreateUpdateDto createDto) {
         model.addAttribute("priority", createDto);
-        model.addAttribute("roles", Role.values());
         return "priority/create";
     }
 

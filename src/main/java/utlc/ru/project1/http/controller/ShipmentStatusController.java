@@ -25,7 +25,7 @@ public class ShipmentStatusController {
     private final ShipmentStatusService shipmentStatusService;
 
     @GetMapping
-    public String findAll(Model model, ModelAndView modelAndView) {
+    public String findAll(Model model) {
         var shipmentStatuses = shipmentStatusService.findAll();
         model.addAttribute("shipmentStatuses", shipmentStatuses);
         return "shipmentStatus/shipmentStatuses";
@@ -45,7 +45,6 @@ public class ShipmentStatusController {
     @GetMapping("/create")
     public String create(Model model, @ModelAttribute("shipment") ShipmentStatusCreateUpdateDto createDto) {
         model.addAttribute("shipmentStatus", createDto);
-        model.addAttribute("roles", Role.values());
         return "shipmentStatus/create";
     }
 

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+  <title th:text="#{entity.client.list.page.title}">Clients</title>
+  <script th:inline="javascript">initializeDataTable('clientsTable', [[${#locale.language}]]);</script>
+</head>
+<body>
+<div th:insert="~{fragments::locale}"></div>
+
+<h1 th:text="#{entity.client.list.page.label}">Clients</h1>
+
+<form action="/clients/create">
+  <button type="submit" th:text="#{entity.client.create.button.label}">Add a new Client</button>
+</form>
+
+<table id="clientsTable">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th th:text="#{entity.client.field.name}">Name</th>
+    <th th:text="#{entity.client.field.clientStatus}">Client Status</th>
+    <th th:text="#{entity.client.field.businessType}">Business Type</th>
+    <th th:text="#{entity.client.field.industryType}">Industry Type</th>
+    <th th:text="#{entity.client.field.address}">Address</th>
+    <dif th:insert="~{fragments::common_fields}"></dif>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="client : ${clients}">
+    <td th:text="${client.id}">ID</td>
+    <td><a th:href="@{'/clients/' + ${client.id}}" th:text="${client.name}">Name</a></td>
+    <td th:text="${client.clientStatus.nameLocales[__${#locale.language}__]} ?: ${client.clientStatus.name}">Client Status name</td>
+    <td th:text="${client.businessType.nameLocales[__${#locale.language}__]} ?: ${client.businessType.name}">Business Type name</td>
+    <td th:text="${client.industryType.nameLocales[__${#locale.language}__]} ?: ${client.industryType.name}">Industry Type name</td>
+    <td th:text="${client.address}">Address</td>
+    <td th:text="${client.createdBy}">Created By</td>
+    <td th:text="${client.createdAt}">Created At</td>
+    <td th:text="${client.modifiedBy}">Modified By</td>
+    <td th:text="${client.modifiedAt}">Modified At</td>
+    <td>
+      <form th:action="@{/clients/{clientId}/delete(clientId=${client.id})}"
+            method="post">
+        <input type="hidden" name="_method" value="DELETE">
+        <button type="submit">Delete</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<div>
+  <a th:href="@{/menu}" th:text="#{ui.button.mainMenu}">Go back</a>
+</div>
+
+<dif th:insert="~{fragments::errors}"></dif>
+
+</body>
+</html>

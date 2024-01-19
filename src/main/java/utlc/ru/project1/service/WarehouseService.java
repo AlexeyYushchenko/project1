@@ -3,6 +3,8 @@ package utlc.ru.project1.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import utlc.ru.project1.database.entity.Country;
+import utlc.ru.project1.database.entity.Warehouse;
 import utlc.ru.project1.database.repository.CountryRepository;
 import utlc.ru.project1.database.repository.WarehouseRepository;
 import utlc.ru.project1.dto.warehouse.WarehouseCreateUpdateDto;
@@ -32,9 +34,10 @@ public class WarehouseService {
     }
 
     @Transactional
-    public WarehouseReadDto create(WarehouseCreateUpdateDto createUpdateDto) {
-        return Optional.of(createUpdateDto)
+    public WarehouseReadDto create(WarehouseCreateUpdateDto dto) {
+        return Optional.of(dto)
                 .map(warehouseMapper::toEntity)
+                .map(entity -> setUpCountryToWarehouse(entity, dto))
                 .map(warehouseRepository::save)
                 .map(warehouseMapper::toDto)
                 .orElseThrow();
@@ -43,14 +46,8 @@ public class WarehouseService {
     @Transactional
     public Optional<WarehouseReadDto> update(Integer id, WarehouseCreateUpdateDto dto) {
         return warehouseRepository.findById(id)
-                .map(entity -> {
-                    warehouseMapper.update(entity, dto); //all entity fields are updated except Country.
-                    var country = Optional.ofNullable(dto.countryId())
-                            .flatMap(countryRepository::findById)
-                            .orElse(null);
-                    entity.setCountry(country);
-                    return entity;
-                })
+                .map(entity -> warehouseMapper.update(entity, dto))
+                .map(entity -> setUpCountryToWarehouse(entity, dto))
                 .map(warehouseRepository::saveAndFlush) //no request to the db without 'flush', thus we can get exception on dif.level
                 .map(warehouseMapper::toDto);
     }
@@ -64,5 +61,13 @@ public class WarehouseService {
                     return true;
                 })
                 .orElse(false);
+    }
+
+    private Warehouse setUpCountryToWarehouse(Warehouse entity, WarehouseCreateUpdateDto dto) {
+        Country country = Optional.ofNullable(dto.countryId())
+                .flatMap(countryRepository::findById)
+                .orElse(null);
+        entity.setCountry(country);
+        return entity;
     }
 }

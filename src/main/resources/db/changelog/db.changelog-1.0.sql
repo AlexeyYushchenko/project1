@@ -58,6 +58,17 @@ CREATE TABLE IF NOT EXISTS industry_type
 );
 
 --changeset ayushchenko:6
+CREATE TABLE IF NOT EXISTS route_status
+(
+    id          SERIAL PRIMARY KEY,
+    name        VARCHAR(255) NOT NULL UNIQUE,
+    created_at  TIMESTAMP DEFAULT NOW(),
+    modified_at TIMESTAMP DEFAULT NOW(),
+    created_by  VARCHAR(64),
+    modified_by VARCHAR(64)
+);
+
+--changeset ayushchenko:7
 CREATE TABLE IF NOT EXISTS priority
 (
     id          SERIAL PRIMARY KEY,

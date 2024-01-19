@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+  <title th:text="#{entity.route.list.page.title}">Routes</title>
+  <script th:inline="javascript">initializeDataTable('routesTable', [[${#locale.language}]]);</script>
+</head>
+<body>
+<div th:insert="~{fragments::locale}"></div>
+
+<h1 th:text="#{entity.route.list.page.label}">Routes</h1>
+
+<form action="/routes/create">
+  <button type="submit" th:text="#{entity.route.create.button.label}">Add a new Route</button>
+</form>
+
+<table id="routesTable">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th th:text="#{entity.route.field.name}">Name</th>
+    <th th:text="#{entity.route.field.routeStatus}">Route Status</th>
+    <th th:text="#{entity.route.field.businessType}">Business Type</th>
+    <th th:text="#{entity.route.field.industryType}">Industry Type</th>
+    <th th:text="#{entity.route.field.address}">Address</th>
+    <dif th:insert="~{fragments::common_fields}"></dif>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="route : ${routes}">
+    <td th:text="${route.id}">ID</td>
+    <td><a th:href="@{'/routes/' + ${route.id}}" th:text="${route.name}">Name</a></td>
+    <td th:text="${route.routeStatus.nameLocales[__${#locale.language}__]} ?: ${route.routeStatus.name}">Route Status name</td>
+    <td th:text="${route.businessType.nameLocales[__${#locale.language}__]} ?: ${route.businessType.name}">Business Type name</td>
+    <td th:text="${route.industryType.nameLocales[__${#locale.language}__]} ?: ${route.industryType.name}">Industry Type name</td>
+    <td th:text="${route.address}">Address</td>
+    <td th:text="${route.createdBy}">Created By</td>
+    <td th:text="${route.createdAt}">Created At</td>
+    <td th:text="${route.modifiedBy}">Modified By</td>
+    <td th:text="${route.modifiedAt}">Modified At</td>
+    <td>
+      <form th:action="@{/routes/{routeId}/delete(routeId=${route.id})}"
+            method="post">
+        <input type="hidden" name="_method" value="DELETE">
+        <button type="submit">Delete</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<div>
+  <a th:href="@{/menu}" th:text="#{ui.button.mainMenu}">Go back</a>
+</div>
+
+<dif th:insert="~{fragments::errors}"></dif>
+
+</body>
+</html>

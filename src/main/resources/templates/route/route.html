@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{entity.route.edit.page.title}">Route</title>
+    <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+</head>
+<body>
+<div th:insert="~{fragments::locale}"></div>
+
+<h1 th:text="#{entity.route.edit.page.label}">Route</h1>
+
+<form th:action="@{/routes/{routeId}(routeId=${route.id()})}" method="post" th:object="${route}">
+    <fieldset>
+        <legend th:text="#{entity.route.edit.page.details.label}">Route Details</legend>
+
+        <div class="form-group">
+            <label for="identificationNumber" class="form-label" th:text="#{entity.route.field.identificationNumber}">Route's
+                identification number:</label>
+            <input id="identificationNumber" type="text" name="identificationNumber" th:value="*{identificationNumber}"
+                   aria-label="Route's identification number" class="form-input">
+        </div>
+
+        <div class="form-group">
+            <label for="routeStatus" class="form-label" th:text="#{entity.route.field.routeStatus}">Route
+                Status:</label>
+            <select id="routeStatus" name="routeStatusId">
+                <option th:each="routeStatus : ${routeStatuses}"
+                        th:value="${routeStatus.id}"
+                        th:selected="${routeStatus.id == route.routeStatus.id}"
+                        th:text="${routeStatus.nameLocales[__${#locale.language}__]} ?: ${routeStatus.name}"
+                        aria-label="Name">Route Status
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="transportType" class="form-label" th:text="#{entity.route.field.transportType}">Route's
+                transportType:</label>
+            <input id="transportType" type="text" name="transportType" th:value="*{transportType}"
+                   aria-label="TransportType" class="form-input">
+        </div>
+
+        <div class="form-group">
+            <label for="isInternational" class="form-label" th:text="#{entity.route.field.isInternational}">International:</label>
+            <input id="isInternational" type="checkbox" name="isInternational" th:checked="*{isInternational}" aria-label="Route International status">
+        </div>
+
+        <div class="form-group">
+            <label for="countryOfDeparture" class="form-label" th:text="#{entity.route.field.countryOfDeparture}">Country of departure:</label>
+            <select id="countryOfDeparture" name="countryOfDepartureId">
+                <option th:each="country : ${countries}"
+                        th:value="${country.id}"
+                        th:selected="${country.id == route.countryOfDeparture.id}"
+                        th:text="${country.nameLocales[__${#locale.language}__]} ?: ${country.name}"
+                        aria-label="Name">Country of departure</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="countryOfDestination" class="form-label" th:text="#{entity.route.field.countryOfDestination}">Country of destination:</label>
+            <select id="countryOfDestination" name="countryOfDestinationId">
+                <option th:each="country : ${countries}"
+                        th:value="${country.id}"
+                        th:selected="${country.id == route.countryOfDestination.id}"
+                        th:text="${country.nameLocales[__${#locale.language}__]} ?: ${country.name}"
+                        aria-label="Name">Country of destination</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="customsPost" class="form-label" th:text="#{entity.route.field.customsPost}">Customs Post:</label>
+            <input id="customsPost" type="text" name="customsPost" th:value="*{customsPost}" aria-label="Customs Post"
+                   class="form-input">
+        </div>
+
+        <div class="form-group">
+            <label for="departureDate" class="form-label" th:text="#{entity.route.field.departureDate}">Departure Date:</label>
+            <input id="departureDate" type="datetime-local" name="departureDate" th:value="${#temporals.format(route.departureDate, 'yyyy-MM-dd\'T\'HH:mm')}" aria-label="Departure Date" class="form-input">
+        </div>
+
+        <div class="form-group">
+            <label for="arrivalDate" class="form-label" th:text="#{entity.route.field.arrivalDate}">Arrival Date:</label>
+            <input id="arrivalDate" type="datetime-local" name="arrivalDate" th:value="${#temporals.format(route.arrivalDate, 'yyyy-MM-dd\'T\'HH:mm')}" aria-label="Arrival Date" class="form-input">
+        </div>
+
+        <button type="submit" th:text="#{ui.button.update.label}">Update</button>
+
+    </fieldset>
+</form>
+<br>
+<form th:action="@{/routes/{routeId}/delete(routeId=${route.id()})}" method="post">
+    <button type="submit"
+            id="removeButton"
+            class="btn btn-danger"
+            th:text="#{ui.button.remove.label}"
+            th:data-confirm-message="#{entity.route.remove.button.confirmation.message}">
+        <i class="fa fa-trash"></i> Remove
+    </button>
+</form>
+
+<div>
+    <a th:href="@{/routes}" th:text="#{ui.button.goBack}">Go back</a>
+</div>
+<div>
+    <a th:href="@{/menu}" th:text="#{ui.button.mainMenu}">Go to Main</a>
+</div>
+
+<div th:insert="~{fragments::errors}"></div>
+
+</body>
+</html>

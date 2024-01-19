@@ -3,11 +3,14 @@ package utlc.ru.project1.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import utlc.ru.project1.database.entity.Country;
+import utlc.ru.project1.database.entity.PickUpPoint;
 import utlc.ru.project1.database.repository.CountryRepository;
 import utlc.ru.project1.database.repository.PickUpPointRepository;
 import utlc.ru.project1.dto.pickuppoint.PickUpPointCreateUpdateDto;
 import utlc.ru.project1.dto.pickuppoint.PickUpPointReadDto;
 import utlc.ru.project1.mapper.PickUpPointMapper;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -32,9 +35,10 @@ public class PickUpPointService {
     }
 
     @Transactional
-    public PickUpPointReadDto create(PickUpPointCreateUpdateDto createUpdateDto) {
-        return Optional.of(createUpdateDto)
+    public PickUpPointReadDto create(PickUpPointCreateUpdateDto dto) {
+        return Optional.of(dto)
                 .map(pickUpPointMapper::toEntity)
+                .map(entity -> setUpCountryToPickUpPoint(entity, dto))
                 .map(pickUpPointRepository::save)
                 .map(pickUpPointMapper::toDto)
                 .orElseThrow();
@@ -43,14 +47,8 @@ public class PickUpPointService {
     @Transactional
     public Optional<PickUpPointReadDto> update(Integer id, PickUpPointCreateUpdateDto dto) {
         return pickUpPointRepository.findById(id)
-                .map(entity -> {
-                    pickUpPointMapper.update(entity, dto); //all entity fields are updated except Country.
-                    var country = Optional.ofNullable(dto.countryId())
-                            .flatMap(countryRepository::findById)
-                            .orElse(null);
-                    entity.setCountry(country);
-                    return entity;
-                })
+                .map(entity -> pickUpPointMapper.update(entity, dto))
+                .map(entity -> setUpCountryToPickUpPoint(entity, dto))
                 .map(pickUpPointRepository::saveAndFlush) //no request to the db without 'flush', thus we can get exception on dif.level
                 .map(pickUpPointMapper::toDto);
     }
@@ -64,5 +62,13 @@ public class PickUpPointService {
                     return true;
                 })
                 .orElse(false);
+    }
+
+    private PickUpPoint setUpCountryToPickUpPoint(PickUpPoint entity, PickUpPointCreateUpdateDto dto) {
+        Country country = Optional.ofNullable(dto.countryId())
+                .flatMap(countryRepository::findById)
+                .orElse(null);
+        entity.setCountry(country);
+        return entity;
     }
 }

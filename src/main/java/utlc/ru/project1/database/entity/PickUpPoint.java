@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.HashMap;
 import java.util.Map;
 
-@EqualsAndHashCode(callSuper=true)
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
 @NoArgsConstructor
@@ -16,7 +16,7 @@ import java.util.Map;
 public class PickUpPoint extends AuditingEntity<Integer> {
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "name", nullable = false, unique = true)
@@ -35,4 +35,15 @@ public class PickUpPoint extends AuditingEntity<Integer> {
     @MapKeyColumn(name = "language_code")
     @Column(name = "localized_name")
     private Map<String, String> nameLocales = new HashMap<>();
+
+    @Builder.Default
+    @ElementCollection
+    @CollectionTable(name = "pick_up_point_localization", joinColumns = @JoinColumn(name = "pick_up_point_id"))
+    @MapKeyColumn(name = "language_code")
+    @Column(name = "localized_address")
+    private Map<String, String> addressLocales = new HashMap<>();
+
+    public void setName(String name) {
+        this.name = name != null ? name.toUpperCase() : null;
+    }
 }

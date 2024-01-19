@@ -25,7 +25,7 @@ public class IndustryTypeController {
     private final IndustryTypeService industryTypeService;
 
     @GetMapping
-    public String findAll(Model model, ModelAndView modelAndView) {
+    public String findAll(Model model) {
         var industryTypes = industryTypeService.findAll();
         model.addAttribute("industryTypes", industryTypes);
         return "industryType/industryTypes";
@@ -45,7 +45,6 @@ public class IndustryTypeController {
     @GetMapping("/create")
     public String create(Model model, @ModelAttribute("industryType") IndustryTypeCreateUpdateDto createDto) {
         model.addAttribute("industryType", createDto);
-        model.addAttribute("roles", Role.values());
         return "industryType/create";
     }
 

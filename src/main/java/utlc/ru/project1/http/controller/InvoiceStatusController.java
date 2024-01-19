@@ -10,9 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import utlc.ru.project1.database.entity.Role;
 import utlc.ru.project1.dto.invoicestatus.InvoiceStatusCreateUpdateDto;
 import utlc.ru.project1.service.InvoiceStatusService;
 
@@ -25,7 +23,7 @@ public class InvoiceStatusController {
     private final InvoiceStatusService invoiceStatusService;
 
     @GetMapping
-    public String findAll(Model model, ModelAndView modelAndView) {
+    public String findAll(Model model) {
         var invoiceStatuses = invoiceStatusService.findAll();
         model.addAttribute("invoiceStatuses", invoiceStatuses);
         return "invoiceStatus/invoiceStatuses";
@@ -45,7 +43,6 @@ public class InvoiceStatusController {
     @GetMapping("/create")
     public String create(Model model, @ModelAttribute("invoiceStatus") InvoiceStatusCreateUpdateDto createDto) {
         model.addAttribute("invoiceStatus", createDto);
-        model.addAttribute("roles", Role.values());
         return "invoiceStatus/create";
     }
 

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+    <title th:text="#{entity.priority.label.registration}">Create a new Priority</title>
+</head>
+<body>
+<div th:insert="~{fragments::locale}"></div>
+
+<h1 th:text="#{entity.priority.create.page.label}">Priority registration</h1>
+
+<h3 th:text="#{entity.priority.label.add}">Add a new Priority</h3>
+
+<form th:action="@{/priorities}" method="post" class="priority-form" th:object="${priority}">
+
+    <div class="form-group">
+        <label for="name" th:text="#{entity.priority.field.name}">Name:</label>
+        <input id="name" type="text" name="name" class="form-input" th:value="*{name}">
+    </div>
+
+    <div class="form-group">
+        <label for="description" th:text="#{entity.priority.field.description}">Description:</label>
+        <input id="description" type="text" name="description" th:value="*{description}">
+    </div>
+
+    <button type="submit" th:text="#{ui.button.add.label}" class="submit-button">Add</button>
+
+</form>
+<br>
+<div>
+    <a th:href="@{/priorities}" th:text="#{ui.button.goBack}">Go back</a>
+</div>
+
+<dif th:insert="~{fragments::errors}"></dif>
+
+</body>
+</html>

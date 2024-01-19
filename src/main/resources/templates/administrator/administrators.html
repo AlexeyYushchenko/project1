@@ -35,9 +35,12 @@
         <td th:text="${administrator.firstname}">Firstname</td>
         <td th:text="${administrator.lastname}">Lastname</td>
         <td th:text="${administrator.createdBy}">Created By</td>
-        <td th:text="${administrator.createdAt}">Created At</td>
+<!--        <td th:text="${administrator.createdAt}">Created At</td>-->
+        <td th:text="${#temporals.format(administrator.createdAt, 'dd.MM.yyyy HH:mm')}">Created At</td>
         <td th:text="${administrator.modifiedBy}">Modified By</td>
-        <td th:text="${administrator.modifiedAt}">Modified At</td>
+<!--        <td th:text="${administrator.modifiedAt}">Modified At</td>-->
+        <td th:text="${#temporals.format(administrator.modifiedAt, 'dd.MM.yyyy HH:mm')}">Modified At</td>
+
         <td>
             <form th:action="@{/administrators/{administratorId}/delete(administratorId=${administrator.id()})}" method="post">
                 <button type="submit"

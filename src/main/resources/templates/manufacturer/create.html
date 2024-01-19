@@ -22,23 +22,14 @@
     <div class="form-group">
         <label for="country" th:text="#{entity.manufacturer.field.country}">Country:</label>
         <select id="country" name="countryId">
-            <!--                <option th:each="country : ${countries}"-->
-            <!--                        th:value="${country.id}"-->
-            <!--                        th:selected="${country.id == manufacturer.countryId}"-->
-            <!--                        th:text="${country.nameLocales[__${#locale.language}__]} ?: ${country.name}"-->
-            <!--                        aria-label="Country Name">Country name</option>-->
-
             <option value="" th:selected="${manufacturer.countryId == null}"></option>
-
-            <!-- Iterating through countries to create options -->
             <option th:each="country : ${countries}"
-                    th:value="${country.id}"
+                    th:value="${country.id()}"
                     th:selected="${country.id == manufacturer.countryId}"
                     th:text="${country.nameLocales[__${#locale.language}__]} ?: ${country.name}"
                     aria-label="Country Name">Country name
             </option>
         </select>
-
     </div>
 
     <div class="form-group">

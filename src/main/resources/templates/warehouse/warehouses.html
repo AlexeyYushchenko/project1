@@ -31,8 +31,7 @@
   <tr th:each="warehouse : ${warehouses}">
     <td th:text="${warehouse.id}">ID</td>
     <td><a th:href="@{'/warehouses/' + ${warehouse.id}}" th:text="${warehouse.name}">Name</a></td>
-    <td th:text="${warehouse.country.name}">Country name</td>
-<!--    <td th:text="${warehouse.country.nameLocales[__${#locale.language}__]} ?: ${warehouse.country.name}">Country name</td>-->
+    <td th:text="${warehouse.country.nameLocales[__${#locale.language}__]} ?: ${warehouse.country.name}">Country name</td>
     <td th:text="${warehouse.address}">Address</td>
     <td th:text="${warehouse.commentary}">Commentary</td>
     <td th:text="${warehouse.createdBy}">Created By</td>

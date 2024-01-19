@@ -25,7 +25,7 @@ public class CountryController {
     private final CountryService countryService;
 
     @GetMapping
-    public String findAll(Model model, ModelAndView modelAndView) {
+    public String findAll(Model model) {
         var countries = countryService.findAll();
         model.addAttribute("countries", countries);
         return "country/countries";
@@ -45,7 +45,6 @@ public class CountryController {
     @GetMapping("/create")
     public String create(Model model, @ModelAttribute("country") CountryCreateUpdateDto createDto) {
         model.addAttribute("country", createDto);
-        model.addAttribute("roles", Role.values());
         return "country/create";
     }
 

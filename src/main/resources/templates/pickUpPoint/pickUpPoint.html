@@ -15,25 +15,50 @@
     <legend th:text="#{entity.pickUpPoint.edit.page.details.label}">Pick-Up Point Details</legend>
 
     <div class="form-group">
-      <label for="name" class="form-label" th:text="#{entity.pickUpPoint.field.name}">Name:</label>
-      <input id="name" type="text" name="name" th:value="*{name}" aria-label="Name" class="form-input">
+      <label for="name" class="form-label" th:text="#{entity.pickUpPoint.field.name} + ' (' + #{ui.default.label} + ')'">Name:</label>
+      <input id="name" type="text" name="name" th:value="*{name}" aria-label="Priority Name" class="form-input">
     </div>
 
     <div class="form-group">
-      <label for="country">Country:
-        <select id="country" name="countryId">
-          <option th:each="country : ${countries}"
-                  th:value="${country.id}"
-                  th:selected="${country.id == pickUpPoint.country.id}"
-                  th:text="${country.name}"
-                  aria-label="Name">Country</option>
-        </select>
-      </label>
+      <label for="country" class="form-label" th:text="#{entity.pickUpPoint.field.country}">Country:</label>
+      <select id="country" name="countryId">
+        <option th:each="country : ${countries}"
+                th:value="${country.id}"
+                th:selected="${country.id == pickUpPoint.country.id}"
+                th:text="${country.nameLocales[__${#locale.language}__]} ?: ${country.name}"
+                aria-label="Name">Country</option>
+      </select>
     </div>
 
     <div class="form-group">
-      <label for="address" class="form-label" th:text="#{entity.pickUpPoint.field.address}">Address:</label>
-      <input id="address" type="text" name="address" th:value="*{address}" aria-label="Address" class="form-input">
+      <label for="address" class="form-label" th:text="#{entity.pickUpPoint.field.address} + ' (' + #{ui.default.label} + ')'">Address:</label>
+      <input id="address" type="text" name="address" th:value="*{address}" aria-label="Priority Description" class="form-input">
+    </div>
+
+    <div th:each="localeEntry : ${pickUpPoint.nameLocales}">
+      <div th:if="${#locale.language == localeEntry.key}" class="form-group">
+        <label th:for="${'localization-' + localeEntry.key}" class="form-label"
+               th:text="#{entity.pickUpPoint.field.name} + ${' (' + localeEntry.key + ')'}">Localized Name:</label>
+        <input th:id="${'localization-' + localeEntry.key}" type="text"
+               th:field="*{nameLocales[__${localeEntry.key}__]}" class="form-input">
+      </div>
+      <div th:if="${#locale.language != localeEntry.key}" class="form-group" style="display: none;">
+        <input th:id="${'localization-' + localeEntry.key}" type="hidden"
+               th:field="*{nameLocales[__${localeEntry.key}__]}">
+      </div>
+    </div>
+
+    <div th:each="localeEntry : ${pickUpPoint.addressLocales()}">
+      <div th:if="${#locale.language == localeEntry.key}" class="form-group">
+        <label th:for="${'localization-' + localeEntry.key}" class="form-label"
+               th:text="#{entity.pickUpPoint.field.address} + ${' (' + localeEntry.key + ')'}">Localized Description:</label>
+        <input th:id="${'localization-' + localeEntry.key}" type="text"
+               th:field="*{addressLocales[__${localeEntry.key}__]}" class="form-input">
+      </div>
+      <div th:if="${#locale.language != localeEntry.key}" class="form-group" style="display: none;">
+        <input th:id="${'localization-' + localeEntry.key}" type="hidden"
+               th:field="*{addressLocales[__${localeEntry.key}__]}">
+      </div>
     </div>
 
     <button type="submit" th:text="#{ui.button.update.label}">Update</button>

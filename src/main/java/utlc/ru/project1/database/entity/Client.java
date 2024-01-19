@@ -28,11 +28,11 @@ public class Client extends AuditingEntity<Integer> {
     private ClientStatus clientStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "business_type", nullable = false)
+    @JoinColumn(name = "business_type_id", nullable = false)
     private BusinessType businessType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "industry_type", nullable = false)
+    @JoinColumn(name = "industry_type_id", nullable = false)
     private IndustryType industryType;
 
     @Column(name = "address")

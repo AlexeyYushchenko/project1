@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+    <title th:text="#{entity.pickUpPoint.label.registration}">Create a new Pick-Up Point</title>
+</head>
+<body>
+<div th:insert="~{fragments::locale}"></div>
+
+<h1 th:text="#{entity.pickUpPoint.create.page.label}">Pick-Up Point registration</h1>
+
+<h3 th:text="#{entity.pickUpPoint.label.add}">Add a new Pick-Up Point</h3>
+
+<form th:action="@{/pickUpPoints}" method="post" class="pickUpPoint-form" th:object="${pickUpPoint}">
+
+    <div class="form-group">
+        <label for="name" class="form-label" th:text="#{entity.pickUpPoint.field.name}">Pick-Up Point name:</label>
+        <input id="name" type="text" name="name" th:value="*{name}" aria-label="Pick-Up Point's name" class="form-input">
+    </div>
+
+    <div class="form-group">
+        <label for="country" th:text="#{entity.pickUpPoint.field.country}">Country:</label>
+        <select id="country" name="countryId">
+            <option value="" th:selected="${pickUpPoint.countryId == null}"></option>
+            <option th:each="country : ${countries}"
+                    th:value="${country.id()}"
+                    th:selected="${country.id == pickUpPoint.countryId}"
+                    th:text="${country.nameLocales[__${#locale.language}__]} ?: ${country.name}"
+                    aria-label="Country Name">Country name
+            </option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="address" class="form-label" th:text="#{entity.pickUpPoint.field.address}">Address:</label>
+        <input id="address" type="text" name="address" th:value="*{address}" aria-label="Address" class="form-input">
+    </div>
+
+    <button type="submit" th:text="#{ui.button.add.label}" class="submit-button">Add</button>
+</form>
+<br>
+<div>
+    <a th:href="@{/pickUpPoints}" th:text="#{ui.button.goBack}">Go back</a>
+</div>
+
+<dif th:insert="~{fragments::errors}"></dif>
+
+</body>
+</html>

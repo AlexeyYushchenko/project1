@@ -35,41 +35,24 @@ VALUES ('Checking order data', 'YAE'),
 
 --changeset ayushchenko:4
 INSERT INTO shipment_status_localization (shipment_status_id, language_code, localized_name)
-VALUES (1, 'en', 'Checking order data'),
+VALUES
        (1, 'ru', 'Проверяем данные заявки'),
-       (2, 'en', 'Attention(!)'),
        (2, 'ru', 'Внимание(!)'),
-       (3, 'en', 'Clarifying order details with the sender'),
        (3, 'ru', 'Уточняем детали заказа с отправителем'),
-       (4, 'en', 'Sent vehicle to the sender''s warehouse'),
        (4, 'ru', 'Отправили машину на склад отправителя'),
-       (5, 'en', 'Picked up and en route to the consolidation warehouse'),
        (5, 'ru', 'Забран и едет на склад консолидации'),
-       (6, 'en', 'Consolidation warehouse (Europe)'),
        (6, 'ru', 'Склад консолидации (Европа)'),
-       (7, 'en', 'Consolidation warehouse (China)'),
        (7, 'ru', 'Склад консолидации (Китай)'),
-       (8, 'en', 'Consolidation warehouse (USA)'),
        (8, 'ru', 'Склад консолидации (США)'),
-       (9, 'en', 'In transit (sea)'),
        (9, 'ru', 'В пути (море)'),
-       (10, 'en', 'In transit (air)'),
        (10, 'ru', 'В пути (Самолет)'),
-       (11, 'en', 'In transit (Europe)'),
        (11, 'ru', 'В пути (Европа)'),
-       (12, 'en', 'Crossing the border'),
        (12, 'ru', 'Проходит границу'),
-       (13, 'en', 'Customs clearance'),
        (13, 'ru', 'Таможенное оформление'),
-       (14, 'en', 'Arriving at the pickup warehouse'),
        (14, 'ru', 'Прибывает на склад выдачи'),
-       (15, 'en', 'Ready for pickup'),
        (15, 'ru', 'Готов к выдаче'),
-       (16, 'en', 'In storage'),
        (16, 'ru', 'На хранении'),
-       (17, 'en', 'Delivered'),
        (17, 'ru', 'Доставлен'),
-       (18, 'en', 'Cancelled'),
        (18, 'ru', 'Отменен');
 
 --changeset ayushchenko:5
@@ -355,3 +338,37 @@ VALUES
     (1, 'ru', 'Оплачен'),
     (2, 'ru', 'Неоплачен'),
     (3, 'ru', 'Просрочен');
+
+--changeset ayushchenko:21
+INSERT INTO route_status (name)
+VALUES ('Scheduled'),
+       ('Loading'),
+       ('Port of departure'),
+       ('Port of destination'),
+       ('Export Clearance'),
+       ('Transit (EU)'),
+       ('Transit (Baltics)'),
+       ('EU-Russia Border'),
+       ('Transit (Asia)'),
+       ('Transit (Russia)'),
+       ('Import Clearance'),
+       ('Completed'),
+       ('Cancelled');
+
+--changeset ayushchenko:22
+INSERT INTO route_status_localization(route_status_id, language_code, localized_name)
+VALUES
+    (1, 'ru', 'Заказан'),
+    (2, 'ru', 'Погрузка'),
+    (3, 'ru', 'Порт отправления'),
+    (4, 'ru', 'Порт назначения'),
+    (5, 'ru', 'Экспортное таможенное оформление'),
+    (6, 'ru', 'Транзит (Европа)'),
+    (7, 'ru', 'Транзит (Прибалтика)'),
+    (8, 'ru', 'Граница ЕС-Россия'),
+    (9, 'ru', 'Транзит (Азия)'),
+    (10, 'ru', 'Транзит (Россия)'),
+    (11, 'ru', 'Импортное таможенное оформление'),
+    (12, 'ru', 'Завершен'),
+    (13, 'ru', 'Отменен');
+

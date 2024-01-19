@@ -28,8 +28,9 @@ public class Invoice extends AuditingEntity<Long> {
     @Enumerated(value = EnumType.STRING)
     private Currency currency;
 
-    @Column(name = "status_id")
-    private Long statusId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "status_id", nullable = false)
+    private InvoiceStatus invoiceStatus;
 
     @Column(name = "issue_date")
     private LocalDate issueDate;

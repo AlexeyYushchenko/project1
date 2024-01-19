@@ -26,4 +26,8 @@ public class Manufacturer extends AuditingEntity<Integer> {
 
     @Column(name = "commentary")
     private String commentary;
+
+    public void setName(String name) {
+        this.name = name != null ? name.toUpperCase() : null;
+    }
 }

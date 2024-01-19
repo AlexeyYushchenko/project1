@@ -3,6 +3,8 @@ package utlc.ru.project1.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import utlc.ru.project1.database.entity.Country;
+import utlc.ru.project1.database.entity.Manufacturer;
 import utlc.ru.project1.database.repository.CountryRepository;
 import utlc.ru.project1.database.repository.ManufacturerRepository;
 import utlc.ru.project1.dto.manufacturer.ManufacturerCreateUpdateDto;
@@ -32,9 +34,10 @@ public class ManufacturerService {
     }
 
     @Transactional
-    public ManufacturerReadDto create(ManufacturerCreateUpdateDto createUpdateDto) {
-        return Optional.of(createUpdateDto)
+    public ManufacturerReadDto create(ManufacturerCreateUpdateDto dto) {
+        return Optional.of(dto)
                 .map(manufacturerMapper::toEntity)
+                .map(entity -> setUpCountryToManufacturer(entity, dto))
                 .map(manufacturerRepository::save)
                 .map(manufacturerMapper::toDto)
                 .orElseThrow();
@@ -43,14 +46,8 @@ public class ManufacturerService {
     @Transactional
     public Optional<ManufacturerReadDto> update(Integer id, ManufacturerCreateUpdateDto dto) {
         return manufacturerRepository.findById(id)
-                .map(entity -> {
-                    manufacturerMapper.update(entity, dto); //all entity fields are updated except Country.
-                    var country = Optional.ofNullable(dto.countryId())
-                            .flatMap(countryRepository::findById)
-                            .orElse(null);
-                    entity.setCountry(country);
-                    return entity;
-                })
+                .map(entity -> manufacturerMapper.update(entity, dto))
+                .map(entity -> setUpCountryToManufacturer(entity, dto))
                 .map(manufacturerRepository::saveAndFlush) //no request to the db without 'flush', thus we can get exception on dif.level
                 .map(manufacturerMapper::toDto);
     }
@@ -64,5 +61,13 @@ public class ManufacturerService {
                     return true;
                 })
                 .orElse(false);
+    }
+
+    private Manufacturer setUpCountryToManufacturer(Manufacturer entity, ManufacturerCreateUpdateDto dto) {
+        Country country = Optional.ofNullable(dto.countryId())
+                .flatMap(countryRepository::findById)
+                .orElse(null);
+        entity.setCountry(country);
+        return entity;
     }
 }

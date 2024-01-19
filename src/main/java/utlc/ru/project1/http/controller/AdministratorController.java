@@ -25,7 +25,7 @@ public class AdministratorController {
     private final AdministratorService administratorService;
 
     @GetMapping
-    public String findAll(Model model, ModelAndView modelAndView) {
+    public String findAll(Model model) {
         var administrators = administratorService.findAll();
         model.addAttribute("administrators", administrators);
         return "administrator/administrators";

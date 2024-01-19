@@ -25,7 +25,7 @@ public class Country extends AuditingEntity<Integer> {
     @Column(name = "code", unique = true, nullable = false, length = 3)
     private String code;
 
-    @Column(name = "is_active", nullable = false, columnDefinition = "BOOLEAN DEFAULT true")
+    @Column(name = "is_active", columnDefinition = "BOOLEAN DEFAULT true")
     private Boolean isActive;
 
     @Builder.Default

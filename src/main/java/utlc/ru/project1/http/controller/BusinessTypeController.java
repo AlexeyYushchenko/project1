@@ -25,7 +25,7 @@ public class BusinessTypeController {
     private final BusinessTypeService businessTypeService;
 
     @GetMapping
-    public String findAll(Model model, ModelAndView modelAndView) {
+    public String findAll(Model model) {
         var businessTypes = businessTypeService.findAll();
         model.addAttribute("businessTypes", businessTypes);
         return "businessType/businessTypes";
@@ -45,7 +45,6 @@ public class BusinessTypeController {
     @GetMapping("/create")
     public String create(Model model, @ModelAttribute("businessType") BusinessTypeCreateUpdateDto createDto) {
         model.addAttribute("businessType", createDto);
-        model.addAttribute("roles", Role.values());
         return "businessType/create";
     }
 

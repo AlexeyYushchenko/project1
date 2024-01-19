@@ -37,10 +37,10 @@ CREATE UNIQUE INDEX country_code_upper_idx ON country (UPPER(code));
 CREATE UNIQUE INDEX country_name_upper_idx ON country (UPPER(name));
 
 --changeset ayushchenko:13
-CREATE UNIQUE INDEX manufacturer_name_lower_idx ON manufacturer (lower(name));
+CREATE UNIQUE INDEX manufacturer_name_upper_idx ON manufacturer (UPPER(name));
 
 --changeset ayushchenko:14
-CREATE UNIQUE INDEX warehouse_name_lower_idx ON warehouse (lower(name));
+CREATE UNIQUE INDEX warehouse_name_upper_idx ON warehouse (UPPER(name));
 
 --changeset ayushchenko:15
 CREATE UNIQUE INDEX pick_up_point_name_lower_idx ON pick_up_point (lower(name));

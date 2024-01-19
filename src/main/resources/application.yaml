@@ -23,6 +23,11 @@ spring:
 #          time-zone: European/Moscow
   messages:
     basename: messages
+    #not working
+#  mvc:
+#    format:
+#      date: iso
+#      date-time: yyyy-MM-dd HH:mm:ss
 
 logging:
   level:

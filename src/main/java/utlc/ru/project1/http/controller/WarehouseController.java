@@ -27,7 +27,7 @@ public class WarehouseController {
     private final CountryService countryService;
 
     @GetMapping
-    public String findAll(Model model, ModelAndView modelAndView) {
+    public String findAll(Model model) {
         var warehouses = warehouseService.findAll();
         model.addAttribute("warehouses", warehouses);
         return "warehouse/warehouses";
@@ -48,7 +48,7 @@ public class WarehouseController {
     @GetMapping("/create")
     public String create(Model model, @ModelAttribute("warehouse") WarehouseCreateUpdateDto createDto) {
         model.addAttribute("warehouse", createDto);
-        model.addAttribute("roles", Role.values());
+        model.addAttribute("countries", countryService.findAll());
         return "warehouse/create";
     }
 
