@@ -26,7 +26,7 @@ public class Route extends AuditingEntity<Long> {
     private String identificationNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "status_id")
+    @JoinColumn(name = "status_id", nullable = false)
     private RouteStatus routeStatus;
 
     @Column(name = "transport_type")
@@ -37,11 +37,11 @@ public class Route extends AuditingEntity<Long> {
     private Boolean isInternational;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "country_of_departure_id")
+    @JoinColumn(name = "country_of_departure_id", referencedColumnName = "id", nullable = false)
     private Country countryOfDeparture;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "country_of_destination_id")
+    @JoinColumn(name = "country_of_destination_id", referencedColumnName = "id", nullable = false)
     private Country countryOfDestination;
 
     @Column(name = "customs_post")

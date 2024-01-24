@@ -34,10 +34,10 @@
     <td th:text="${warehouse.country.nameLocales[__${#locale.language}__]} ?: ${warehouse.country.name}">Country name</td>
     <td th:text="${warehouse.address}">Address</td>
     <td th:text="${warehouse.commentary}">Commentary</td>
-    <td th:text="${warehouse.createdBy}">Created By</td>
-    <td th:text="${warehouse.createdAt}">Created At</td>
-    <td th:text="${warehouse.modifiedBy}">Modified By</td>
-    <td th:text="${warehouse.modifiedAt}">Modified At</td>
+    <td th:text="${warehouse.auditingInfoDto.createdBy}">Created By</td>
+    <td th:text="${#temporals.format(warehouse.auditingInfoDto.createdAt, 'dd.MM.yyyy, HH:mm')}">Created At</td>
+    <td th:text="${warehouse.auditingInfoDto.modifiedBy}">Modified By</td>
+    <td th:text="${#temporals.format(warehouse.auditingInfoDto.modifiedAt, 'dd.MM.yyyy, HH:mm')}">Modified At</td>
     <td>
       <form th:action="@{/warehouses/{warehouseId}/delete(warehouseId=${warehouse.id})}"
             method="post">

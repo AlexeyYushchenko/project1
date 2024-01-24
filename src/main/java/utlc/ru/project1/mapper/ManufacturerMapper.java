@@ -1,6 +1,7 @@
 package utlc.ru.project1.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import utlc.ru.project1.database.entity.Manufacturer;
 import utlc.ru.project1.dto.manufacturer.ManufacturerCreateUpdateDto;
@@ -8,6 +9,7 @@ import utlc.ru.project1.dto.manufacturer.ManufacturerReadDto;
 
 @Mapper
 public interface ManufacturerMapper{
+    @Mapping(target = "auditingInfoDto", source = ".")
     ManufacturerReadDto toDto(Manufacturer manufacturer);  // Entity to DTO
 
     Manufacturer toEntity(ManufacturerCreateUpdateDto dto);  // DTO to Entity

@@ -35,10 +35,10 @@
     <td th:text="${client.businessType.nameLocales[__${#locale.language}__]} ?: ${client.businessType.name}">Business Type name</td>
     <td th:text="${client.industryType.nameLocales[__${#locale.language}__]} ?: ${client.industryType.name}">Industry Type name</td>
     <td th:text="${client.address}">Address</td>
-    <td th:text="${client.createdBy}">Created By</td>
-    <td th:text="${client.createdAt}">Created At</td>
-    <td th:text="${client.modifiedBy}">Modified By</td>
-    <td th:text="${client.modifiedAt}">Modified At</td>
+    <td th:text="${client.auditingInfoDto.createdBy}">Created By</td>
+    <td th:text="${#temporals.format(client.auditingInfoDto.createdAt, 'dd.MM.yyyy, HH:mm')}">Created At</td>
+    <td th:text="${client.auditingInfoDto.modifiedBy}">Modified By</td>
+    <td th:text="${#temporals.format(client.auditingInfoDto.modifiedAt, 'dd.MM.yyyy, HH:mm')}">Modified At</td>
     <td>
       <form th:action="@{/clients/{clientId}/delete(clientId=${client.id})}"
             method="post">

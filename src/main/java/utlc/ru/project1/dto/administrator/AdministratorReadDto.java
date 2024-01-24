@@ -1,9 +1,7 @@
 package utlc.ru.project1.dto.administrator;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import utlc.ru.project1.database.entity.Role;
-
-import java.time.LocalDateTime;
+import utlc.ru.project1.dto.auditinginfo.AuditingInfoDto;
 
 public record AdministratorReadDto(
         Integer id,
@@ -12,9 +10,6 @@ public record AdministratorReadDto(
         String firstname,
         String lastname,
         Role role,
-        LocalDateTime createdAt,
-        LocalDateTime modifiedAt,
-        String createdBy,
-        String modifiedBy
+        AuditingInfoDto auditingInfoDto
 ) {
 }

@@ -74,36 +74,36 @@ CREATE TABLE IF NOT EXISTS warehouse
 --changeset ayushchenko:6
 CREATE TABLE IF NOT EXISTS client
 (
-    id            SERIAL PRIMARY KEY,
-    name          VARCHAR(50)                       NOT NULL UNIQUE,
-    full_name     VARCHAR(100),
-    status_id     INT REFERENCES client_status (id) NOT NULL,
+    id               SERIAL PRIMARY KEY,
+    name             VARCHAR(50)                       NOT NULL UNIQUE,
+    full_name        VARCHAR(100),
+    status_id        INT REFERENCES client_status (id) NOT NULL,
     business_type_id INT REFERENCES business_type (id) NOT NULL,
     industry_type_id INT REFERENCES industry_type (id) NOT NULL,
-    address       VARCHAR(255),
-    created_at    TIMESTAMP DEFAULT NOW(),
-    modified_at   TIMESTAMP DEFAULT NOW(),
-    created_by    VARCHAR(64),
-    modified_by   VARCHAR(64)
+    address          VARCHAR(255),
+    created_at       TIMESTAMP DEFAULT NOW(),
+    modified_at      TIMESTAMP DEFAULT NOW(),
+    created_by       VARCHAR(64),
+    modified_by      VARCHAR(64)
 );
 
 --changeset ayushchenko:7
 CREATE TABLE IF NOT EXISTS route
 (
-    id                     BIGSERIAL PRIMARY KEY,
-    identification_number  VARCHAR(100)                     NOT NULL UNIQUE,
-    status_id              INT REFERENCES route_status (id) NOT NULL,
-    transport_type         VARCHAR(20)                      NOT NULL,              -- e.g., 'road', 'sea', 'air', 'railway'
-    is_international       BOOLEAN                          DEFAULT TRUE, -- flag for international/domestic; CAN BE REMOVED as you can fetch only those rows with different origin/destination countries;
-    country_of_departure_id   INT REFERENCES country (id)      NOT NULL,              -- Foreign key reference to 'countryId'
-    country_of_destination_id INT REFERENCES country (id)      NOT NULL,              -- Foreign key reference to 'countryId'
-    customs_post           VARCHAR(50)                      NULL,                  -- NULL for domestic routes
-    departure_date         TIMESTAMP,                                                   -- The scheduled departure date
-    arrival_date           TIMESTAMP,                                                   -- The scheduled arrival date
-    created_at             TIMESTAMP                                 DEFAULT NOW(),
-    modified_at            TIMESTAMP                                 DEFAULT NOW(),
-    created_by             VARCHAR(64),
-    modified_by            VARCHAR(64)
+    id                        BIGSERIAL PRIMARY KEY,
+    identification_number     VARCHAR(100)                     NOT NULL UNIQUE,
+    status_id                 INT REFERENCES route_status (id) NOT NULL,
+    transport_type            VARCHAR(20)                      NOT NULL, -- e.g., 'road', 'sea', 'air', 'railway'
+    is_international          BOOLEAN   DEFAULT TRUE,                    -- flag for international/domestic; CAN BE REMOVED as you can fetch only those rows with different origin/destination countries;
+    country_of_departure_id   INT REFERENCES country (id)      NOT NULL, -- Foreign key reference to 'countryId'
+    country_of_destination_id INT REFERENCES country (id)      NOT NULL, -- Foreign key reference to 'countryId'
+    customs_post              VARCHAR(50)                      NULL,     -- NULL for domestic routes
+    departure_date            TIMESTAMP,                                 -- The scheduled departure date
+    arrival_date              TIMESTAMP,                                 -- The scheduled arrival date
+    created_at                TIMESTAMP DEFAULT NOW(),
+    modified_at               TIMESTAMP DEFAULT NOW(),
+    created_by                VARCHAR(64),
+    modified_by               VARCHAR(64)
 );
 
 --changeset ayushchenko:8
@@ -174,9 +174,9 @@ CREATE TABLE IF NOT EXISTS shipment
     warehouse_diff_comment  TEXT,
 
     -- Origin and Destination
-    country_of_departure    INT REFERENCES country (id),
-    manufacturer_id         INT REFERENCES manufacturer (id),
-    country_of_destination  INT REFERENCES country (id),
+    country_of_departure    INT REFERENCES country (id)            NOT NULL,
+    manufacturer_id         INT REFERENCES manufacturer (id)       NOT NULL,
+    country_of_destination  INT REFERENCES country (id)            NOT NULL,
 
     -- Auditing
     created_at              TIMESTAMP                    DEFAULT NOW(),

@@ -19,26 +19,35 @@
   <thead>
   <tr>
     <th>ID</th>
-    <th th:text="#{entity.route.field.name}">Name</th>
+    <th th:text="#{entity.route.field.identificationNumber}">Identification Number</th>
     <th th:text="#{entity.route.field.routeStatus}">Route Status</th>
-    <th th:text="#{entity.route.field.businessType}">Business Type</th>
-    <th th:text="#{entity.route.field.industryType}">Industry Type</th>
-    <th th:text="#{entity.route.field.address}">Address</th>
+    <th th:text="#{entity.route.field.transportType}">Transport Type</th>
+    <th th:text="#{entity.route.field.isInternational}">International</th>
+    <th th:text="#{entity.route.field.countryOfDeparture}">countryOfDeparture</th>
+    <th th:text="#{entity.route.field.countryOfDestination}">countryOfDestination</th>
+    <th th:text="#{entity.route.field.customsPost}">Customs Post</th>
+    <th th:text="#{entity.route.field.departureDate}">Departure Date</th>
+    <th th:text="#{entity.route.field.arrivalDate}">Arrival Date</th>
     <dif th:insert="~{fragments::common_fields}"></dif>
   </tr>
   </thead>
   <tbody>
   <tr th:each="route : ${routes}">
     <td th:text="${route.id}">ID</td>
-    <td><a th:href="@{'/routes/' + ${route.id}}" th:text="${route.name}">Name</a></td>
-    <td th:text="${route.routeStatus.nameLocales[__${#locale.language}__]} ?: ${route.routeStatus.name}">Route Status name</td>
-    <td th:text="${route.businessType.nameLocales[__${#locale.language}__]} ?: ${route.businessType.name}">Business Type name</td>
-    <td th:text="${route.industryType.nameLocales[__${#locale.language}__]} ?: ${route.industryType.name}">Industry Type name</td>
-    <td th:text="${route.address}">Address</td>
-    <td th:text="${route.createdBy}">Created By</td>
-    <td th:text="${route.createdAt}">Created At</td>
-    <td th:text="${route.modifiedBy}">Modified By</td>
-    <td th:text="${route.modifiedAt}">Modified At</td>
+    <td><a th:href="@{'/routes/' + ${route.id}}" th:text="${route.identificationNumber}">Identification Number</a></td>
+    <td th:text="${route.routeStatus.nameLocales[__${#locale.language}__]} ?: ${route.routeStatus.name}">Route status name</td>
+    <td th:text="${route.transportType}">Transport Type</td>
+    <td th:text="${route.isInternational}">International</td>
+    <td th:text="${route.countryOfDeparture.nameLocales[__${#locale.language}__]} ?: ${route.countryOfDeparture.name}">Country Of Departure</td>
+    <td th:text="${route.countryOfDestination.nameLocales[__${#locale.language}__]} ?: ${route.countryOfDestination.name}">Country Of Destination</td>
+    <td th:text="${route.customsPost}">Customs Post</td>
+    <td th:text="${#temporals.format(route.departureDate, 'dd.MM.yyyy')}">Departure Date</td>
+    <td th:text="${#temporals.format(route.arrivalDate, 'dd.MM.yyyy')}">Arrival Date</td>
+
+    <td th:text="${route.auditingInfoDto.createdBy}">Created By</td>
+    <td th:text="${#temporals.format(route.auditingInfoDto.createdAt, 'dd.MM.yyyy, HH:mm')}">Created At</td>
+    <td th:text="${route.auditingInfoDto.modifiedBy}">Modified By</td>
+    <td th:text="${#temporals.format(route.auditingInfoDto.modifiedAt, 'dd.MM.yyyy, HH:mm')}">Modified At</td>
     <td>
       <form th:action="@{/routes/{routeId}/delete(routeId=${route.id})}"
             method="post">

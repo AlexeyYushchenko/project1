@@ -76,12 +76,12 @@
 
         <div class="form-group">
             <label for="departureDate" class="form-label" th:text="#{entity.route.field.departureDate}">Departure Date:</label>
-            <input id="departureDate" type="datetime-local" name="departureDate" th:value="${#temporals.format(route.departureDate, 'yyyy-MM-dd\'T\'HH:mm')}" aria-label="Departure Date" class="form-input">
+            <input id="departureDate" type="datetime-local" name="departureDate" th:value="*{departureDate}" aria-label="Departure Date" class="form-input">
         </div>
 
         <div class="form-group">
             <label for="arrivalDate" class="form-label" th:text="#{entity.route.field.arrivalDate}">Arrival Date:</label>
-            <input id="arrivalDate" type="datetime-local" name="arrivalDate" th:value="${#temporals.format(route.arrivalDate, 'yyyy-MM-dd\'T\'HH:mm')}" aria-label="Arrival Date" class="form-input">
+            <input id="arrivalDate" type="datetime-local" name="arrivalDate" th:value="*{arrivalDate}" aria-label="Arrival Date" class="form-input">
         </div>
 
         <button type="submit" th:text="#{ui.button.update.label}">Update</button>

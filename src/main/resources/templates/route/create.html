@@ -15,16 +15,16 @@
 <form th:action="@{/routes}" method="post" class="route-form" th:object="${route}">
 
     <div class="form-group">
-        <label for="identificationNumber" class="form-label" th:text="#{entity.route.field.identificationNumber}">Route's
-            identification number:</label>
+        <label for="identificationNumber" class="form-label" th:text="#{entity.route.field.identificationNumber}">Route's identification number:</label>
         <input id="identificationNumber" type="text" name="identificationNumber" th:value="*{identificationNumber}"
-               aria-label="Route's identification number" class="form-input">
+               aria-label="Route's identification number" class="form-input" required th:required="required" th:attr="title=#{field.required.message}">
     </div>
 
     <div class="form-group">
         <label for="routeStatus" class="form-label" th:text="#{entity.route.field.routeStatus}">Route
             Status:</label>
-        <select id="routeStatus" name="routeStatusId">
+        <select id="routeStatus" name="routeStatusId" required th:required="required" th:attr="title=#{field.required.message}">
+            <option value="" th:selected="${route.routeStatusId == null}"></option>
             <option th:each="routeStatus : ${routeStatuses}"
                     th:value="${routeStatus.id}"
                     th:selected="${routeStatus.id == route.routeStatusId}"
@@ -38,7 +38,7 @@
         <label for="transportType" class="form-label" th:text="#{entity.route.field.transportType}">Route's
             transportType:</label>
         <input id="transportType" type="text" name="transportType" th:value="*{transportType}"
-               aria-label="TransportType" class="form-input">
+               aria-label="TransportType" class="form-input" required th:required="required" th:attr="title=#{field.required.message}">
     </div>
 
     <div class="form-group">
@@ -48,7 +48,8 @@
 
     <div class="form-group">
         <label for="countryOfDeparture" class="form-label" th:text="#{entity.route.field.countryOfDeparture}">Country of departure:</label>
-        <select id="countryOfDeparture" name="countryOfDepartureId">
+        <select id="countryOfDeparture" name="countryOfDepartureId" required th:required="required" th:attr="title=#{field.required.message}">
+            <option value="" th:selected="${route.countryOfDepartureId == null}"></option>
             <option th:each="country : ${countries}"
                     th:value="${country.id}"
                     th:selected="${country.id == route.countryOfDepartureId}"
@@ -59,7 +60,8 @@
 
     <div class="form-group">
         <label for="countryOfDestination" class="form-label" th:text="#{entity.route.field.countryOfDestination}">Country of destination:</label>
-        <select id="countryOfDestination" name="countryOfDestinationId">
+        <select id="countryOfDestination" name="countryOfDestinationId" required th:required="required" th:attr="title=#{field.required.message}">
+            <option value="" th:selected="${route.countryOfDestinationId == null}"></option>
             <option th:each="country : ${countries}"
                     th:value="${country.id}"
                     th:selected="${country.id == route.countryOfDestinationId}"
@@ -70,18 +72,17 @@
 
     <div class="form-group">
         <label for="customsPost" class="form-label" th:text="#{entity.route.field.customsPost}">Customs Post:</label>
-        <input id="customsPost" type="text" name="customsPost" th:value="*{customsPost}" aria-label="Customs Post"
-               class="form-input">
+        <input id="customsPost" type="text" name="customsPost" th:value="*{customsPost}" aria-label="Customs Post" class="form-input">
     </div>
 
     <div class="form-group">
         <label for="departureDate" class="form-label" th:text="#{entity.route.field.departureDate}">Departure Date:</label>
-        <input id="departureDate" type="datetime-local" name="departureDate" th:value="${#temporals.format(route.departureDate, 'yyyy-MM-dd\'T\'HH:mm')}" aria-label="Departure Date" class="form-input">
+        <input id="departureDate" type="datetime-local" name="departureDate" th:value="*{departureDate}" aria-label="Departure Date" class="form-input">
     </div>
 
     <div class="form-group">
         <label for="arrivalDate" class="form-label" th:text="#{entity.route.field.arrivalDate}">Arrival Date:</label>
-        <input id="arrivalDate" type="datetime-local" name="arrivalDate" th:value="${#temporals.format(route.arrivalDate, 'yyyy-MM-dd\'T\'HH:mm')}" aria-label="Arrival Date" class="form-input">
+        <input id="arrivalDate" type="datetime-local" name="arrivalDate" th:value="${#temporals.format(route.arrivalDate, 'yyyy-MM-dd')}" aria-label="Arrival Date" class="form-input">
     </div>
 
     <button type="submit" th:text="#{ui.button.add.label}" class="submit-button">Add</button>

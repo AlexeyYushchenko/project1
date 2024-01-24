@@ -39,6 +39,7 @@ public class RouteController {
         return routeService.findById(id)
                 .map(route -> {
                     model.addAttribute("route", route);
+                    model.addAttribute("routeStatuses", routeStatusService.findAll());
                     model.addAttribute("countries", countryService.findAll());
                     return "route/route";
                 })

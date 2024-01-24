@@ -27,10 +27,10 @@
     <tr th:each="invoiceStatus : ${invoiceStatuses}">
         <td th:text="${invoiceStatus.id}">ID</td>
         <td><a th:href="@{'/invoiceStatuses/' + ${invoiceStatus.id}}" th:text="${invoiceStatus.nameLocales[__${#locale.language}__]} ?: ${invoiceStatus.name}">Name</a></td>
-        <td th:text="${invoiceStatus.createdBy}">Created By</td>
-        <td th:text="${invoiceStatus.createdAt}">Created At</td>
-        <td th:text="${invoiceStatus.modifiedBy}">Modified By</td>
-        <td th:text="${invoiceStatus.modifiedAt}">Modified At</td>
+        <td th:text="${invoiceStatus.auditingInfoDto.createdBy}">Created By</td>
+        <td th:text="${#temporals.format(invoiceStatus.auditingInfoDto.createdAt, 'dd.MM.yyyy, HH:mm')}">Created At</td>
+        <td th:text="${invoiceStatus.auditingInfoDto.modifiedBy}">Modified By</td>
+        <td th:text="${#temporals.format(invoiceStatus.auditingInfoDto.modifiedAt, 'dd.MM.yyyy, HH:mm')}">Modified At</td>
         <td>
             <form th:action="@{/invoiceStatuses/{invoiceStatusId}/delete(invoiceStatusId=${invoiceStatus.id})}"
                   method="post">

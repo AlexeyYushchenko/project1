@@ -3,12 +3,9 @@ package utlc.ru.project1.dto.route;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record RouteCreateUpdateDto(
-
         @NotNull(message = "validation.route.identificationNumber.required")
         @Pattern(regexp = ".*\\S.*", message = "validation.route.identificationNumber.pattern")
         @Size(min = 2, max = 100, message = "validation.route.identificationNumber.size")

@@ -30,7 +30,8 @@ public class SecurityConfiguration {
                         .anyRequest().permitAll()); // Permit all requests without authentication
         return http.build();
 
-//        http.csrf(AbstractHttpConfigurer::disable)  //todo remove the '.disable' option
+//        http
+//                .csrf(AbstractHttpConfigurer::disable)  //todo remove the '.disable' option
 //                .httpBasic(Customizer.withDefaults())
 //                .authorizeHttpRequests((authz) -> authz
 //                        .requestMatchers("/images/**", "/css/**", "/js/**")

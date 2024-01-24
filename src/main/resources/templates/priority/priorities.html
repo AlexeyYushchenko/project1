@@ -29,10 +29,10 @@
         <td th:text="${priority.id}">ID</td>
         <td><a th:href="@{'/priorities/' + ${priority.id}}" th:text="${priority.nameLocales[__${#locale.language}__]} ?: ${priority.name}">Name</a></td>
         <td><a th:href="@{'/priorities/' + ${priority.id}}" th:text="${priority.descriptionLocales[__${#locale.language}__]} ?: ${priority.description}">Description</a></td>
-        <td th:text="${priority.createdBy}">Created By</td>
-        <td th:text="${priority.createdAt}">Created At</td>
-        <td th:text="${priority.modifiedBy}">Modified By</td>
-        <td th:text="${priority.modifiedAt}">Modified At</td>
+        <td th:text="${priority.auditingInfoDto.createdBy}">Created By</td>
+        <td th:text="${#temporals.format(priority.auditingInfoDto.createdAt, 'dd.MM.yyyy, HH:mm')}">Created At</td>
+        <td th:text="${priority.auditingInfoDto.modifiedBy}">Modified By</td>
+        <td th:text="${#temporals.format(priority.auditingInfoDto.modifiedAt, 'dd.MM.yyyy, HH:mm')}">Modified At</td>
         <td>
             <form th:action="@{/priorities/{priorityId}/delete(priorityId=${priority.id})}"
                   method="post">

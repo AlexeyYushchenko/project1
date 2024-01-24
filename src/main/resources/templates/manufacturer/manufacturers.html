@@ -34,10 +34,10 @@
     <td th:text="${manufacturer.country.nameLocales[__${#locale.language}__]} ?: ${manufacturer.country.name}">Country name</td>
     <td th:text="${manufacturer.address}">Address</td>
     <td th:text="${manufacturer.commentary}">Commentary</td>
-    <td th:text="${manufacturer.createdBy}">Created By</td>
-    <td th:text="${manufacturer.createdAt}">Created At</td>
-    <td th:text="${manufacturer.modifiedBy}">Modified By</td>
-    <td th:text="${manufacturer.modifiedAt}">Modified At</td>
+    <td th:text="${manufacturer.auditingInfoDto.createdBy}">Created By</td>
+    <td th:text="${#temporals.format(manufacturer.auditingInfoDto.createdAt, 'dd.MM.yyyy, HH:mm')}">Created At</td>
+    <td th:text="${manufacturer.auditingInfoDto.modifiedBy}">Modified By</td>
+    <td th:text="${#temporals.format(manufacturer.auditingInfoDto.modifiedAt, 'dd.MM.yyyy, HH:mm')}">Modified At</td>
     <td>
       <form th:action="@{/manufacturers/{manufacturerId}/delete(manufacturerId=${manufacturer.id})}"
             method="post">

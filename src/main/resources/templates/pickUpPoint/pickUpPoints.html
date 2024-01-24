@@ -32,10 +32,10 @@
     <td><a th:href="@{'/pickUpPoints/' + ${pickUpPoint.id}}" th:text="${pickUpPoint.nameLocales[__${#locale.language}__]} ?: ${pickUpPoint.name}">Name</a></td>
     <td th:text="${pickUpPoint.country.nameLocales[__${#locale.language}__]} ?: ${pickUpPoint.country.name}">Country name</td>
     <td><a th:href="@{'/pickUpPoints/' + ${pickUpPoint.id}}" th:text="${pickUpPoint.addressLocales[__${#locale.language}__]} ?: ${pickUpPoint.address}">Address</a></td>
-    <td th:text="${pickUpPoint.createdBy}">Created By</td>
-    <td th:text="${pickUpPoint.createdAt}">Created At</td>
-    <td th:text="${pickUpPoint.modifiedBy}">Modified By</td>
-    <td th:text="${pickUpPoint.modifiedAt}">Modified At</td>
+    <td th:text="${pickUpPoint.auditingInfoDto.createdBy}">Created By</td>
+    <td th:text="${#temporals.format(pickUpPoint.auditingInfoDto.createdAt, 'dd.MM.yyyy, HH:mm')}">Created At</td>
+    <td th:text="${pickUpPoint.auditingInfoDto.modifiedBy}">Modified By</td>
+    <td th:text="${#temporals.format(pickUpPoint.auditingInfoDto.modifiedAt, 'dd.MM.yyyy, HH:mm')}">Modified At</td>
     <td>
       <form th:action="@{/pickUpPoints/{pickUpPointId}/delete(pickUpPointId=${pickUpPoint.id})}"
             method="post">

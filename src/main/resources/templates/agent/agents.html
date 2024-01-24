@@ -31,10 +31,10 @@
     <td><a th:href="@{'/agents/' + ${agent.id}}" th:text="${agent.name}">Name</a></td>
     <td th:text="${agent.phone}">Phone</td>
     <td th:text="${agent.commentary}">Commentary</td>
-    <td th:text="${agent.createdBy}">Created By</td>
-    <td th:text="${agent.createdAt}">Created At</td>
-    <td th:text="${agent.modifiedBy}">Modified By</td>
-    <td th:text="${agent.modifiedAt}">Modified At</td>
+    <td th:text="${agent.auditingInfoDto.createdBy}">Created By</td>
+    <td th:text="${#temporals.format(agent.auditingInfoDto.createdAt, 'dd.MM.yyyy, HH:mm')}">Created At</td>
+    <td th:text="${agent.auditingInfoDto.modifiedBy}">Modified By</td>
+    <td th:text="${#temporals.format(agent.auditingInfoDto.modifiedAt, 'dd.MM.yyyy, HH:mm')}">Modified At</td>
     <td>
       <form th:action="@{/agents/{agentId}/delete(agentId=${agent.id})}"
             method="post">

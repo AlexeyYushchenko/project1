@@ -31,10 +31,10 @@
         <td><a th:href="@{'/countries/' + ${country.id}}" th:text="${country.nameLocales[__${#locale.language}__]} ?: ${country.name}">Country name</a></td>
         <td th:text="${country.code}">Code</td>
         <td th:text="${country.isActive}">isActive</td>
-        <td th:text="${country.createdBy}">Created By</td>
-        <td th:text="${country.createdAt}">Created At</td>
-        <td th:text="${country.modifiedBy}">Modified By</td>
-        <td th:text="${country.modifiedAt}">Modified At</td>
+        <td th:text="${country.auditingInfoDto.createdBy}">Created By</td>
+        <td th:text="${#temporals.format(country.auditingInfoDto.createdAt, 'dd.MM.yyyy, HH:mm')}">Created At</td>
+        <td th:text="${country.auditingInfoDto.modifiedBy}">Modified By</td>
+        <td th:text="${#temporals.format(country.auditingInfoDto.modifiedAt, 'dd.MM.yyyy, HH:mm')}">Modified At</td>
         <td>
             <form th:action="@{/countries/{countryId}/delete(countryId=${country.id})}"
                   method="post">

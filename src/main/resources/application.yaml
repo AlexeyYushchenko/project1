@@ -24,10 +24,10 @@ spring:
   messages:
     basename: messages
     #not working
-#  mvc:
-#    format:
+  mvc:
+    format:
 #      date: iso
-#      date-time: yyyy-MM-dd HH:mm:ss
+      date-time: dd.MM.yyyy HH:mm:ss
 
 logging:
   level:

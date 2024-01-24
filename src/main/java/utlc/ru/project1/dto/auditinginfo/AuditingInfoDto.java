@@ -2,7 +2,7 @@ package utlc.ru.project1.dto.auditinginfo;
 
 import java.time.LocalDateTime;
 
-public record AuditingInfo(
+public record AuditingInfoDto(
         LocalDateTime createdAt,
         LocalDateTime modifiedAt,
         String createdBy,

@@ -75,7 +75,7 @@ public class Shipment extends AuditingEntity<Long> {
     private PickUpPoint pickUpPoint;
 
     @Column(name = "destination_address")
-    private String destination_address;
+    private String destinationAddress;
 
     //client-provided information
     @Column(name = "client_pcs")
@@ -119,8 +119,6 @@ public class Shipment extends AuditingEntity<Long> {
     @JoinColumn(name = "country_of_destination")
     private Country countryOfDestination;
 
-    // If you have a status history table
     @OneToMany(mappedBy = "shipment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ShipmentStatusHistory> statusHistories;
-
 }

@@ -29,10 +29,10 @@
         <td th:text="${industryType.id}">ID</td>
         <td><a th:href="@{'/industryTypes/' + ${industryType.id}}" th:text="${industryType.nameLocales[__${#locale.language}__]} ?: ${industryType.name}">Name</a></td>
         <td><a th:href="@{'/industryTypes/' + ${industryType.id}}" th:text="${industryType.descriptionLocales[__${#locale.language}__]} ?: ${industryType.description}">Description</a></td>
-        <td th:text="${industryType.createdBy}">Created By</td>
-        <td th:text="${industryType.createdAt}">Created At</td>
-        <td th:text="${industryType.modifiedBy}">Modified By</td>
-        <td th:text="${industryType.modifiedAt}">Modified At</td>
+        <td th:text="${industryType.auditingInfoDto.createdBy}">Created By</td>
+        <td th:text="${#temporals.format(industryType.auditingInfoDto.createdAt, 'dd.MM.yyyy, HH:mm')}">Created At</td>
+        <td th:text="${industryType.auditingInfoDto.modifiedBy}">Modified By</td>
+        <td th:text="${#temporals.format(industryType.auditingInfoDto.modifiedAt, 'dd.MM.yyyy, HH:mm')}">Modified At</td>
         <td>
             <form th:action="@{/industryTypes/{industryTypeId}/delete(industryTypeId=${industryType.id})}"
                   method="post">
