@@ -22,7 +22,7 @@ public class Shipment extends AuditingEntity<Long> {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id", nullable = false)
-    private ShipmentStatus status;
+    private ShipmentStatus shipmentStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", nullable = false)
