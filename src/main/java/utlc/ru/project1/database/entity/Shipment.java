@@ -1,10 +1,8 @@
 package utlc.ru.project1.database.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -48,27 +46,27 @@ public class Shipment extends AuditingEntity<Long> {
     @Column(name = "date_placed")
     private LocalDateTime datePlaced;
 
-    @Column(name = "date_checked")
-    private LocalDateTime dateChecked;
+    @Column(name = "date_order_processed")
+    private LocalDateTime dateOrderProcessed;
 
-    @Column(name = "date_ready_dispatch")
-    private LocalDateTime dateReadyDispatch;
+    @Column(name = "date_ready_for_dispatch")
+    private LocalDateTime dateReadyForDispatch;
+
+    @Column(name = "date_confirmed_dispatch")
+    private LocalDateTime dateConfirmedDispatch;
 
     @Column(name = "date_reached_warehouse")
     private LocalDateTime dateReachedWarehouse;
 
-    @Column(name = "date_loading")
-    private LocalDateTime dateLoading;
+    @Column(name = "departure_date")
+    private LocalDateTime departureDate;
 
-    @Column(name = "date_unloading")
-    private LocalDateTime dateUnloading;
+    @Column(name = "arrival_date")
+    private LocalDateTime arrivalDate;
 
     //Delivery Type and Address
     @Column(name = "delivery_type", nullable = false)
     private String deliveryType;
-
-    @Column(name = "date_confirmed_dispatch", nullable = false)
-    private LocalDateTime dateConfirmedDispatch;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pick_up_point_id")
@@ -119,6 +117,12 @@ public class Shipment extends AuditingEntity<Long> {
     @JoinColumn(name = "country_of_destination")
     private Country countryOfDestination;
 
-    @OneToMany(mappedBy = "shipment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ShipmentStatusHistory> statusHistories;
+    //todo add history of statuses with dates and authors
+//    @ElementCollection
+//    @CollectionTable(name = "shipment_status_history",
+//            joinColumns = @JoinColumn(name = "shipment_id"))
+//    @MapKeyColumn(name = "language_code")
+//    @Column(name = "localized_name")
+//    @OneToMany(mappedBy = "shipment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<ShipmentStatusHistory> statusHistories;
 }

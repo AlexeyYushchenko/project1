@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+    <title th:text="#{entity.shipment.label.registration}">Create a new shipment</title>
+    <style>
+        .error {
+            border: 2px solid red;
+        }
+    </style>
+</head>
+<body>
+<div th:insert="~{fragments::locale}"></div>
+
+<h1 th:text="#{entity.shipment.create.page.label}">Shipment registration</h1>
+
+<h3 th:text="#{entity.shipment.label.add}">Add a new shipment</h3>
+
+<form th:action="@{/shipments}" method="post" class="shipment-form" th:object="${shipment}">
+
+    <div class="accordion" id="shipmentAccordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button custom-color" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#shipmentInformation" aria-expanded="true"
+                        aria-controls="shipmentInformation"
+                        th:text="#{entity.shipment.section.shipmentInformation}">
+                    Shipment Information
+                </button>
+            </h2>
+            <div id="shipmentInformation" class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                    <div class="form-group">
+                        <label for="shipmentStatus" class="form-label"
+                               th:text="#{entity.shipment.field.shipmentStatus}">Shipment
+                            Status:</label>
+                        <select id="shipmentStatus" name="shipmentStatusId">
+                            <option th:each="shipmentStatus : ${shipmentStatuses}"
+                                    th:value="${shipmentStatus.id}"
+                                    th:selected="${shipmentStatus.id == shipment.shipmentStatusId}"
+                                    th:text="${shipmentStatus.nameLocales[__${#locale.language}__]} ?: ${shipmentStatus.name}"
+                                    aria-label="Shipment Status">Shipment Status
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="internalComment" class="form-label"
+                               th:text="#{entity.shipment.field.internalComment}">Internal
+                            Comment:</label>
+                        <textarea id="internalComment" th:text="*{internalComment}" name="internalComment"
+                                  th:value="*{internalComment}" rows="3" class="form-input auto-expand"
+                                  aria-label="Internal Comment"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="priority" class="form-label"
+                               th:text="#{entity.shipment.field.priority}">Priority:</label>
+                        <select id="priority" name="priorityId">
+                            <option th:each="priority : ${priorities}"
+                                    th:value="${priority.id}"
+                                    th:selected="${priority.id == shipment.priorityId}"
+                                    th:text="${priority.nameLocales[__${#locale.language}__]} ?: ${priority.name}"
+                                    aria-label="Priority">Priority
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="route" class="form-label" th:text="#{entity.shipment.field.route}">Route:</label>
+                        <select id="route" name="routeId">
+                            <!-- Option for 'no selection' -->
+                            <option value="" th:selected="${shipment.routeId() == null}"></option>
+                            <!-- Options for each route -->
+                            <option th:each="route : ${routes}"
+                                    th:value="${route.id}"
+                                    th:selected="${route.id == shipment.routeId}"
+                                    th:text="${route.identificationNumber}"
+                                    aria-label="Route">Route
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button custom-color" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#clientInformation" aria-expanded="true"
+                        aria-controls="clientInformation"
+                        th:text="#{entity.shipment.section.clientInformation}">
+                    Client information
+                </button>
+            </h2>
+            <div id="clientInformation" class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                    <div class="form-group">
+                        <label for="client" class="form-label" th:text="#{entity.shipment.field.client}">Client:</label>
+                        <select id="client" name="clientId" th:required="required">
+                            <option value="" th:selected="${shipment.routeId() == null}"></option>
+                            <option th:each="client : ${clients}" th:value="${client.id}"
+                                    th:selected="${client.id == shipment.clientId}"
+                                    th:text="${client.name}"
+                                    aria-label="Client">Client
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientComment" class="form-label" th:text="#{entity.shipment.field.clientComment}">Client
+                            Comment</label>
+                        <textarea id="clientComment" th:text="*{clientComment}" name="clientComment"
+                                  th:value="*{clientComment}" rows="3" class="form-input auto-expand"
+                                  aria-label="Client Comment"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button custom-color" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#cargoDetails" aria-expanded="true"
+                        aria-controls="cargoDetails"
+                        th:text="#{entity.shipment.section.cargoDetails}">
+                    Cargo Details
+                </button>
+            </h2>
+            <div id="cargoDetails" class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                    <div class="form-group">
+                        <label for="shipmentType" class="form-label"
+                               th:text="#{entity.shipment.field.shipmentType}">shipmentType:</label>
+                        <input id="shipmentType" type="text" name="shipmentType" th:value="*{shipmentType}"
+                               aria-label="Shipment Type" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="shipmentDescription" class="form-label"
+                               th:text="#{entity.shipment.field.shipmentDescription}">Shipment
+                            Description:</label>
+                        <textarea id="shipmentDescription" th:text="*{shipmentDescription}" name="shipmentDescription"
+                                  th:value="*{shipmentDescription}" rows="3" class="form-input auto-expand"
+                                  aria-label="Shipment Description"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button custom-color" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#cargoDimensions" aria-expanded="true"
+                        aria-controls="cargoDimensions"
+                        th:text="#{entity.shipment.section.cargoDimensions}">
+                    Cargo Dimensions
+                </button>
+            </h2>
+            <div id="cargoDimensions" class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                    <div class="form-group">
+                        <label for="clientPcs" class="form-label" th:text="#{entity.shipment.field.clientPcs}">Client
+                            Pcs:</label>
+                        <input id="clientPcs" type="text" name="clientPcs" th:value="*{clientPcs}"
+                               aria-label="Client Pcs"
+                               class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="clientVolumeM3" class="form-label"
+                               th:text="#{entity.shipment.field.clientVolumeM3}">clientVolumeM3:</label>
+                        <input id="clientVolumeM3" type="text" name="clientVolumeM3" th:value="*{clientVolumeM3}"
+                               aria-label="Client Volume M3" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="clientWeightKg" class="form-label"
+                               th:text="#{entity.shipment.field.clientWeightKg}">clientWeightKg:</label>
+                        <input id="clientWeightKg" type="text" name="clientWeightKg" th:value="*{clientWeightKg}"
+                               aria-label="Client Weight Kg" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="warehousePcs" class="form-label" th:text="#{entity.shipment.field.warehousePcs}">Warehouse
+                            Pcs:</label>
+                        <input id="warehousePcs" type="text" name="warehousePcs" th:value="*{warehousePcs}"
+                               aria-label="Warehouse Pcs" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="warehouseVolumeM3" class="form-label"
+                               th:text="#{entity.shipment.field.warehouseVolumeM3}">warehouseVolumeM3:</label>
+                        <input id="warehouseVolumeM3" type="text" name="warehouseVolumeM3"
+                               th:value="*{warehouseVolumeM3}"
+                               aria-label="warehouseVolumeM3" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="warehouseWeightKg" class="form-label"
+                               th:text="#{entity.shipment.field.warehouseWeightKg}">warehouseWeightKg:</label>
+                        <input id="warehouseWeightKg" type="text" name="warehouseWeightKg"
+                               th:value="*{warehouseWeightKg}"
+                               aria-label="warehouseWeightKg" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="warehouseComment" class="form-label"
+                               th:text="#{entity.shipment.field.warehouseComment}">Warehouse
+                            Comment:</label>
+                        <textarea id="warehouseComment" th:text="*{warehouseComment}" name="warehouseComment"
+                                  th:value="*{warehouseComment}" rows="1" class="form-input auto-expand"
+                                  aria-label="Warehouse Comment"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="warehouseDiffComment" class="form-label"
+                               th:text="#{entity.shipment.field.warehouseDiffComment}">Warehouse Diff Comment:</label>
+                        <textarea id="warehouseDiffComment" th:text="*{warehouseDiffComment}"
+                                  name="warehouseDiffComment"
+                                  th:value="*{warehouseDiffComment}" rows="3" class="form-input auto-expand"
+                                  aria-label="Warehouse Diff Comment"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button custom-color" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#logisticsInformation" aria-expanded="true"
+                        aria-controls="logisticsInformation"
+                        th:text="#{entity.shipment.section.logisticsInformation}">
+                    Logistics Information
+                </button>
+            </h2>
+            <div id="logisticsInformation" class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                    <div class="form-group">
+                        <label for="countryOfDeparture" class="form-label"
+                               th:text="#{entity.shipment.field.countryOfDeparture}">Country
+                            of departure:</label>
+                        <select id="countryOfDeparture" name="countryOfDepartureId" th:required="required">
+                            <option value="" th:selected="${shipment.routeId() == null}"></option>
+                            <option th:each="country : ${countries}"
+                                    th:value="${country.id}"
+                                    th:selected="${country.id == shipment.countryOfDepartureId}"
+                                    th:text="${country.nameLocales[__${#locale.language}__]} ?: ${country.name}"
+                                    aria-label="Name">Country of departure
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="countryOfDestination" class="form-label"
+                               th:text="#{entity.shipment.field.countryOfDestination}">Country of destination:</label>
+                        <select id="countryOfDestination" name="countryOfDestinationId" th:required="required">
+                            <option value="" th:selected="${shipment.routeId() == null}"></option>
+                            <option th:each="country : ${countries}"
+                                    th:value="${country.id}"
+                                    th:selected="${country.id == shipment.countryOfDestinationId}"
+                                    th:text="${country.nameLocales[__${#locale.language}__]} ?: ${country.name}"
+                                    aria-label="Name">Country of destination
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="manufacturer" class="form-label"
+                               th:text="#{entity.shipment.field.manufacturer}">Manufacturer:</label>
+                        <select id="manufacturer" name="manufacturerId" th:required="required">
+                            <option th:each="manufacturer : ${manufacturers}"
+                                    th:value="${manufacturer.id}"
+                                    th:selected="${manufacturer.id == shipment.manufacturerId}"
+                                    th:text="${manufacturer.name}"
+                                    aria-label="Manufacturer">Manufacturer
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="deliveryType" class="form-label" th:text="#{entity.shipment.field.deliveryType}">Delivery
+                            Type:</label>
+                        <input id="deliveryType" type="text" name="deliveryType" th:value="*{deliveryType}"
+                               aria-label="Delivery Type" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pickUpPoint" class="form-label" th:text="#{entity.shipment.field.pickUpPoint}">Pick-Up
+                            Point:</label>
+                        <select id="pickUpPoint" name="pickUpPointId">
+                            <!-- Default prompt for user to make a selection -->
+                            <option value="" disabled selected></option>
+
+                            <!-- Iterating through pickUpPoints to populate the dropdown -->
+                            <option th:each="pickUpPoint : ${pickUpPoints}"
+                                    th:value="${pickUpPoint.id}"
+                                    th:selected="${shipment.pickUpPointId() != null and pickUpPoint.id == shipment.pickUpPointId()}"
+                                    th:text="${pickUpPoint.name}"
+                                    aria-label="Pick-Up Point">Pick-Up Point
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="destinationAddress" class="form-label"
+                               th:text="#{entity.shipment.field.destinationAddress}">Destination
+                            Address:</label>
+                        <textarea id="destinationAddress" th:text="*{destinationAddress}" name="destinationAddress"
+                                  th:value="*{destinationAddress}" rows="3" class="form-input auto-expand"
+                                  aria-label="Destination Address"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="datePlaced" class="form-label" th:text="#{entity.shipment.field.datePlaced}">Order
+                            Placed</label>
+                        <input id="datePlaced" type="datetime-local" name="datePlaced" th:value="*{datePlaced}"
+                               aria-label="Order Placed" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dateOrderProcessed" class="form-label"
+                               th:text="#{entity.shipment.field.dateOrderProcessed}">Order
+                            Processed</label>
+                        <input id="dateOrderProcessed" type="datetime-local" name="dateOrderProcessed"
+                               th:value="*{dateOrderProcessed}" aria-label="Order Processed" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dateReadyForDispatch" class="form-label"
+                               th:text="#{entity.shipment.field.dateReadyForDispatch}">Ready For Dispatch</label>
+                        <input id="dateReadyForDispatch" type="datetime-local" name="dateReadyForDispatch"
+                               th:value="*{dateReadyForDispatch}"
+                               aria-label="Ready For Dispatch" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dateConfirmedDispatch" class="form-label"
+                               th:text="#{entity.shipment.field.dateConfirmedDispatch}">Confirmed Dispatch</label>
+                        <input id="dateConfirmedDispatch" type="datetime-local" name="dateConfirmedDispatch"
+                               th:value="*{dateConfirmedDispatch}"
+                               aria-label="Confirmed Dispatch" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dateReachedWarehouse" class="form-label"
+                               th:text="#{entity.shipment.field.dateReachedWarehouse}">Reached Warehouse</label>
+                        <input id="dateReachedWarehouse" type="datetime-local" name="dateReachedWarehouse"
+                               th:value="*{dateReachedWarehouse}"
+                               aria-label="Reached Warehouse" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="departureDate" class="form-label" th:text="#{entity.shipment.field.departureDate}">Departure
+                            Date</label>
+                        <input id="departureDate" type="datetime-local" name="departureDate" th:value="*{departureDate}"
+                               aria-label="Departure Date" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="arrivalDate" class="form-label" th:text="#{entity.shipment.field.arrivalDate}">Arrival
+                            Date</label>
+                        <input id="arrivalDate" type="datetime-local" name="arrivalDate" th:value="*{arrivalDate}"
+                               aria-label="Arrival Date" class="form-input">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" th:text="#{ui.button.add.label}" class="submit-button">Add</button>
+</form>
+<br>
+<div>
+    <a th:href="@{/shipments}" th:text="#{ui.button.goBack}">Go back</a>
+</div>
+
+<dif th:insert="~{fragments::errors}"></dif>
+
+</body>
+</html>

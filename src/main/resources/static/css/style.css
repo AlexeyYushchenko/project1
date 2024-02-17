@@ -63,6 +63,81 @@ body {
 /*    background-position: 100%;*/
 /*}*/
 
+.accordion-button {
+    font-size: 2rem; /* Similar to h1 */
+    font-weight: bold; /* Bold text */
+    padding: 1rem 1.25rem; /* Larger padding for a bigger touch area */
+}
+.accordion-header {
+    margin-bottom: 1rem; /* Space between items */
+}
+
+.accordion-button.custom-color {
+    background-color: #8a99a8; /* Example: A shade of green */
+    color: white; /* Change text color to ensure readability */
+}
+
+/* Adjusted for visibility when accordion is open */
+.accordion-button.custom-color:not(.collapsed) {
+    background-color: #012750; /* White background for open state */
+    color: #ffffff; /* Dark navy text color for contrast */
+}
+
+.accordion-button.custom-color:hover, .accordion-button.custom-color:focus {
+    background-color: #ffffff; /* A different shade for hover/focus states */
+    color: #012750;
+    transition: background-color 1.3s;
+}
+
+.accordion-button.custom-color:required {
+    background-color: #dc1111; /* A different shade for hover/focus states */
+    color: #fac102;
+    transition: background-color 1.3s;
+}
+
+.error {
+    border: 2px solid red;
+}
+
+.collapsible {
+    background-color: #f1f1f1;
+    color: #003e80;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+}
+
+.active, .collapsible:hover {
+    background-color: #003e80;
+    color: #f1f1f1;
+    transition: background-color 1.3s;
+}
+
+.content {
+    padding: 0 18px;
+    display: none;
+    overflow: hidden;
+    background-color: #f1f1f1;
+}
+
+
+
+
+
+
+
+
+
+textarea {
+    width: 100%; /* Adjust width as necessary */
+    box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+    /* No need to specify overflow properties; let it use the default behavior */
+}
+
 .sidebar {
     width: 200px;
     background-color: #fff;

@@ -17,13 +17,13 @@
     <div class="form-group">
         <label for="identificationNumber" class="form-label" th:text="#{entity.route.field.identificationNumber}">Route's identification number:</label>
         <input id="identificationNumber" type="text" name="identificationNumber" th:value="*{identificationNumber}"
-               aria-label="Route's identification number" class="form-input" required th:required="required" th:attr="title=#{field.required.message}">
+               aria-label="Route's identification number" class="form-input" required th:required="required">
     </div>
 
     <div class="form-group">
         <label for="routeStatus" class="form-label" th:text="#{entity.route.field.routeStatus}">Route
             Status:</label>
-        <select id="routeStatus" name="routeStatusId" required th:required="required" th:attr="title=#{field.required.message}">
+        <select id="routeStatus" name="routeStatusId" required th:required="required">
             <option value="" th:selected="${route.routeStatusId == null}"></option>
             <option th:each="routeStatus : ${routeStatuses}"
                     th:value="${routeStatus.id}"
@@ -38,7 +38,7 @@
         <label for="transportType" class="form-label" th:text="#{entity.route.field.transportType}">Route's
             transportType:</label>
         <input id="transportType" type="text" name="transportType" th:value="*{transportType}"
-               aria-label="TransportType" class="form-input" required th:required="required" th:attr="title=#{field.required.message}">
+               aria-label="TransportType" class="form-input" required th:required="required">
     </div>
 
     <div class="form-group">
@@ -48,7 +48,7 @@
 
     <div class="form-group">
         <label for="countryOfDeparture" class="form-label" th:text="#{entity.route.field.countryOfDeparture}">Country of departure:</label>
-        <select id="countryOfDeparture" name="countryOfDepartureId" required th:required="required" th:attr="title=#{field.required.message}">
+        <select id="countryOfDeparture" name="countryOfDepartureId" required th:required="required">
             <option value="" th:selected="${route.countryOfDepartureId == null}"></option>
             <option th:each="country : ${countries}"
                     th:value="${country.id}"
@@ -60,7 +60,7 @@
 
     <div class="form-group">
         <label for="countryOfDestination" class="form-label" th:text="#{entity.route.field.countryOfDestination}">Country of destination:</label>
-        <select id="countryOfDestination" name="countryOfDestinationId" required th:required="required" th:attr="title=#{field.required.message}">
+        <select id="countryOfDestination" name="countryOfDestinationId" required th:required="required">
             <option value="" th:selected="${route.countryOfDestinationId == null}"></option>
             <option th:each="country : ${countries}"
                     th:value="${country.id}"

@@ -48,13 +48,6 @@
     <td th:text="${#temporals.format(route.auditingInfoDto.createdAt, 'dd.MM.yyyy, HH:mm')}">Created At</td>
     <td th:text="${route.auditingInfoDto.modifiedBy}">Modified By</td>
     <td th:text="${#temporals.format(route.auditingInfoDto.modifiedAt, 'dd.MM.yyyy, HH:mm')}">Modified At</td>
-    <td>
-      <form th:action="@{/routes/{routeId}/delete(routeId=${route.id})}"
-            method="post">
-        <input type="hidden" name="_method" value="DELETE">
-        <button type="submit">Delete</button>
-      </form>
-    </td>
   </tr>
   </tbody>
 </table>

@@ -372,3 +372,15 @@ VALUES
     (12, 'ru', 'Завершен'),
     (13, 'ru', 'Отменен');
 
+--changeset ayushchenko:23
+INSERT INTO client (name, full_name, status_id, business_type_id, industry_type_id, address)
+VALUES ('Client 1', 'Client 1 full name', 1, 1, 1, 'Moscow, Tverskaya str., 1');
+
+--changeset ayushchenko:24
+INSERT INTO route (identification_number, status_id, transport_type, country_of_departure_id, country_of_destination_id, customs_post)
+VALUES ('01-IT-24012024', 1, '90', 1, 2, 'KL');
+
+--changeset ayushchenko:25
+INSERT INTO shipment (status_id, client_id, route_id, internal_comment, client_comment, delivery_type, destination_address, client_pcs, client_volume_m3, client_weight_kg, shipment_type, shipment_description, country_of_departure, manufacturer_id, country_of_destination)
+VALUES (1, 1, 1, 'Very expensive and fragile crystal statue. Take good care!', 'molto fragile!', 'truck', 'Mosca, Tverkskaya 1', 1, 10, 2000, 'Fragile cargo', 'crystal statue', 1, 1, 2);
+

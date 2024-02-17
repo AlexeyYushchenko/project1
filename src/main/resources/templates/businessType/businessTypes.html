@@ -33,13 +33,6 @@
         <td th:text="${#temporals.format(businessType.auditingInfoDto.createdAt, 'dd.MM.yyyy, HH:mm')}">Created At</td>
         <td th:text="${businessType.auditingInfoDto.modifiedBy}">Modified By</td>
         <td th:text="${#temporals.format(businessType.auditingInfoDto.modifiedAt, 'dd.MM.yyyy, HH:mm')}">Modified At</td>
-        <td>
-            <form th:action="@{/businessTypes/{businessTypeId}/delete(businessTypeId=${businessType.id})}"
-                  method="post">
-                <input type="hidden" name="_method" value="DELETE">
-                <button type="submit">Delete</button>
-            </form>
-        </td>
     </tr>
     </tbody>
 </table>

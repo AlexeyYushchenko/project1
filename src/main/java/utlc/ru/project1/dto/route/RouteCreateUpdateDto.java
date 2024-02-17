@@ -3,6 +3,8 @@ package utlc.ru.project1.dto.route;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDateTime;
 
 public record RouteCreateUpdateDto(
@@ -26,7 +28,9 @@ public record RouteCreateUpdateDto(
         Integer countryOfDestinationId,
 
         String customsPost,
+        @DateTimeFormat(pattern = "dd.MM.yyyy, HH:mm")
         LocalDateTime departureDate,
+        @DateTimeFormat(pattern = "dd.MM.yyyy, HH:mm")
         LocalDateTime arrivalDate
         ) {
 }

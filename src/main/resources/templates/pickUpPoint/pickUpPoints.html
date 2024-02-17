@@ -36,13 +36,6 @@
     <td th:text="${#temporals.format(pickUpPoint.auditingInfoDto.createdAt, 'dd.MM.yyyy, HH:mm')}">Created At</td>
     <td th:text="${pickUpPoint.auditingInfoDto.modifiedBy}">Modified By</td>
     <td th:text="${#temporals.format(pickUpPoint.auditingInfoDto.modifiedAt, 'dd.MM.yyyy, HH:mm')}">Modified At</td>
-    <td>
-      <form th:action="@{/pickUpPoints/{pickUpPointId}/delete(pickUpPointId=${pickUpPoint.id})}"
-            method="post">
-        <input type="hidden" name="_method" value="DELETE">
-        <button type="submit">Delete</button>
-      </form>
-    </td>
   </tr>
   </tbody>
 </table>

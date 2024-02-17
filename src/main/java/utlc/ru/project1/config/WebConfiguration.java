@@ -26,7 +26,6 @@ public class WebConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(localeChangeInterceptor());
     }
 
-    //testing date time formatting
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(Jsr310Converters.StringToLocalDateTimeConverter.INSTANCE);

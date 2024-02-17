@@ -27,7 +27,7 @@ public class ShipmentStatusHistory extends AuditingEntity<Long> {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id")
-    private ShipmentStatus status;
+    private ShipmentStatus shipmentStatus;
 
     @Column(name = "status_date")
     private Instant statusDate;

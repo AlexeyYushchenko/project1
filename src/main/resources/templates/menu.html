@@ -14,6 +14,7 @@
 
 <div class="main-container">
     <ul>
+        <li><a th:href="@{/shipments}" th:text="#{entity.shipment.list.page.title}">Orders</a></li>
         <li><a th:href="@{/administrators}" th:text="#{entity.administrator.list.page.title}">Administrators</a></li>
         <li><a th:href="@{/clients}" th:text="#{entity.client.list.page.title}">Clients</a></li>
         <li><a th:href="@{/agents}" th:text="#{entity.agent.list.page.title}">Agents</a></li>
@@ -29,7 +30,6 @@
         <li><a th:href="@{/priorities}" th:text="#{entity.priority.list.page.title}">Priorities</a></li>
 <!--        <li><a th:href="@{/roadTransports}" th:text="#{entity.roadTransport.list.page.title}">Road Transports</a></li>-->
         <li><a th:href="@{/routes}" th:text="#{entity.route.list.page.title}">Routes</a></li>
-<!--        <li><a th:href="@{/shipments}" th:text="#{entity.shipment.list.page.title}">Shipments</a></li>-->
         <li><a th:href="@{/warehouses}" th:text="#{entity.warehouse.list.page.title}">Warehouses</a></li>
     </ul>
 </div>

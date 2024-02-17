@@ -147,16 +147,18 @@ CREATE TABLE IF NOT EXISTS shipment
     internal_comment        TEXT,
     client_comment          TEXT,
     warehouse_comment       TEXT,
+
+    -- Date fields grouped together
     date_placed             TIMESTAMP,
-    date_checked            TIMESTAMP,
-    date_ready_dispatch     TIMESTAMP,
+    date_order_processed    TIMESTAMP,
+    date_ready_for_dispatch TIMESTAMP,
+    date_confirmed_dispatch TIMESTAMP,
     date_reached_warehouse  TIMESTAMP,
-    date_loading            TIMESTAMP,
-    date_unloading          TIMESTAMP,
+    departure_date          TIMESTAMP,
+    arrival_date            TIMESTAMP,
 
     -- Delivery Type and Address
     delivery_type           VARCHAR(20)                            NOT NULL, -- e.g., 'pick-up', 'door-to-door'
-    date_confirmed_dispatch TIMESTAMP,
     pick_up_point_id        INT REFERENCES pick_up_point (id),
     destination_address     VARCHAR(255),
 
@@ -192,6 +194,9 @@ CREATE TABLE IF NOT EXISTS shipment_status_history
     shipment_id BIGINT REFERENCES shipment (id),
     status_id   INT REFERENCES shipment_status (id),
     status_date TIMESTAMP DEFAULT NOW(),
+    created_at  TIMESTAMP DEFAULT NOW(),
+    modified_at TIMESTAMP DEFAULT NOW(),
+    created_by  VARCHAR(64),
     modified_by VARCHAR(64),
     comment     TEXT
 );

@@ -39,17 +39,6 @@
         <td th:text="${administrator.auditingInfoDto.modifiedBy}">Modified By</td>
         <td th:text="${#temporals.format(administrator.auditingInfoDto.modifiedAt, 'dd.MM.yyyy, HH:mm')}">Modified At</td>
 
-        <td>
-            <form th:action="@{/administrators/{administratorId}/delete(administratorId=${administrator.id()})}" method="post">
-                <button type="submit"
-                        id="removeButton"
-                        class="btn btn-danger"
-                        th:text="#{ui.button.remove.label}"
-                        th:data-confirm-message="#{entity.administrator.remove.button.confirmation.message}">
-                    <i class="fa fa-trash"></i> Remove
-                </button>
-            </form>
-        </td>
     </tr>
     </tbody>
 </table>

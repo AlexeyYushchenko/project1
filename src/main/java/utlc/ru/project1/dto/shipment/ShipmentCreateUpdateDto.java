@@ -9,18 +9,13 @@ import java.util.List;
 
 public record ShipmentCreateUpdateDto(
 
-        @NotNull(message = "validation.client.name.required")
-        @Pattern(regexp = ".*\\S.*", message = "validation.client.name.pattern")
-        @Size(min = 2, max = 50, message = "validation.client.name.size")
-
-
         @NotNull(message = "validation.shipment.shipmentStatus.required")
         Integer shipmentStatusId,
 
         @NotNull(message = "validation.shipment.client.required")
         Integer clientId,
 
-        @NotNull(message = "validation.client.priority.required")
+        @NotNull(message = "validation.shipment.priority.required")
         Integer priorityId,
 
         Long routeId,
@@ -33,23 +28,25 @@ public record ShipmentCreateUpdateDto(
 
         LocalDateTime datePlaced,
 
-        LocalDateTime dateChecked,
+        LocalDateTime dateOrderProcessed,
 
-        LocalDateTime dateReadyDispatch,
+        LocalDateTime dateReadyForDispatch,
 
         LocalDateTime dateReachedWarehouse,
 
-        LocalDateTime dateLoading,
+        LocalDateTime departureDate,
 
-        LocalDateTime dateUnloading,
+        LocalDateTime arrivalDate,
 
-        @NotNull(message = "validation.client.deliveryType.required")
+        @NotNull(message = "validation.shipment.deliveryType.required")
+        @Size(max = 20, message = "validation.shipment.deliveryType.size")
         String deliveryType,
 
         LocalDateTime dateConfirmedDispatch,
 
         Integer pickUpPointId,
 
+        @Size(max = 255, message = "validation.shipment.destinationAddress.size")
         String destinationAddress,
 
         Integer clientPcs,
@@ -58,6 +55,8 @@ public record ShipmentCreateUpdateDto(
 
         Float clientWeightKg,
 
+        @NotNull(message = "validation.shipment.shipmentType.required")
+        @Size(max = 50, message = "validation.shipment.shipmentType.size")
         String shipmentType,
 
         String shipmentDescription,
@@ -70,13 +69,13 @@ public record ShipmentCreateUpdateDto(
 
         String warehouseDiffComment,
 
-        @NotNull(message = "validation.client.countryOfDeparture.required")
+        @NotNull(message = "validation.shipment.countryOfDeparture.required")
         Integer countryOfDepartureId,
 
-        @NotNull(message = "validation.client.manufacturer.required")
+        @NotNull(message = "validation.shipment.manufacturer.required")
         Integer manufacturerId,
 
-        @NotNull(message = "validation.client.countryOfDestination.required")
+        @NotNull(message = "validation.shipment.countryOfDestination.required")
         Integer countryOfDestinationId,
 
         List<ShipmentStatusHistory> statusHistories

@@ -33,13 +33,6 @@
         <td th:text="${#temporals.format(priority.auditingInfoDto.createdAt, 'dd.MM.yyyy, HH:mm')}">Created At</td>
         <td th:text="${priority.auditingInfoDto.modifiedBy}">Modified By</td>
         <td th:text="${#temporals.format(priority.auditingInfoDto.modifiedAt, 'dd.MM.yyyy, HH:mm')}">Modified At</td>
-        <td>
-            <form th:action="@{/priorities/{priorityId}/delete(priorityId=${priority.id})}"
-                  method="post">
-                <input type="hidden" name="_method" value="DELETE">
-                <button type="submit">Delete</button>
-            </form>
-        </td>
     </tr>
     </tbody>
 </table>
