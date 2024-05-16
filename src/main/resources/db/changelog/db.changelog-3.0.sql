@@ -76,7 +76,6 @@ CREATE TABLE IF NOT EXISTS invoice_status_localization
     PRIMARY KEY (invoice_status_id, language_code)
 );
 
-
 --changeset ayushchenko:9
 CREATE TABLE IF NOT EXISTS route_status_localization
 (
@@ -84,4 +83,24 @@ CREATE TABLE IF NOT EXISTS route_status_localization
     language_code     VARCHAR(5),
     localized_name    VARCHAR(255) NOT NULL,
     PRIMARY KEY (route_status_id, language_code)
+);
+
+--changeset ayushchenko:10
+CREATE TABLE IF NOT EXISTS service_type_localization
+(
+    service_type_id      INT REFERENCES service_type (id) ON DELETE CASCADE,
+    language_code         VARCHAR(5),
+    localized_name        VARCHAR(255) NOT NULL,
+    localized_description TEXT,
+    PRIMARY KEY (service_type_id, language_code)
+);
+
+--changeset ayushchenko:11
+CREATE TABLE IF NOT EXISTS payment_type_localization
+(
+    payment_type_id      INT REFERENCES payment_type (id) ON DELETE CASCADE,
+    language_code         VARCHAR(5),
+    localized_name        VARCHAR(255) NOT NULL,
+    localized_description TEXT,
+    PRIMARY KEY (payment_type_id, language_code)
 );

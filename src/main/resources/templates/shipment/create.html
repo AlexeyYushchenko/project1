@@ -4,11 +4,6 @@
     <meta charset="UTF-8">
     <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
     <title th:text="#{entity.shipment.label.registration}">Create a new shipment</title>
-    <style>
-        .error {
-            border: 2px solid red;
-        }
-    </style>
 </head>
 <body>
 <div th:insert="~{fragments::locale}"></div>
@@ -25,7 +20,7 @@
                 <button class="accordion-button custom-color" type="button" data-bs-toggle="collapse"
                         data-bs-target="#shipmentInformation" aria-expanded="true"
                         aria-controls="shipmentInformation"
-                        th:text="#{entity.shipment.section.shipmentInformation}">
+                        th:text="#{entity.shipment.tab.commonData}">
                     Shipment Information
                 </button>
             </h2>

@@ -157,7 +157,7 @@ CREATE TABLE IF NOT EXISTS shipment
     departure_date          TIMESTAMP,
     arrival_date            TIMESTAMP,
 
-    -- Delivery Type and Address
+    -- Delivery Type and Address (!)
     delivery_type           VARCHAR(20)                            NOT NULL, -- e.g., 'pick-up', 'door-to-door'
     pick_up_point_id        INT REFERENCES pick_up_point (id),
     destination_address     VARCHAR(255),
@@ -181,8 +181,8 @@ CREATE TABLE IF NOT EXISTS shipment
     country_of_destination  INT REFERENCES country (id)            NOT NULL,
 
     -- Auditing
-    created_at              TIMESTAMP                    DEFAULT NOW(),
-    modified_at             TIMESTAMP                    DEFAULT NOW(),
+    created_at              TIMESTAMP,
+    modified_at             TIMESTAMP,
     created_by              VARCHAR(64),
     modified_by             VARCHAR(64)
 );
@@ -193,59 +193,97 @@ CREATE TABLE IF NOT EXISTS shipment_status_history
     id          BIGSERIAL PRIMARY KEY,
     shipment_id BIGINT REFERENCES shipment (id),
     status_id   INT REFERENCES shipment_status (id),
-    status_date TIMESTAMP DEFAULT NOW(),
-    created_at  TIMESTAMP DEFAULT NOW(),
-    modified_at TIMESTAMP DEFAULT NOW(),
+    status_date TIMESTAMP,
+    created_at  TIMESTAMP,
+    modified_at TIMESTAMP,
     created_by  VARCHAR(64),
     modified_by VARCHAR(64),
     comment     TEXT
 );
 
 --changeset ayushchenko:12
-CREATE TABLE IF NOT EXISTS invoice
+CREATE TABLE IF NOT EXISTS currency
 (
-    id           BIGSERIAL PRIMARY KEY,
-    shipment_id  BIGINT,
-    total_amount DECIMAL(10, 2),
-    currency     VARCHAR(3), -- ISO currency code (e.g., USD, EUR)
-    status_id    BIGINT,
-    issue_date   DATE,
-    due_date     DATE,
-    commentary   TEXT,
+    id          SERIAL PRIMARY KEY,
+    code        VARCHAR(3) NOT NULL,
+    name        VARCHAR(50),
+    enabled     BOOLEAN,
 
-    created_at   TIMESTAMP DEFAULT NOW(),
-    modified_at  TIMESTAMP DEFAULT NOW(),
-    created_by   VARCHAR(64),
-    modified_by  VARCHAR(64),
-
-    FOREIGN KEY (shipment_id) REFERENCES shipment (id),
-    FOREIGN KEY (status_id) REFERENCES invoice_status (id)
+    -- Auditing
+    created_at  TIMESTAMP,
+    modified_at TIMESTAMP,
+    created_by  VARCHAR(64),
+    modified_by VARCHAR(64)
 );
 
+-- добавить историю курсов
 --changeset ayushchenko:13
-CREATE TABLE IF NOT EXISTS payment
+CREATE TABLE IF NOT EXISTS invoice
 (
-    id                BIGSERIAL PRIMARY KEY,
-    client_id         INT,
-    amount            DECIMAL(10, 2),
-    currency          VARCHAR(3), -- ISO currency code
-    payment_date_time TIMESTAMP,
-    payment_method    VARCHAR(50),
+    id              BIGSERIAL PRIMARY KEY,
+    client_id       INT REFERENCES client (id)            NOT NULL,
+    service_type_id INT REFERENCES service_type (id)      NOT NULL,
+    shipment_id     BIGINT REFERENCES shipment (id),
+    total_amount    DECIMAL(10, 2)                        NOT NULL,
+    currency_id     INT REFERENCES currency (id)          NOT NULL,
+    status_id       BIGINT REFERENCES invoice_status (id) NOT NULL,
+    issue_date      DATE                                  NOT NULL,
+    due_date        DATE,
+    commentary      TEXT,
 
-    created_at        TIMESTAMP DEFAULT NOW(),
-    modified_at       TIMESTAMP DEFAULT NOW(),
-    created_by        VARCHAR(64),
-    modified_by       VARCHAR(64),
-
-    FOREIGN KEY (client_id) REFERENCES client (id)
+    created_at      TIMESTAMP,
+    modified_at     TIMESTAMP,
+    created_by      VARCHAR(64),
+    modified_by     VARCHAR(64)
 );
 
 --changeset ayushchenko:14
+CREATE TABLE IF NOT EXISTS payment
+(
+    id                      BIGSERIAL PRIMARY KEY,
+    client_id               INT REFERENCES client (id)       NOT NULL,
+    amount                  DECIMAL(10, 2)                   NOT NULL,
+    currency_id             INT REFERENCES currency (id)     NOT NULL,
+    payment_date            DATE                             NOT NULL,
+    payment_type_id         INT REFERENCES payment_type (id) NOT NULL,
+    payment_processing_fees DECIMAL(10, 2),
+    total_amount            DECIMAL(10, 2),
+
+    commentary              VARCHAR(255),
+
+    created_at              TIMESTAMP,
+    modified_at             TIMESTAMP,
+    created_by              VARCHAR(64),
+    modified_by             VARCHAR(64)
+);
+
+--changeset ayushchenko:15
 CREATE TABLE IF NOT EXISTS payment_invoice
 (
     id               BIGSERIAL PRIMARY KEY,
-    payment_id       BIGINT NOT NULL REFERENCES payment (id) ON DELETE CASCADE,
-    invoice_id       BIGINT NOT NULL REFERENCES invoice (id) ON DELETE CASCADE,
-    allocated_amount DECIMAL(10, 2),
+    payment_id       BIGINT REFERENCES payment (id) ON DELETE CASCADE NOT NULL,
+    invoice_id       BIGINT REFERENCES invoice (id) ON DELETE CASCADE NOT NULL,
+    allocated_amount DECIMAL(10, 2), -- Original amount in payment's currency
+    converted_amount DECIMAL(10, 2), -- Amount after conversion to invoice's currency
+    currency_from_id INT REFERENCES currency (id)                     NOT NULL,
+    currency_to_id   INT REFERENCES currency (id)                     NOT NULL,
+    exchange_rate    DECIMAL(10, 6),
     UNIQUE (payment_id, invoice_id)
 );
+
+--changeset ayushchenko:16
+CREATE TABLE IF NOT EXISTS client_balance
+(
+    id          BIGSERIAL PRIMARY KEY,
+    client_id   INT NOT NULL REFERENCES client (id) ON DELETE CASCADE,
+    currency_id INT NOT NULL REFERENCES currency (id) ON DELETE CASCADE,
+    balance     DECIMAL(15, 2),
+    UNIQUE (client_id, currency_id)
+);
+
+--changeset ayushchenko:**
+-- CREATE TABLE IF NOT EXISTS client_settings
+-- (
+--     lang_preferences ...
+--     jurisdiction - country_id
+-- );

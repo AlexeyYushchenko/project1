@@ -1,138 +1,206 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #ffffff;
+    /*background-color: #ffffff;*/
     margin: 0;
     padding: 0;
 }
 
-.header {
+header {
     background-color: #5181b8;
-    color: #fff;
-    padding: 10px 20px;
+    /*color: #fff;*/
+    padding: 10px;
     text-align: left;
 }
 
 .main-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    padding: 20px;
-}
-
-/*NEON BUTTON-LIKE LINKS*/
-/*.main-container a {*/
-/*    display: inline-block;*/
-/*    background-color: #000000; !* Dark background for contrast *!*/
-/*    color: #ffffff; !* White text color *!*/
-/*    border: none;*/
-/*    padding: 10px 10px;*/
-/*    margin: 5px;*/
-/*    font-size: 16px;*/
-/*    font-family: Arial, sans-serif;*/
-/*    text-decoration: none;*/
-/*    cursor: pointer;*/
-/*    outline: none;*/
-/*    border-radius: 5px;*/
-/*    text-transform: uppercase;*/
-/*    letter-spacing: 1.5px;*/
-/*    position: relative;*/
-/*    transition: all 0.3s ease;*/
-/*}*/
-
-/*.main-container a:hover {*/
-/*    background-color: #303030;*/
-/*}*/
-
-/*.main-container a:before {*/
-/*    content: '';*/
-/*    position: absolute;*/
-/*    top: -5px;*/
-/*    left: -5px;*/
-/*    right: -5px;*/
-/*    bottom: -5px;*/
-/*    z-index: -1;*/
-/*    background: linear-gradient(45deg, #00f5ff, #00f5ff, #00f5ff, #00f5ff, #ff0000, #fb0094, #0000ff, #00ff00, #ffff00, #ff0000);*/
-/*    !*background: linear-gradient(45deg, #fb0094, #0000ff, #00ff00, #ffff00, #ff0000, #fb0094, #0000ff, #00ff00, #ffff00, #ff0000);*!*/
-/*    background-size: 300%;*/
-/*    border-radius: 10px;*/
-/*    transition: all 0.3s ease;*/
-/*    filter: blur(5px);*/
-/*}*/
-
-/*.main-container a:hover:before {*/
-/*    filter: blur(8px);*/
-/*    background-position: 100%;*/
-/*}*/
-
-.accordion-button {
-    font-size: 2rem; /* Similar to h1 */
-    font-weight: bold; /* Bold text */
-    padding: 1rem 1.25rem; /* Larger padding for a bigger touch area */
-}
-.accordion-header {
-    margin-bottom: 1rem; /* Space between items */
-}
-
-.accordion-button.custom-color {
-    background-color: #8a99a8; /* Example: A shade of green */
-    color: white; /* Change text color to ensure readability */
-}
-
-/* Adjusted for visibility when accordion is open */
-.accordion-button.custom-color:not(.collapsed) {
-    background-color: #012750; /* White background for open state */
-    color: #ffffff; /* Dark navy text color for contrast */
-}
-
-.accordion-button.custom-color:hover, .accordion-button.custom-color:focus {
-    background-color: #ffffff; /* A different shade for hover/focus states */
-    color: #012750;
-    transition: background-color 1.3s;
-}
-
-.accordion-button.custom-color:required {
-    background-color: #dc1111; /* A different shade for hover/focus states */
-    color: #fac102;
-    transition: background-color 1.3s;
-}
-
-.error {
-    border: 2px solid red;
-}
-
-.collapsible {
-    background-color: #f1f1f1;
-    color: #003e80;
-    cursor: pointer;
-    padding: 18px;
-    width: 100%;
-    border: none;
+    align-items: center;
     text-align: left;
-    outline: none;
-    font-size: 15px;
 }
 
-.active, .collapsible:hover {
-    background-color: #003e80;
-    color: #f1f1f1;
-    transition: background-color 1.3s;
+.vertical-container {
+    display: flex; /* Enables Flexbox */
+    flex-direction: column; /* Stacks flex items vertically */
+    justify-content: center; /* Centers flex items along the main axis (vertically, in this case) */
+    align-items: center; /* Centers flex items along the cross axis (horizontally) */
+}
+
+.form-actions div {
+    margin: 10px; /* Adds space below each button */
+}
+
+.form-control:focus, .form-input:focus, .auto-expand:focus {
+    background-color: #B0DE09;
+    color: black;
+    border-color: #B0DE09; /* Acid green border */
+    box-shadow: 0 0 0 0.2rem rgba(176, 222, 9, 0.25); /* Acid green glow */
+    outline: none; /* 2px solid #B0DE09; /* Change the outline color to acid green */
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, outline 0.3s ease;
+}
+
+.tab-content {
+    background-color: rgba(176, 222, 9, 0.35);
+    border: 1px solid #000000;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    padding: 10px;
+    border-top: none;
+    margin-bottom: 20px;
+}
+
+fieldset, legend {
+    all: revert;
+}
+
+legend {
+    background-color: white;
+    border-radius: 10px;
+}
+
+fieldset {
+    background-color: white;
+    padding: 10px;
+    border: 1px solid #000000; /* Creates a 1px solid black border around the element */
+    border-radius: 8px; /* Rounds the corners of the border to make it 8px curved */
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+fieldset:hover {
+    border-color: #B0DE09; /* Acid green */
+    border-width: 2px;
+}
+
+/*.date-boxes-container {*/
+/*    display: flex;*/
+/*    flex-wrap: wrap;*/
+/*    margin-right: 15px;*/
+/*    flex-direction: column;*/
+/*    justify-content: space-between; !* Evenly distribute space around items *!*/
+/*    !*align-items: stretch; !* Stretch items to fill the container *!*!*/
+/*    !*height: 100%; !* Ensure the container takes up full height *!*!*/
+/*}*/
+
+.date-boxes-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group:hover{
+    color: #de00ff;
+}
+
+.horizontal-container {
+    display: flex;
+    justify-content: space-between;
+    /*margin-bottom: 1rem;*/
+}
+
+.horizontal-container .label-column {
+    flex: 1;
+    margin-right: 10px; /* Adjust as needed */
+}
+
+.horizontal-container .input-column {
+    flex: 2; /* Adjust this according to the space you want to allocate to the input field */
+}
+
+.form-input {
+    width: 100%; /* Ensure the input takes the full width of its container */
+}
+
+/* If you want the labels to be right-aligned */
+.label-column label {
+    display: block;
+    text-align: left;
+    /* Adjust margin or padding as necessary */
+    margin-right: 10px;
+}
+
+
+.nav{
+    margin-top: 20px;
+}
+
+/* Gradient track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3); /* Adds shadow inside the track */
+    background-color: #f0f0f0; /* Light grey background */
+}
+
+/* Gradient thumb */
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #81fffa, #00ff66); /* Diagonal gradient from blue to pink */
+    border-radius: 10px;
+}
+
+/* Scrollbar size */
+::-webkit-scrollbar {
+    width: 20px;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: #B0DE09; /* Acid green */
+    color: black; /* Change text color for better contrast, if needed */
+    border-color: #000000; /* Optional: Adjust the border color to match */
+}
+
+.nav-link {
+    background-color: #ffffff; /* Sets the background color to blue */
+    color: #000000; /* Sets the text color to white */
+    padding: 10px 15px; /* Adjust padding as needed */
+    margin-right: 5px; /* Adds space between tabs */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.nav-link:not(.active) {
+    border-color: #000000; /* Change to your preferred border color for non-active tabs */
+}
+
+.nav.item{
+    background-color: #02fcce;
+}
+
+.nav-link:hover {
+    background-color: #5094ff; /* Darker shade for hover effect */
+    border-collapse: collapse;
+    border-color: yellow;
+    color: white;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+}
+
+.fade-out {
+    animation: fadeOut 0.5s;
+    opacity: 0;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
 }
 
 .content {
     padding: 0 18px;
     display: none;
     overflow: hidden;
-    background-color: #f1f1f1;
+    /*background-color: #f1f1f1;*/
 }
 
-
-
-
-
-
-
-
-
 textarea {
+    border-radius: 8px;
     width: 100%; /* Adjust width as necessary */
     box-sizing: border-box; /* Includes padding and border in the element's total width and height */
     /* No need to specify overflow properties; let it use the default behavior */
@@ -140,7 +208,7 @@ textarea {
 
 .sidebar {
     width: 200px;
-    background-color: #fff;
+    /*background-color: #fff;*/
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-right: 20px;
     padding: 20px;
@@ -159,6 +227,7 @@ ul {
 }
 
 ul li a {
+    border-radius: 10px;
     text-decoration: none;
     color: #000;
     display: block;
@@ -187,4 +256,12 @@ ul li a:hover {
 
 .logout-button:hover {
     background-color: #43648c;
+}
+
+/* Assuming your table has an ID of 'shipmentsTable' */
+#shipmentsTable tr:nth-child(odd) {
+    background-color: #fff; /* White for odd rows */
+}
+#shipmentsTable tr:nth-child(even) {
+    background-color: #c4d1fd; /* Light blue for even rows */
 }

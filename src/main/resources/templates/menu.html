@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Main Menu</title>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
 </head>
 <body>
 <div th:insert="~{fragments::locale}"></div>
@@ -18,16 +19,21 @@
         <li><a th:href="@{/administrators}" th:text="#{entity.administrator.list.page.title}">Administrators</a></li>
         <li><a th:href="@{/clients}" th:text="#{entity.client.list.page.title}">Clients</a></li>
         <li><a th:href="@{/agents}" th:text="#{entity.agent.list.page.title}">Agents</a></li>
+        <li><a th:href="@{/priorities}" th:text="#{entity.priority.list.page.title}">Priorities</a></li>
         <li><a th:href="@{/businessTypes}" th:text="#{entity.businessType.list.page.title}">Business Types</a></li>
+        <li><a th:href="@{/serviceTypes}" th:text="#{entity.serviceType.list.page.title}">Service Types</a></li>
+        <li><a th:href="@{/paymentTypes}" th:text="#{entity.paymentType.list.page.title}">Payment Types</a></li>
+        <li><a th:href="@{/industryTypes}" th:text="#{entity.industryType.list.page.title}">Industry Types</a></li>
         <li><a th:href="@{/clientStatuses}" th:text="#{entity.clientStatus.list.page.title}">Client Statuses</a></li>
         <li><a th:href="@{/invoiceStatuses}" th:text="#{entity.invoiceStatus.list.page.title}">Invoice Statuses</a></li>
         <li><a th:href="@{/routeStatuses}" th:text="#{entity.routeStatus.list.page.title}">Route Statuses</a></li>
         <li><a th:href="@{/shipmentStatuses}" th:text="#{entity.shipmentStatus.list.page.title}">Shipment Statuses</a></li>
         <li><a th:href="@{/countries}" th:text="#{entity.country.list.page.title}">Countries</a></li>
-        <li><a th:href="@{/industryTypes}" th:text="#{entity.industryType.list.page.title}">Industry Types</a></li>
+        <li><a th:href="@{/currencies}" th:text="#{entity.currency.list.page.title}">Currencies</a></li>
+        <li><a th:href="@{/payments}" th:text="#{entity.payment.list.page.title}">Payments</a></li>
+<!--        <li><a th:href="@{/invoices}" th:text="#{entity.invoice.list.page.title}">Invoices</a></li>-->
         <li><a th:href="@{/manufacturers}" th:text="#{entity.manufacturer.list.page.title}">Manufacturers</a></li>
         <li><a th:href="@{/pickUpPoints}" th:text="#{entity.pickUpPoint.list.page.title}">Pick Up Points</a></li>
-        <li><a th:href="@{/priorities}" th:text="#{entity.priority.list.page.title}">Priorities</a></li>
 <!--        <li><a th:href="@{/roadTransports}" th:text="#{entity.roadTransport.list.page.title}">Road Transports</a></li>-->
         <li><a th:href="@{/routes}" th:text="#{entity.route.list.page.title}">Routes</a></li>
         <li><a th:href="@{/warehouses}" th:text="#{entity.warehouse.list.page.title}">Warehouses</a></li>

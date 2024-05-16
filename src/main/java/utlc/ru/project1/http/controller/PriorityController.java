@@ -32,8 +32,7 @@ public class PriorityController {
     }
 
     @GetMapping("/{id}")
-    public String findById(@PathVariable("id") Integer id,
-                           Model model) {
+    public String findById(@PathVariable("id") Integer id, Model model) {
         return priorityService.findById(id)
                 .map(priority -> {
                     model.addAttribute("priority", priority);

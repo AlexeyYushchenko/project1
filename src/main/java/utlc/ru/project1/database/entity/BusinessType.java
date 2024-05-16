@@ -43,3 +43,4 @@ public class BusinessType extends AuditingEntity<Integer> {
     @Column(name = "localized_description")
     private Map<String, String> descriptionLocales = new HashMap<>();
 }
+

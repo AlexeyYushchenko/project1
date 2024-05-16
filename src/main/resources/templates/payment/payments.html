@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+  <title th:text="#{entity.payment.list.page.title}">Payments</title>
+  <script th:inline="javascript">
+    initializeDataTable('paymentsTable', [[${#locale.language}]]);
+  </script>
+</head>
+<body>
+<div th:insert="~{fragments::locale}"></div>
+
+<h1 th:text="#{entity.payment.list.page.label}">Payments</h1>
+
+<form action="/payments/create">
+  <button type="submit" th:text="#{entity.payment.create.button.label}">Add a new Payment</button>
+</form>
+
+<table id="paymentsTable">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th th:text="#{entity.payment.field.client}">Client</th>
+    <th th:text="#{entity.payment.field.amount}">Amount</th>
+    <th th:text="#{entity.payment.field.currency}">Currency</th>
+    <th th:text="#{entity.payment.field.paymentDate}">Payment Date</th>
+    <th th:text="#{entity.payment.field.paymentType}">Payment Type</th>
+    <th th:text="#{entity.payment.field.processingFees}">Processing Fees</th>
+    <th th:text="#{entity.payment.field.totalAmount}">Total Amount</th>
+    <th th:text="#{entity.payment.field.commentary}">Commentary</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="payment : ${payments}">
+    <td><a th:href="@{'/payments/' + ${payment.id}}" th:text="${payment.id}">ID</a></td>
+    <td><a th:href="@{'/clients/' + ${payment.client.id}}" th:text="${payment.client.name}">Client</a></td>
+    <td th:text="${payment.amount}"></td>
+    <td th:text="${payment.currency.name}"></td>
+    <td th:text="${#temporals.format(payment.paymentDate, 'dd.MM.yyyy')}"></td>
+    <td th:text="${payment.paymentType.nameLocales[__${#locale.language}__]} ?: ${payment.paymentType.name}">Payment Type</td>
+    <td th:text="${payment.paymentProcessingFees}">Payment processing fees</td>
+    <td th:text="${payment.totalAmount}">Total amount</td>
+    <td th:text="${payment.commentary}">Commentary</td>
+  </tr>
+  </tbody>
+</table>
+
+<div>
+  <a th:href="@{/menu}" th:text="#{ui.button.mainMenu}">Go back</a>
+</div>
+
+<dif th:insert="~{fragments::errors}"></dif>
+
+</body>
+</html>

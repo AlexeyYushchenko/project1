@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Data
@@ -21,20 +21,31 @@ public class Payment extends AuditingEntity<Long> {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", nullable = false)
-    private Client client; // Ensure you have a Client entity defined
+    private Client client;
 
     @Column(name = "amount", precision = 10, scale = 2, nullable = false)
     private BigDecimal amount;
 
-    @Column(name = "payment_date_time", nullable = false)
-    private LocalDateTime paymentDateTime; // Using LocalDateTime for both date and time
-
-    @Column(name = "payment_method", length = 50, nullable = false)
-    private String paymentMethod;
-
-    @Column(name = "currency", length = 3, nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "currency_id", nullable = false)
     private Currency currency;
 
+    @Column(name = "payment_date", nullable = false)
+    private LocalDate paymentDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_type_id", nullable = false)
+    private PaymentType paymentType;
+
+    @Column(name = "payment_processing_fees", precision = 10, scale = 2)
+    private BigDecimal paymentProcessingFees;
+
+    @Column(name = "total_amount", precision = 10, scale = 2)
+    private BigDecimal totalAmount;
+
+    @Column(name = "commentary", length = 255, nullable = true)
+    private String commentary;
+
     @OneToMany(mappedBy = "payment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<PaymentAllocation> allocations;
+    private Set<PaymentInvoice> allocations;
 }

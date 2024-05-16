@@ -80,3 +80,27 @@ CREATE TABLE IF NOT EXISTS priority
     modified_by VARCHAR(64)
 );
 
+--changeset ayushchenko:8
+CREATE TABLE IF NOT EXISTS service_type
+(
+    id          SERIAL PRIMARY KEY,
+    name        VARCHAR(50) NOT NULL UNIQUE,
+    description TEXT,
+    created_at  TIMESTAMP DEFAULT NOW(),
+    modified_at TIMESTAMP DEFAULT NOW(),
+    created_by  VARCHAR(64),
+    modified_by VARCHAR(64)
+);
+
+--changeset ayushchenko:9
+CREATE TABLE IF NOT EXISTS payment_type
+(
+    id          SERIAL PRIMARY KEY,
+    name        VARCHAR(50) NOT NULL UNIQUE,
+    description TEXT,
+    created_at  TIMESTAMP DEFAULT NOW(),
+    modified_at TIMESTAMP DEFAULT NOW(),
+    created_by  VARCHAR(64),
+    modified_by VARCHAR(64)
+);
+

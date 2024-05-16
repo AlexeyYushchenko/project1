@@ -34,8 +34,7 @@ public class ManufacturerController {
     }
 
     @GetMapping("/{id}")
-    public String findById(@PathVariable("id") Integer id,
-                           Model model) {
+    public String findById(@PathVariable("id") Integer id, Model model) {
         return manufacturerService.findById(id)
                 .map(manufacturer -> {
                     model.addAttribute("manufacturer", manufacturer);

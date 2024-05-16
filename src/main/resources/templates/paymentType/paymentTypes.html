@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+    <title th:text="#{entity.paymentType.list.page.title}">Payment Types</title>
+    <script th:inline="javascript">initializeDataTable('paymentTypesTable', [[${#locale.language}]]);</script>
+</head>
+<body>
+<div th:insert="~{fragments::locale}"></div>
+
+<h1 th:text="#{entity.paymentType.list.page.label}">Payment Types</h1>
+
+<form action="/paymentTypes/create">
+    <button type="submit" th:text="#{entity.paymentType.create.button.label}">Add a new Payment Type</button>
+</form>
+
+<table id="paymentTypesTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th th:text="#{entity.paymentType.field.name}">Name</th>
+        <th th:text="#{entity.paymentType.field.description}">Description</th>
+        <dif th:insert="~{fragments::common_fields}"></dif>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="paymentType : ${paymentTypes}">
+        <td th:text="${paymentType.id}">ID</td>
+        <td><a th:href="@{'/paymentTypes/' + ${paymentType.id}}" th:text="${paymentType.nameLocales[__${#locale.language}__]} ?: ${paymentType.name}">Name</a></td>
+        <td><a th:href="@{'/paymentTypes/' + ${paymentType.id}}" th:text="${paymentType.descriptionLocales[__${#locale.language}__]} ?: ${paymentType.description}">Description</a></td>
+        <td th:text="${paymentType.auditingInfoDto.createdBy}">Created By</td>
+        <td th:text="${#temporals.format(paymentType.auditingInfoDto.createdAt, 'dd.MM.yyyy, HH:mm')}">Created At</td>
+        <td th:text="${paymentType.auditingInfoDto.modifiedBy}">Modified By</td>
+        <td th:text="${#temporals.format(paymentType.auditingInfoDto.modifiedAt, 'dd.MM.yyyy, HH:mm')}">Modified At</td>
+    </tr>
+    </tbody>
+</table>
+
+<div>
+    <a th:href="@{/menu}" th:text="#{ui.button.mainMenu}">Go back</a>
+</div>
+
+<dif th:insert="~{fragments::errors}"></dif>
+
+</body>
+</html>
+
