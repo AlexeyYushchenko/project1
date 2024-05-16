@@ -51,7 +51,6 @@
         <th th:text="#{entity.shipment.field.countryOfDeparture}">country Of Departure</th>
         <th th:text="#{entity.shipment.field.countryOfDestination}">country Of Destination</th>
         <th th:text="#{entity.shipment.field.manufacturer}">manufacturer</th>
-        <dif th:insert="~{fragments::common_fields}"></dif>
     </tr>
     </thead>
     <tbody>
@@ -66,9 +65,10 @@
                th:text="${shipment.route.identificationNumber}">Route</a>
             <span th:if="${shipment.route == null}"></span>
         </td>
-        <td th:text="${shipment.internalComment.length() > 100 ? shipment.internalComment.substring(0, 100).concat('...') : shipment.internalComment}">Internal Comment</td>
-        <td th:text="${shipment.clientComment.length() > 100 ? shipment.clientComment.substring(0, 100).concat('...') : shipment.clientComment}">Client Comment</td>
-        <td th:text="${shipment.warehouseComment.length() > 100 ? shipment.warehouseComment.substring(0, 100).concat('...') : shipment.warehouseComment}">Warehouse Comment</td>
+        <td th:text="${shipment.internalComment}" class="col-2 text-truncate" style="max-width: 100px;">Internal Comment</td>
+<!--        <td th:text="${shipment.clientComment.length() > 100 ? shipment.clientComment.substring(0, 100).concat('...') : shipment.clientComment}">Client Comment</td>-->
+        <td th:text="${shipment.clientComment}" class="col-2 text-truncate" style="max-width: 100px;">Client Comment</td>
+        <td th:text="${shipment.warehouseComment}" class="col-2 text-truncate" style="max-width: 100px;">Warehouse Comment</td>
 
         <td th:text="${#temporals.format(shipment.datePlaced, 'dd.MM.yyyy')}">Order Placed</td>
         <td th:text="${#temporals.format(shipment.dateOrderProcessed, 'dd.MM.yyyy')}">Order Processed</td>
@@ -80,27 +80,22 @@
 
         <td th:text="${shipment.deliveryType}">Delivery Type</td>
         <td th:text="${shipment.pickUpPoint} != null ? (${shipment.pickUpPoint.nameLocales[__${#locale.language}__]} ?: ${shipment.pickUpPoint.name}) : ''">pickUpPoint</td>
-        <td th:text="${shipment.destinationAddress.length() > 100 ? shipment.destinationAddress.substring(0, 100).concat('...') : shipment.destinationAddress}">Destination Address</td>
+        <td th:text="${shipment.destinationAddress}" class="col-2 text-truncate" style="max-width: 100px;">Destination Address</td>
         <td th:text="${shipment.clientPcs}">Pcs (client)</td>
         <td th:text="${shipment.clientVolumeM3}">Volume, M3 (client)</td>
         <td th:text="${shipment.clientWeightKg}">Weight, kg (client)</td>
         <td th:text="${shipment.shipmentType}">Shipment Type</td>
-        <td th:text="${shipment.shipmentDescription.length() > 100 ? shipment.shipmentDescription.substring(0, 100).concat('...') : shipment.shipmentDescription}">Shipment Description</td>
+        <td th:text="${shipment.shipmentDescription}" class="col-2 text-truncate" style="max-width: 100px;">Shipment Description</td>
 
         <td th:text="${shipment.warehousePcs}">Pcs (actual)</td>
         <td th:text="${shipment.warehouseVolumeM3}">Volume, M3(actual)</td>
         <td th:text="${shipment.warehouseWeightKg}">Weight, kg(actual)</td>
 
-        <td th:text="${shipment.warehouseDiffComment.length() > 100 ? shipment.warehouseDiffComment.substring(0, 100).concat('...') : shipment.warehouseDiffComment}">Warehouse Difference Comment</td>
+        <td th:text="${shipment.warehouseDiffComment}" class="col-2 text-truncate" style="max-width: 100px;">Warehouse Difference Comment</td>
 
         <td th:text="${shipment.countryOfDeparture.nameLocales[__${#locale.language}__]} ?: ${shipment.countryOfDeparture.name}">Country Of Departure</td>
         <td th:text="${shipment.countryOfDestination.nameLocales[__${#locale.language}__]} ?: ${shipment.countryOfDestination.name}">Country Of Destination</td>
         <td><a th:href="@{'/manufacturers/' + ${shipment.manufacturer.id}}" th:text="${shipment.manufacturer.name}">Manufacturer</a></td>
-
-        <td th:text="${shipment.auditingInfoDto.createdBy}">Created By</td>
-        <td th:text="${#temporals.format(shipment.auditingInfoDto.createdAt, 'dd.MM.yyyy, HH:mm')}">Created At</td>
-        <td th:text="${shipment.auditingInfoDto.modifiedBy}">Modified By</td>
-        <td th:text="${#temporals.format(shipment.auditingInfoDto.modifiedAt, 'dd.MM.yyyy, HH:mm')}">Modified At</td>
     </tr>
     </tbody>
 </table>

@@ -1,11 +1,11 @@
 package utlc.ru.project1.database.entity;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import jakarta.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -18,27 +18,37 @@ public class Invoice extends AuditingEntity<Long> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "shipment_id")
-    private Long shipmentId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id", insertable = false, updatable = false)
+    private Client client;
 
-    @Column(name = "total_amount", precision = 10, scale = 2)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "service_type_id", insertable = false, updatable = false)
+    private ServiceType serviceType;
+
+    @Column(name = "total_amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal totalAmount;
 
-    @Column(length = 3)
-    @Enumerated(value = EnumType.STRING)
+    @Column(name = "issue_date", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date issueDate;
+
+    @Column(name = "due_date")
+    @Temporal(TemporalType.DATE)
+    private Date dueDate;
+
+    @Column(name = "commentary", columnDefinition = "TEXT")
+    private String commentary;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "currency_id", insertable = false, updatable = false) //ЧТО ДЕЛАЮТ insertable = false, updatable = false?
     private Currency currency;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "status_id", nullable = false)
+    @JoinColumn(name = "shipment_id", insertable = false, updatable = false)
+    private Shipment shipment;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "status_id", insertable = false, updatable = false)
     private InvoiceStatus invoiceStatus;
-
-    @Column(name = "issue_date")
-    private LocalDate issueDate;
-
-    @Column(name = "due_date")
-    private LocalDate dueDate;
-
-    @Column(name = "commentary")
-    private String commentary;
-
 }

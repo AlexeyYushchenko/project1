@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{entity.payment.edit.page.title} + ' #' + ${payment.id}">Payment</title>
+    <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+</head>
+<body>
+<div th:insert="~{fragments::locale}"></div>
+
+<div th:class="vertical-container">
+
+    <h1 class="m-4 text-primary" th:text="#{entity.payment.edit.page.label} + ' #' + ${payment.id}">Payment ID</h1>
+
+    <div th:class="main-container">
+
+        <form th:action="@{/payments/{paymentId}(paymentId=${payment.id()})}" method="post" th:object="${payment}">
+
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-paymentData-tab" data-bs-toggle="tab"
+                            data-bs-target="#nav-paymentData" type="button" role="tab" aria-controls="nav-paymentData"
+                            aria-selected="true"
+                            th:text="#{entity.payment.tab.paymentData}">Payment Data
+                    </button>
+                    <button class="nav-link" id="nav-allocation-tab" data-bs-toggle="tab"
+                            data-bs-target="#nav-allocation" type="button" role="tab"
+                            aria-controls="nav-allocation" aria-selected="false"
+                            th:text="#{entity.payment.tab.allocation}">Payment Allocation
+                    </button>
+                </div>
+            </nav>
+
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-paymentData" role="tabpanel"
+                     aria-labelledby="nav-paymentData-tab" tabindex="0">
+
+                    <div class="form-group horizontal-container">
+                        <div class="label-column">
+                            <label for="paymentDate" class="form-label"
+                                   th:text="#{entity.payment.field.paymentDate}">Payment Date</label>
+                        </div>
+                        <div class="date-column">
+                            <input id="paymentDate" type="date" name="paymentDate" th:value="*{paymentDate}"
+                                   aria-label="Payment Date" class="form-input">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="client" class="form-label"
+                               th:text="#{entity.payment.field.client}">Client:</label>
+                        <select id="client" name="clientId">
+                            <option th:each="client : ${clients}" th:value="${client.id}"
+                                    th:selected="${client.id == payment.client.id}" th:text="${client.name}"
+                                    aria-label="Client">Client
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="paymentType" class="form-label"
+                               th:text="#{entity.payment.field.paymentType}">Payment Type:</label>
+                        <select id="paymentType" name="paymentTypeId">
+                            <option th:each="paymentType : ${paymentTypes}" th:value="${paymentType.id}"
+                                    th:selected="${paymentType.id == payment.paymentType.id}"
+                                    th:text="${paymentType.name}"
+                                    aria-label="paymentType">Payment Type
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="currency" class="form-label"
+                               th:text="#{entity.payment.field.currency}">Currency:</label>
+                        <select id="currency" name="currencyId">
+                            <option th:each="currency : ${currencies}" th:value="${currency.id}"
+                                    th:selected="${currency.id == payment.currency.id}" th:text="${currency.name}"
+                                    aria-label="Currency">Currency
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group horizontal-container">
+                        <div class="label-column">
+                            <label for="amount" class="form-label"
+                                   th:text="#{entity.payment.field.amount}">amount</label>
+                        </div>
+                        <div class="date-column">
+                            <input id="amount" type="text" name="amount" th:value="*{amount}"
+                                   aria-label="amount" class="form-input">
+                        </div>
+                    </div>
+
+                    <div class="form-group horizontal-container">
+                        <div class="label-column">
+                            <label for="paymentProcessingFees" class="form-label"
+                                   th:text="#{entity.payment.field.processingFees}">Payment Processing Fees</label>
+                        </div>
+                        <div class="date-column">
+                            <input id="paymentProcessingFees" type="text" name="paymentProcessingFees"
+                                   th:value="*{paymentProcessingFees}"
+                                   aria-label="Payment Processing Fees" class="form-input">
+                        </div>
+                    </div>
+
+                    <div class="form-group horizontal-container">
+                        <div class="label-column">
+                            <label for="totalAmount" class="form-label"
+                                   th:text="#{entity.payment.field.totalAmount}">Total Amount</label>
+                        </div>
+                        <div class="date-column">
+                            <input id="totalAmount" type="text" name="totalAmount"
+                                   th:value="*{totalAmount}"
+                                   aria-label="Total Amount" class="form-input" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label for="commentary" class="form-label"
+                               th:text="#{entity.payment.field.commentary}">Commentary</label>
+                        <textarea id="commentary" th:text="*{commentary}" name="commentary"
+                                  th:value="*{commentary}" rows="3" class="form-input auto-expand"
+                                  aria-label="Commentary"></textarea>
+                    </div>
+
+                </div>
+
+                <div class="tab-pane fade" id="nav-allocation" role="tabpanel"
+                     aria-labelledby="nav-allocation-tab" tabindex="0">
+
+
+                </div>
+
+            </div>
+
+            <button type="submit" th:text="#{ui.button.update.label}" class="btn btn-success">Update</button>
+
+        </form>
+
+    </div>
+</div>
+
+
+<div class="form-actions">
+    <div>
+        <a th:href="@{/payments}" th:text="#{ui.button.goBack}" class="btn btn-secondary">Go back</a>
+    </div>
+    <div>
+        <a th:href="@{/menu}" th:text="#{ui.button.mainMenu}" class="btn btn-secondary">Main Menu</a>
+    </div>
+</div>
+
+<!-- Error Messages -->
+<div th:insert="~{fragments::errors}"></div>
+
+</body>
+</html>

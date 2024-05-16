@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{entity.currency.edit.page.title}">Currency</title>
+    <th:block th:replace="~{fragments :: common-head-elements}"></th:block>
+</head>
+<body>
+<div th:insert="~{fragments::locale}"></div>
+
+<h1 th:text="#{entity.currency.edit.page.label}">Currency</h1>
+
+<form th:action="@{/currencies/{currencyId}(currencyId=${currency.id()})}" method="post" th:object="${currency}">
+
+    <fieldset>
+        <legend th:text="#{entity.currency.edit.page.details.label}">Currency Details</legend>
+
+        <div class="form-group">
+            <label for="code" class="form-label"
+                   th:text="#{entity.currency.field.code} + ' (' + #{ui.default.label} + ')'">Code:</label>
+            <input id="code" type="text" name="code" th:value="*{code}" aria-label="Currency Code" class="form-input" pattern="[A-Z]{3}" th:title="#{validation.currency.code.html.title}">
+        </div>
+
+        <div class="form-group">
+            <label for="name" class="form-label"
+                   th:text="#{entity.currency.field.name} + ' (' + #{ui.default.label} + ')'">Name:</label>
+            <input id="name" type="text" name="name" th:value="*{name}" aria-label="Currency Name" class="form-input">
+        </div>
+
+        <div class="form-group">
+            <label for="enabled" class="form-label" th:text="#{entity.currency.field.enabled}">Enabled:</label>
+            <input id="enabled" type="checkbox" name="enabled" th:checked="*{enabled}" aria-label="Currency enabled status">
+        </div>
+
+        <!-- todo Optional: If your application supports localization for currency names or descriptions -->
+        <!-- todo Adjust or remove the localization sections according to your application's needs -->
+
+        <button type="submit" th:text="#{ui.button.update.label}">Update</button>
+
+    </fieldset>
+</form>
+<br>
+<form th:action="@{/currencies/{currencyId}/delete(currencyId=${currency.id()})}" method="post">
+    <button type="submit"
+            id="removeButton"
+            class="btn btn-danger"
+            th:text="#{ui.button.remove.label}"
+            th:data-confirm-message="#{entity.currency.remove.button.confirmation.message}">
+        <i class="fa fa-trash"></i> Remove
+    </button>
+</form>
+
+<div>
+    <a th:href="@{/currencies}" th:text="#{ui.button.goBack}">Go back</a>
+</div>
+<div>
+    <a th:href="@{/menu}" th:text="#{ui.button.mainMenu}">Go to Main</a>
+</div>
+
+<div th:insert="~{fragments::errors}"></div>
+
+</body>
+</html>

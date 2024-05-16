@@ -278,6 +278,19 @@ VALUES ('Microenterprise', 'Up to 15 employees or turnover up to 120 million rub
        ('Individual', 'Private individual making purchases for personal, non-commercial purposes', 'YAE');
 
 --changeset ayushchenko:13
+INSERT INTO service_type (name, description, created_by)
+VALUES ('International Delivery', 'Charging for the transportation of goods across international borders.', 'YAE'),
+       ('Local Delivery', 'Fees associated with the regional transport of goods within the same country or area.', 'YAE'),
+       ('Insurance', 'Providing coverage against loss or damage during transit.', 'YAE'),
+       ('Customs Clearance', 'Charging for handling the paperwork and procedures required to clear goods through customs.', 'YAE'),
+       ('Warehousing', 'Fees for storage of goods in a warehouse for a specified period.', 'YAE'),
+       ('Packing and Crating', 'Providing specialized packing services to ensure the safety and integrity of goods during transport.', 'YAE'),
+       ('Freight Forwarding', 'Coordinating and arranging the entire shipping process through various carriers.', 'YAE'),
+       ('Supply Chain Consulting', 'Charging for expert advice on optimizing supply chain operations and logistics strategies.', 'YAE'),
+       ('Inventory Management', 'Providing services to manage and track inventory levels, orders, and product deliveries.', 'YAE'),
+       ('Expedited Shipping', 'Offering a premium for faster than normal delivery times.', 'YAE');
+
+--changeset ayushchenko:14
 INSERT INTO business_type_localization(business_type_id, language_code, localized_name, localized_description)
 VALUES (1, 'ru','Микропредприятие', 'до 15 человек или оборот до 120 млн рублей'),
        (2, 'ru','Малый бизнес', '16-100 человек или оборот до 800 млн рублей'),
@@ -285,7 +298,20 @@ VALUES (1, 'ru','Микропредприятие', 'до 15 человек ил
        (4, 'ru','Крупный бизнес', '251< человек или оборот от 2 млрд рублей'),
        (5, 'ru','Физлицо', 'Частное лицо, совершающее покупки для личных, некоммерческих целей');
 
---changeset ayushchenko:14
+--changeset ayushchenko:15
+INSERT INTO service_type_localization(service_type_id, language_code, localized_name, localized_description)
+VALUES (1, 'ru', 'Международная доставка', 'Взимание платы за транспортировку товаров через международные границы'),
+       (2, 'ru', 'Локальная доставка', 'Сборы, связанные с транспортировкой товаров внутри страны или региона'),
+       (3, 'ru', 'Страхование', 'Предоставление страховки от потери или повреждения во время транспортировки'),
+       (4, 'ru', 'Таможенное оформление', 'Взимание платы за выполнение необходимых процедур и документации для таможенного оформления'),
+       (5, 'ru', 'Складирование', 'Взимание платы за хранение товаров на складе на указанный период'),
+       (6, 'ru', 'Упаковка и крейтинг', 'Предоставление специализированных услуг по упаковке для обеспечения сохранности и целостности товаров во время транспортировки'),
+       (7, 'ru', 'Экспедирование грузов', 'Координация и организация всего процесса перевозки через различных перевозчиков'),
+       (8, 'ru', 'Консультации по цепочке поставок', 'Взимание платы за профессиональные консультации по оптимизации операций цепочки поставок и логистических стратегий'),
+       (9, 'ru', 'Управление запасами', 'Предоставление услуг по управлению и отслеживанию уровней запасов, заказов и доставки продукции'),
+       (10, 'ru', 'Срочная доставка', 'Предложение премиум-услуг за доставку быстрее обычного срока');
+
+--changeset ayushchenko:16
 INSERT INTO industry_type (name, description, created_by)
 VALUES ('Manufacturing', 'The industry involved in the production of goods', 'YAE'),
        ('Retail', 'The sale of goods directly to end consumers', 'YAE'),
@@ -297,7 +323,7 @@ VALUES ('Manufacturing', 'The industry involved in the production of goods', 'YA
        ('eCommerce', 'Electronic commerce, associated with buying and selling goods or services over the internet', 'YAE'),
        ('Agricultural Sector', 'The industry involved in agriculture and processing of agricultural products', 'YAE');
 
---changeset ayushchenko:15
+--changeset ayushchenko:17
 INSERT INTO industry_type_localization(industry_type_id, language_code, localized_name, localized_description)
 VALUES
     (1,'ru', 'Производство', 'Отрасль, связанная с производством товаров'),
@@ -310,36 +336,43 @@ VALUES
     (8,'ru', 'eCommerce', 'Электронная коммерция, связанная с покупкой и продажей товаров или услуг через интернет'),
     (9,'ru', 'Агропромышленный Сектор', 'Отрасль, занимающаяся сельским хозяйством и обработкой сельскохозяйственной продукции');
 
---changeset ayushchenko:16
+--changeset ayushchenko:18
 INSERT INTO priority (name, description, created_by)
 VALUES ('Standard', 'Normal priority level with standard processing times', 'YAE'),
        ('High', 'Elevated priority level with expedited processing times', 'YAE');
 
---changeset ayushchenko:17
+--changeset ayushchenko:19
 INSERT INTO priority_localization(priority_id, language_code, localized_name, localized_description)
 VALUES
     (1, 'ru', 'Стандартный', 'Обычный уровень приоритета со стандартными сроками обработки'),
     (2, 'ru', 'Высокий', 'Повышенный уровень приоритета с ускоренными сроками обработки');
 
---changeset ayushchenko:18
+--changeset ayushchenko:20
 INSERT INTO agent (name, phone, commentary)
 VALUES ('Test name 1', '+7 383 912 38 58', 'This is a test commentary'),
        ('Test name 2', '+39 5383 912 38 58', 'This is a test commentary');
 
---changeset ayushchenko:19
+--changeset ayushchenko:21
 INSERT INTO invoice_status (name)
-VALUES ('Paid'),
-       ('Unpaid'),
+VALUES
+    ('Draft'),
+    ('Unpaid'),
+    ('Paid'),
+('Partially paid'),
+       ('Cancelled'),
        ('Overdue');
 
---changeset ayushchenko:20
+--changeset ayushchenko:22
 INSERT INTO invoice_status_localization(invoice_status_id, language_code, localized_name)
 VALUES
-    (1, 'ru', 'Оплачен'),
-    (2, 'ru', 'Неоплачен'),
-    (3, 'ru', 'Просрочен');
+    (1, 'ru', 'Черновик'),
+    (2, 'ru', 'Не оплачен'),
+    (3, 'ru', 'Оплачен'),
+    (4, 'ru', 'Частично оплачен'),
+    (5, 'ru', 'Отменен'),
+    (6, 'ru', 'Просрочен');
 
---changeset ayushchenko:21
+--changeset ayushchenko:23
 INSERT INTO route_status (name)
 VALUES ('Scheduled'),
        ('Loading'),
@@ -355,7 +388,7 @@ VALUES ('Scheduled'),
        ('Completed'),
        ('Cancelled');
 
---changeset ayushchenko:22
+--changeset ayushchenko:24
 INSERT INTO route_status_localization(route_status_id, language_code, localized_name)
 VALUES
     (1, 'ru', 'Заказан'),
@@ -372,15 +405,58 @@ VALUES
     (12, 'ru', 'Завершен'),
     (13, 'ru', 'Отменен');
 
---changeset ayushchenko:23
+--changeset ayushchenko:25
 INSERT INTO client (name, full_name, status_id, business_type_id, industry_type_id, address)
-VALUES ('Client 1', 'Client 1 full name', 1, 1, 1, 'Moscow, Tverskaya str., 1');
+VALUES
+    ('UTLS RUS', 'UTLS RUSSIA', 1, 1, 1, 'Moscow, Tverskaya str., 1'),
+    ('UTLS CHINA', 'UTLS CHINA', 1, 1, 1, 'Moscow, Tverskaya str., 1'),
+    ('RUSSIANO', 'RUSSIANO', 1, 1, 1, 'Italia, Roma, via Felice, 37'),
+    ('MEXICAN CARTEL', 'MEXICAN CARTEL', 1, 1, 1, 'Museo Nacional de la Estampa, Av. Hidalgo 39, Centro Histórico de la Cdad. de México, Guerrero, Cuauhtémoc, 06050 Ciudad de México, CDMX, Messico');
 
---changeset ayushchenko:24
+--changeset ayushchenko:26
 INSERT INTO route (identification_number, status_id, transport_type, country_of_departure_id, country_of_destination_id, customs_post)
 VALUES ('01-IT-24012024', 1, '90', 1, 2, 'KL');
 
---changeset ayushchenko:25
+--changeset ayushchenko:27
 INSERT INTO shipment (status_id, client_id, route_id, internal_comment, client_comment, delivery_type, destination_address, client_pcs, client_volume_m3, client_weight_kg, shipment_type, shipment_description, country_of_departure, manufacturer_id, country_of_destination)
 VALUES (1, 1, 1, 'Very expensive and fragile crystal statue. Take good care!', 'molto fragile!', 'truck', 'Mosca, Tverkskaya 1', 1, 10, 2000, 'Fragile cargo', 'crystal statue', 1, 1, 2);
 
+--changeset ayushchenko:28
+INSERT INTO currency (code, name, enabled)
+VALUES
+    ('RUB', 'Russian Ruble', true),
+    ('USD', 'US Dollar', true),
+    ('EUR', 'Euro', true),
+    ('CNY', 'Chinese Yuan', false);
+
+--changeset ayushchenko:29
+INSERT INTO payment_type (name, description)
+VALUES
+    ('Bank Transfer', 'Payment made through direct transfer of funds from one bank account to another.'),
+    ('Cash at the Office', 'Payment made in cash at the company office.'),
+    ('Cash at the Warehouse', 'Payment made in cash directly at the warehouse during goods pickup.'),
+    ('Cash by Carrier', 'Payment made in cash to the carrier at the time of delivery.'),
+    ('Reclamation', 'Refund or compensation paid due to claims or complaints about goods or services.'),
+    ('Cryptocurrency', 'Payment made using digital currency such as Bitcoin, Ethereum, etc.'),
+    ('Credit Card', 'Payment made using a credit card either online or offline.'),
+    ('Online Payment', 'Payment made through online payment systems or gateways.'),
+    ('Mobile Payment', 'Payment made through mobile payment apps or mobile wallets.');
+
+--changeset ayushchenko:30
+INSERT INTO payment_type_localization(payment_type_id, language_code, localized_name, localized_description)
+VALUES (1, 'ru', 'Банковский перевод', 'Оплата средствами прямого перевода с одного банковского счета на другой'),
+       (2, 'ru', 'Наличные в офисе', 'Оплата наличными в офисе компании'),
+       (3, 'ru', 'Наличные на складе', 'Оплата наличными непосредственно на складе при получении товаров'),
+       (4, 'ru', 'Наличные курьеру', 'Оплата наличными курьеру при доставке'),
+       (5, 'ru', 'Возврат средств', 'Возврат или компенсация оплаты из-за претензий или жалоб на товары или услуги'),
+       (6, 'ru', 'Криптовалюта', 'Оплата с использованием цифровой валюты, такой как Bitcoin, Ethereum и т.д.'),
+       (7, 'ru', 'Оплата кредитной картой', 'Оплата с помощью кредитной карты, возможно как онлайн, так и офлайн'),
+       (8, 'ru', 'Онлайн-платежи', 'Оплата через онлайн-платежные системы или платежные шлюзы'),
+       (9, 'ru', 'Мобильный платеж', 'Оплата с помощью мобильных приложений или электронных кошельков');
+
+--changeset ayushchenko:31
+INSERT INTO payment(client_id, amount, currency_id, payment_date, payment_type_id, payment_processing_fees, commentary)
+VALUES
+    (1, 10000, 2, '2024-01-01', 4, 0, 'SERVICES'),  -- CASH
+    (1, 15000, 3, '2024-01-01', 6, 100, 'GOODS'),   -- CRYPTO
+    (1, 1000000, 1, '2024-01-01', 1, 0, 'LOCAL SERVICES');  -- TRANSFER
