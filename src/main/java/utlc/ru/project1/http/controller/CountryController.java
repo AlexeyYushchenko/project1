@@ -48,23 +48,23 @@ public class CountryController {
         return "country/create";
     }
 
-    @PostMapping
-    public String create(@ModelAttribute @Validated CountryCreateUpdateDto dto,
-                         BindingResult bindingResult,
-                         RedirectAttributes redirectAttributes) {
+        @PostMapping
+        public String create(@ModelAttribute @Validated CountryCreateUpdateDto dto,
+                             BindingResult bindingResult,
+                             RedirectAttributes redirectAttributes) {
 
-        if (!bindingResult.hasErrors()) {
-            try {
-                countryService.create(dto);
-                return "redirect:/countries";
-            } catch (DataIntegrityViolationException e) {
-                bindingResult.reject("database error", "error.database.country.uniqueConstraintViolation");
+            if (!bindingResult.hasErrors()) {
+                try {
+                    countryService.create(dto);
+                    return "redirect:/countries";
+                } catch (DataIntegrityViolationException e) {
+                    bindingResult.reject("database error", "error.database.country.uniqueConstraintViolation");
+                }
             }
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            redirectAttributes.addFlashAttribute("country", dto);
+            return "redirect:/countries/create";
         }
-        redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-        redirectAttributes.addFlashAttribute("country", dto);
-        return "redirect:/countries/create";
-    }
 
     @PostMapping("/{id}")
     public String update(@PathVariable("id") Integer id,
